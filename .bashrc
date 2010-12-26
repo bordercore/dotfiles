@@ -86,6 +86,9 @@ alias svndiff='svn diff --diff-cmd diff -x -uw'
 # usefull alias to browse your filesystem for heavy usage quickly
 alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -i du -hs {}'
 
+# Look for dot files
+alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
+
 if [ -e ~/.fetchmail.pid ];
 then
     alias checkmail="kill -SIGUSR1 `cat ~/.fetchmail.pid | cut -f 1 -d \" \"`"
