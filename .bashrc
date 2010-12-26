@@ -87,12 +87,6 @@ function dis {
 
 }
 
-function alert {
-
-    sleep $1; play /usr/share/sounds/gnibbles/bonus.wav
-
-}
-
 #if test $COLORTERM
 #then
 #    . /home/jerrell/.bashprompt/bashthemes/nergal
