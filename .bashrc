@@ -26,6 +26,9 @@ export LESS="--ignore-case"
 
 export GREP_OPTIONS="--directories=skip --color=always"
 
+# define color to additional file types
+export LS_COLORS=$LS_COLORS:"*.gif=01;35":"*.jpg=01;35":"*.png=01;35":
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
