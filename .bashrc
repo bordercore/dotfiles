@@ -1,4 +1,6 @@
-# .bashrc
+# Master .bashrc file
+#   by F. Jerrell Schivers
+#
 
 # User specific aliases and functions
 
@@ -7,9 +9,12 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-export PATH=$PATH:/home/jerrell/bin:/usr/games:/usr/sbin:/sbin
-export PATH=$PATH:$HOME/bin
-export MANPATH=$MANPATH:/var/qmail/man
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+#export HISTCONTROL=ignoredups
+
 export VISUAL="emacs -nw"
 export history=100
 
@@ -21,8 +26,8 @@ export LESS="--ignore-case"
 
 export GREP_OPTIONS="--directories=skip --color=always"
 
-# This lets 'less' view certain binary files
-eval $(lesspipe)
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
 #setup color ls
 #eval `dircolors /etc/DIR_COLORS.xterm`
@@ -56,6 +61,9 @@ alias ccc="rm *~"
 alias rls="ls -l -r -h -B --sort=time"
 alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
+
+# Ignore whitespace when using the svn diff command
+alias svndiff='svn diff --diff-cmd diff -x -uw'
 
 if [ -e ~/.fetchmail.pid ];
 then
@@ -94,3 +102,7 @@ function alert {
 if [ -f /usr/local/etc/jerrell.sh ];then
     . /usr/local/etc/jerrell.sh
 fi
+
+# Wumpus specific stuff here
+export PATH=$PATH:/home/jerrell/bin:/usr/games:/usr/sbin:/sbin
+export PATH=$PATH:$HOME/bin
