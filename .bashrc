@@ -61,6 +61,10 @@ alias rls="ls -l -r -h -B --sort=time"
 alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
 
+# Directory navigation aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+
 # Ignore whitespace when using the svn diff command
 alias svndiff='svn diff --diff-cmd diff -x -uw'
 
