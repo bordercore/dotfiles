@@ -1,6 +1,10 @@
 # Master .bashrc file
 #   by F. Jerrell Schivers
 #
+# TODO: Split this up into .bash_functions, .bash_aliases, and .bash_prompt.  Then:
+#   if [ -f ~/.bash_functions ]; then
+#      . ~/.bash_functions
+#  fi
 
 # User specific aliases and functions
 
@@ -78,6 +82,9 @@ alias ...='cd ../..'
 
 # Ignore whitespace when using the svn diff command
 alias svndiff='svn diff --diff-cmd diff -x -uw'
+
+# usefull alias to browse your filesystem for heavy usage quickly
+alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -i du -hs {}'
 
 if [ -e ~/.fetchmail.pid ];
 then
