@@ -60,6 +60,7 @@ alias ccc="rm *~"
 alias rls="ls -l -r -h -B --sort=time"
 alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
+alias f="find . |grep "
 
 # Directory navigation aliases
 alias ..='cd ..'
