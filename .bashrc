@@ -44,7 +44,6 @@ export CLASSPATH=$CLASSPATH:/usr/share/java/activation.jar
 export CLASSPATH=$CLASSPATH:/usr/share/java/inetlib.jar
 export CLASSPATH=$CLASSPATH:.
 
-export CVSROOT=/home/cvs
 export WWW=/home/www/htdocs/bordercore
 
 # Options for the ack grep replacement
