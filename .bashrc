@@ -15,8 +15,14 @@ fi
 # don't put duplicate lines in the history. See bash(1) for more options
 #export HISTCONTROL=ignoredups
 
+# Set the maximum number of lines kept in history
+export HISTFILESIZE=1000
+
+# Add a timestamp for history
+export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
+
+# Set the default editor
 export VISUAL="emacs -nw"
-export history=100
 
 # Use emacs for git commit log messages
 export GIT_EDITOR=emacs
