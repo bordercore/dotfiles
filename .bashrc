@@ -107,7 +107,15 @@ extract () {
     fi
 }
 
-#if test $COLORTERM
+psgrep () {
+    if [ ! -z $1 ] ; then
+	echo "Grepping for processes matching $1..."
+	ps aux | grep $1 | grep -v grep
+	else
+	echo "!! Need name to grep for"
+	fi
+}
+
 #then
 #    . /home/jerrell/.bashprompt/bashthemes/nergal
 #else
