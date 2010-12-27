@@ -1,34 +1,54 @@
 # Created by KrON from windowmaker on IRC
 # Changed by Spidey 08/06
 
-function set_prompt {
+# function set_prompt {
+function exitstatus {
 
-if [ "$TERM" == "dumb" ]; then
-  return
-fi
+    EXITSTATUS="$?"
+
+    if [ "$TERM" == "dumb" ]; then
+	return
+    fi
 
 # For a lighter version of any of these colors,
 #  replace the '0' with '1', eg turn green to
 #  light green 0;32m => 1;32m
+    local OFF="\[\033[m\]"
+    local BOLD="\[\033[1m\]"
+    local black="\[\033[0;30m\]"
+    local red="\[\033[0;31m\]"
+    local yellow="\[\033[0;33m\]"
+    local green="\[\033[0;32m\]"
+    local cyan="\[\033[1;36m\]"
+    local white="\[\033[37m\]"
+    local blue="\[\033[34m\]"
+    local purple="\[\033[35m\]"
+    local brown="\[\033[33m\]"
+    local grad=`tty|cut -d/ -f3`
 
-local black="\[\033[0;30m\]"
-local red="\[\033[0;31m\]"
-local yellow="\[\033[0;33m\]"
-local green="\[\033[0;32m\]"
-local cyan="\[\033[1;36m\]"
-local white="\[\033[37m\]"
-local blue="\[\033[34m\]"
-local purple="\[\033[35m\]"
-local brown="\[\033[33m\]"
-local grad=`tty|cut -d/ -f3`
+    local bakred='\e[41m'   # Red Background
 
-export PS1="$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%l:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$red($purple\w$red)$purple\[\033[0;00m\] "
+    ERROR=$EXITSTATUS
+
+# If the last command resulted in an error, prominently display the exit status
+    if [ "$EXITSTATUS" -ne "0" ]; then
+	ERROR="${BOLD}$bakred$EXITSTATUS${OFF}"
+    fi
+
+
+#local status=`echo $?`
+    export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\[\033[m\] "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
 export P2="> "
 
+# export  PS1="${BOLD}\u@\h:\w${OFF}${RED}\$${OFF} "
+
 }
+
+PROMPT_COMMAND=exitstatus
+
 
 # Colors:
 #
