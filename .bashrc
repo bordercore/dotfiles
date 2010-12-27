@@ -70,7 +70,7 @@ export PGUSER=bordercore
 alias rm="rm -i"
 alias ls="ls -F --color=tty"
 alias ccc="rm *~"
-alias rls="ls -l -r -h -B --sort=time"
+alias rls="ls -l -r -h -B -t"
 alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
 alias f="find . |grep "
@@ -88,11 +88,6 @@ alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sor
 
 # Look for dot files
 alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
-
-if [ -e ~/.fetchmail.pid ];
-then
-    alias checkmail="kill -SIGUSR1 `cat ~/.fetchmail.pid | cut -f 1 -d \" \"`"
-fi
 
 # Prevent core dumps
 ulimit -c 0
