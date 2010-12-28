@@ -19,7 +19,7 @@ fi
 #export HISTCONTROL=ignoredups
 
 # Set the maximum number of lines kept in history
-export HISTFILESIZE=1000
+export HISTFILESIZE=10000
 
 # Add a timestamp for history
 export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
@@ -47,16 +47,11 @@ export LS_COLORS=$LS_COLORS:"*.gif=01;35":"*.jpg=01;35":"*.png=01;35":
 # Point nethack to my personal config file
 #export NETHACKOPTIONS="@/usr/lib/games/nethackdir/config/nethackrc-jerrell"
 
-# Set the default DN for LDAP operations
-export LDAPBINDDN="cn=Manager,dc=bordercore,dc=com"
-
 export CLASSPATH=/usr/share/java/xerces-1.4.4.jar
 export CLASSPATH=$CLASSPATH:/usr/share/java/gnumail.jar
 export CLASSPATH=$CLASSPATH:/usr/share/java/activation.jar
 export CLASSPATH=$CLASSPATH:/usr/share/java/inetlib.jar
 export CLASSPATH=$CLASSPATH:.
-
-export WWW=/home/www/htdocs/bordercore
 
 # Options for the ack grep replacement
 export ACK_OPTIONS="--ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
@@ -147,18 +142,13 @@ psgrep () {
 	fi
 }
 
-#then
-#    . /home/jerrell/.bashprompt/bashthemes/nergal
-#else
-#    export PS1="[\h \u \w] "
-#fi
-
-#/usr/games/fortune
-
-if [ -f /usr/local/etc/jerrell.sh ];then
-    . /usr/local/etc/jerrell.sh
-fi
-
+#
 # Wumpus specific stuff here
+#
+
 export PATH=$PATH:/home/jerrell/bin:/usr/games:/usr/sbin:/sbin
 export PATH=$PATH:$HOME/bin
+
+# Set the default DN for LDAP operations
+export LDAPBINDDN="cn=Manager,dc=bordercore,dc=com"
+
