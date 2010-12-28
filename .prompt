@@ -35,6 +35,7 @@ function set_prompt {
 	ERROR="${BOLD}$bakred$EXITSTATUS${OFF}"
     fi
 
+    # Capture the number of jobs
     JOBS=`jobs | wc -l | awk '{print $1}'`
 
     if [ $JOBS -ne 0 ]; then
@@ -47,10 +48,13 @@ function set_prompt {
 	JOBS=""
     fi
 
+    # Are running in a screen?
+    [ "$STY" != "" ] && SFLAG='-SCR' || SFLAG=''
+
     # export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\$OFF "
 
 
-    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple$JOBS-$ERROR$OFF "
+    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple$JOBS$SFLAG-$ERROR$OFF "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
