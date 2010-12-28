@@ -1,8 +1,8 @@
-# Created by KrON from windowmaker on IRC
-# Changed by Spidey 08/06
+# Master .prompt file for setting the BASH prompt
+#  by F. Jerrell Schivers
+#  based on work by KrON from windowmaker on IRC and Spidey 08/06
 
-# function set_prompt {
-function exitstatus {
+function set_prompt {
 
     EXITSTATUS="$?"
 
@@ -30,14 +30,15 @@ function exitstatus {
 
     ERROR=$EXITSTATUS
 
-# If the last command resulted in an error, prominently display the exit status
+    # If the last command resulted in an error, prominently display the exit status
     if [ "$EXITSTATUS" -ne "0" ]; then
 	ERROR="${BOLD}$bakred$EXITSTATUS${OFF}"
     fi
 
+    # export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\$OFF "
 
-#local status=`echo $?`
-    export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\[\033[m\] "
+
+    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple-$red($white$ERROR$red)$OFF "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
@@ -47,7 +48,7 @@ export P2="> "
 
 }
 
-PROMPT_COMMAND=exitstatus
+PROMPT_COMMAND=set_prompt
 
 
 # Colors:
