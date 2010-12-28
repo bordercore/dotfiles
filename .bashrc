@@ -6,7 +6,6 @@
 #      . ~/.bash_functions
 #  fi
 
-# User specific aliases and functions
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -68,13 +67,20 @@ export PGUSER=bordercore
 
 # Set up the aliases
 alias rm="rm -i"
-alias ls="ls -F --color=tty"
 alias ccc="rm *~"
 alias rls="ls -l -r -h -B -t"
 alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
 alias f="find . |grep "
 alias tf='tail -f'
+
+# Handle Linux and OS X differences here
+if [ `uname` == "Darwin" ]; then
+    alias ls='ls -G -F'
+else
+       #eval "`dircolors -b`"
+    alias ls='ls -F --color=auto'
+fi
 
 # Directory navigation aliases
 alias ..='cd ..'
