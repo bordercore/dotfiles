@@ -38,7 +38,7 @@ function set_prompt {
     # export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\$OFF "
 
 
-    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple-$red($white$ERROR$red)$OFF "
+    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple-$red\j-$red($white$ERROR$red)$OFF "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
