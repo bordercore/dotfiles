@@ -48,13 +48,19 @@ function set_prompt {
 	JOBS=""
     fi
 
-    # Are running in a screen?
+    # Are we running in a screen?
     [ "$STY" != "" ] && SFLAG='-SCR' || SFLAG=''
+
+    # Set SSH_FLAG only if this is a remote (ssh) connection.  This will be used in the prompt
+    local SSH_IP=`echo $SSH_CLIENT | awk '{ print $1 }'`
+    if [ $SSH2_IP ]; then
+	local SSH_FLAG="$red@$brown\h"
+    fi
 
     # export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\$OFF "
 
 
-    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$red@$brown\h$red)$purple$JOBS$SFLAG-$ERROR$OFF "
+    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$SSH_FLAG$red)$purple$JOBS$SFLAG-$ERROR$OFF "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
