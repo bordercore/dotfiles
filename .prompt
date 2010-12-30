@@ -59,8 +59,17 @@ function set_prompt {
 
     # export PS1="$red($brown\u$red@$brown\h$red)$purple-$red($red\$(date +%l:%M%P) \$(date +%m/%d)$red)$purple-$red($white$ERROR$red)\n$red($purple\w$red)$purple\$OFF "
 
+    # When displaying the PWD in the prompt, we want to truncate it so avoid displaying excessively long paths
+    MAXLENGTH=100
+    MYPWD=`echo $PWD | sed "s@$HOME@~@g"`  # If we're in our home dir, then use ~ for $HOME
+    LENGTH=${#MYPWD}
 
-    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple\w$red)$purple\n\$red($brown\u$SSH_FLAG$red)$purple$JOBS$SFLAG-$ERROR$OFF "
+    if [ $(( LENGTH )) -gt $MAXLENGTH ] ; then
+	MYPWD=${MYPWD:$LENGTH-$MAXLENGTH:$MAXLENGTH}
+	MYPWD="...$MYPWD"
+    fi
+
+    export PS1="$red($red\$(date +%l:%M%P\ %m/%d)$red)$purple-$red($purple$MYPWD$red)$purple\n\$red($brown\u$SSH_FLAG$red)$purple$JOBS$SFLAG-$ERROR$OFF "
 
 # export PS1="$purple\332\304$red($green\u$red@$green\h$red)$purple-$red($blue\$(date +%H:%M%P)$red-$blue\$(date +%m)/\$(date +%d)$red)$purple-$red($green$grad$red)\n$purple\300\304$red($purple\w$red)$purple\[\033[0;00m\] "
 
