@@ -1,0 +1,21 @@
+#
+# .bashrc file for bordercore
+#   by F. Jerrell Schivers
+#
+#  This should be sourced at the end of the master .bashrc file
+#
+
+# Postgres connection parameters
+
+export PGDATABASE=bordercore
+export PGHOST=localhost
+export PGUSER=bordercore
+
+export PATH=$PATH:/usr/games:/usr/sbin:/sbin
+
+# Set the default DN for LDAP operations
+export LDAPBINDDN="cn=Manager,dc=bordercore,dc=com"
+
+# Django dev
+export PYTHONPATH=$HOME/dev/django/bordercore_project:$HOME/dev/django/bordercore_project/bordercore
+export DJANGO_SETTINGS_MODULE=config.settings.dev
