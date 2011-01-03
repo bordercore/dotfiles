@@ -56,10 +56,6 @@ export CLASSPATH=$CLASSPATH:.
 # Options for the ack grep replacement
 export ACK_OPTIONS="--ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
 
-export PGDATABASE=bordercore
-export PGHOST=localhost
-export PGUSER=bordercore
-
 # Set up the aliases
 alias rm="rm -i"
 alias ccc="rm *~"
@@ -143,12 +139,8 @@ psgrep () {
 }
 
 #
-# Wumpus specific stuff here
+# Source your location or host specific .bashrc file here
 #
-
-export PATH=$PATH:/home/jerrell/bin:/usr/games:/usr/sbin:/sbin
-export PATH=$PATH:$HOME/bin
-
-# Set the default DN for LDAP operations
-export LDAPBINDDN="cn=Manager,dc=bordercore,dc=com"
+# Eg: . $HOME/.bashrc-bordercore
+#
 
