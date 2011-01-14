@@ -1,0 +1,65 @@
+#
+# .bashrc file for Black Duck
+#   by F. Jerrell Schivers
+#
+#  This should be sourced at the end of the master .bashrc file
+#
+
+# Postgres connection parameters
+export PGHOST=tick
+export PGUSER=blackduck
+export PGDATABASE=test_db
+
+# Set the default search path for schemas
+export PGOPTIONS="-c search_path=public,lscan2,f451"
+
+# Aliases for connecting to various databases
+alias plewis="psql -h lewis --set=search_path=public,lscan2,f451 spider_db";
+alias ptrack="psql -h track bds_stdproj44_daemon"
+
+export PATH=$PATH:$HOME/bin/:/usr/local/bin:/sbin:~jschivers/bin:/opt/postgres-8.4.4/bin/
+
+export PERL5LIB=/home/sauto
+
+export SPIDERSERVER=tick
+export SPIDERDB=test_db
+
+# Koders stuff
+export KODERS_SQL_SERVER_DB=Test1_Working
+export KODERS_SQL_SERVER_HOST=kodespiderdev
+
+# Apache convenience functions
+source $HOME/bin/apache_util
+
+# bashDir -- directory navigation made easy
+. $HOME/bashDirB
+
+function go {
+
+    if [ $# -lt 1 ]; then
+        usage
+        exit 1
+    fi
+
+    if [ $1 = "modules" ]; then
+        cd /home/sauto/Blackduck/Sauto
+    elif [ $1 = "svn" ]; then
+        cd $HOME/svn/blackduckspider/trunk/sauto/Blackduck/Sauto
+    elif [ $1 = "www" ]; then
+        cd /home/www/htdocs/sauto
+    elif [ $1 = "sauto" ]; then
+        cd $CVS/sauto
+    elif [ $1 = "triggers" ]; then
+        cd $CVS/sauto/triggers
+    elif [ $1 = "functions" ]; then
+        cd $CVS/sauto/functions
+    else
+
+        # Assume this is the unix name for a project
+        FIRST_DIR=`expr substr $1 1 1`
+        SECOND_DIR=`expr substr $1 1 2`
+        cd "/home/sauto/dl/$FIRST_DIR/$SECOND_DIR/$1/"
+
+    fi
+
+}
