@@ -144,3 +144,4 @@ psgrep () {
 # Eg: . $HOME/.bashrc-bordercore
 #
 
+. $HOME/.bashrc-bordercore
