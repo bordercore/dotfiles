@@ -54,7 +54,7 @@ export CLASSPATH=$CLASSPATH:/usr/share/java/inetlib.jar
 export CLASSPATH=$CLASSPATH:.
 
 # Options for the ack grep replacement
-export ACK_OPTIONS="--ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
+export ACK_OPTIONS="--ignore-case --ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
 
 # Set up the aliases
 alias rm="rm -i"
