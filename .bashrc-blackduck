@@ -14,8 +14,8 @@ export PGDATABASE=test_db
 export PGOPTIONS="-c search_path=public,lscan2,f451"
 
 # Aliases for connecting to various databases
-alias plewis="psql -h lewis --set=search_path=public,lscan2,f451 spider_db";
-alias ptrack="psql -h track bds_stdproj44_daemon"
+alias plewis="psql --pset null="(null)" -h lewis --set=search_path=public,lscan2,f451 spider_db";
+alias ptrack="psql --pset null="(null)" -h track bds_stdproj44_daemon"
 
 export PATH=$PATH:$HOME/bin/:/usr/local/bin:/sbin:~jschivers/bin:/opt/postgres-8.4.4/bin/
 
