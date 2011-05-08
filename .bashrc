@@ -33,7 +33,7 @@ export GIT_EDITOR=emacs
 # Searches in less should not be case-sensitive
 export LESS="--ignore-case"
 
-export GREP_OPTIONS="--directories=skip --color=always"
+export GREP_OPTIONS="--directories=skip --color=auto"
 
 # define color to additional file types
 export LS_COLORS=$LS_COLORS:"*.gif=01;35":"*.jpg=01;35":"*.png=01;35":
