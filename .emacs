@@ -146,3 +146,6 @@
 
 ;; disable the splash screen
 (setq inhibit-splash-screen t)
+
+;; for re-builder mode, set the syntax to 'string' to avoid extra escaping
+(setq reb-re-syntax 'string)
