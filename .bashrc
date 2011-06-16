@@ -91,6 +91,14 @@ ulimit -c 0
 
 set noclobber
 
+# bash completion support for Git
+GIT_BASH_SCRIPT=$HOME/bin/git-completion.bash
+if [ -e $GIT_BASH_SCRIPT ]; then
+    source $GIT_BASH_SCRIPT
+    GIT_PS1_SHOWDIRTYSTATE=1  # show unstaged (*) and staged (+) changes
+    GIT_PS1_SHOWUNTRACKEDFILES=1 # show untracked files
+fi
+
 source $HOME/.prompt
 set_prompt
 
@@ -143,5 +151,5 @@ psgrep () {
 #
 # Eg: . $HOME/.bashrc-bordercore
 #
-
 . $HOME/.bashrc-bordercore
+
