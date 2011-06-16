@@ -41,9 +41,9 @@ function set_prompt {
 
     if [ $JOBS -ne 0 ]; then
 	if [ $JOBS -eq 1 ]; then
-	    JOBS=" $green($BOLD${red}1 job$OFF)"
+	    JOBS=" $green($BOLD${red}1 job$OFF$green)"
 	else
-	    JOBS=" $green($BOLD$red$JOBS jobs$OFF)"
+	    JOBS=" $green($BOLD$red$JOBS jobs$OFF$green)"
 	fi
     else
 	JOBS=""
@@ -68,7 +68,14 @@ function set_prompt {
 	MYPWD="...$MYPWD"
     fi
 
-    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white"
+    GIT=
+    if [ `type -t __git_ps1` ]; then
+        GIT="$yellow$(__git_ps1 ' (%s)')"
+    fi
+
+#    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white"
+
+    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white"
 
     export P2="> "
 
