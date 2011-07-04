@@ -34,6 +34,8 @@ source $HOME/bin/apache_util
 # bashDir -- directory navigation made easy
 . $HOME/bashDirB
 
+export ACK_OPTIONS=$ACK_OPTIONS:" --ignore-dir=yui --ignore-dir=profiler --ignore-dir=jquery"
+
 function go {
 
     if [ $# -lt 1 ]; then
