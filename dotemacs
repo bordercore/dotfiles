@@ -65,17 +65,12 @@
 ;; Turn on Column Number mode
 (setq column-number-mode 1)
 
-(global-set-key "\C-h" 'delete-backward-char)
+;(global-set-key "\C-h" 'delete-backward-char)
 ;(global-set-key "\C-?" 'delete-char)
 
 (setq load-path
-      (append (list nil "~/emacs/elisp"
-                    "/usr/local/share/emacs/site-lisp")
-              load-path))
-
-(setq load-path
       (append load-path
-	      '("~/emacs/elisp/ecb/lisp/ecb")))
+	      '("/usr/local/share/emacs/site-lisp")))
 
 (autoload 'maniac-fill-mode "maniac" nil t)
 
@@ -115,7 +110,7 @@
 	    (define-key nh-map-mode-map (kbd "<next>") 'nethack-command-southeast)
 ))
 
-(add-to-list 'load-path "~/emacs/elisp/nethack/")
+(add-to-list 'load-path "~/.emacs.d/elisp/nethack/")
 (autoload 'nethack "nethack" "Play Nethack." t)
 (setq nethack-program "/usr/games/nethack-lisp")
 
@@ -149,3 +144,6 @@
 
 ;; for re-builder mode, set the syntax to 'string' to avoid extra escaping
 (setq reb-re-syntax 'string)
+
+;; support for Magit, which provides nice Git integration with Emacs
+(require 'magit)
