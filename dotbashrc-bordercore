@@ -2,14 +2,15 @@
 # .bashrc file for bordercore
 #   by F. Jerrell Schivers
 #
+#  Bordercore-specific bash configuration.
 #  This should be sourced at the end of the master .bashrc file
 #
 
 # Postgres connection parameters
 
-export PGDATABASE=bordercore
 export PGHOST=localhost
 export PGUSER=bordercore
+export PGDATABASE=bordercore
 
 export PATH=$PATH:/usr/games:/usr/sbin:/sbin
 
