@@ -134,6 +134,11 @@
 (setq load-path (cons org-sys-directory load-path))
 (setq org-startup-indented t)
 
+;; Automatically use Imenu, as needed
+(defun try-to-add-imenu ()
+  (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
+ (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+
 (setq imenu-max-items 50)
 
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
