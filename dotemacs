@@ -141,6 +141,9 @@
 
 (setq imenu-max-items 50)
 
+;; Always show trailing whitespace
+(setq-default show-trailing-whitespace t)
+
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
 
