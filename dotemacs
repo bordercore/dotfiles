@@ -130,6 +130,10 @@
 ;; (load-library "mailcrypt")
 ;; (mc-setversion "gpg")
 
+;; turn on font-lock mode in all modes that support it
+(when (fboundp 'global-font-lock-mode)
+  (global-font-lock-mode t))
+
 (defvar org-sys-directory "/home/jerrell/org-6.31a/lisp" "The directory containing the org distribution.")
 (setq load-path (cons org-sys-directory load-path))
 (setq org-startup-indented t)
