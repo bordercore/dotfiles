@@ -90,6 +90,9 @@
        (mwheel-install)
 ))
 
+;; Use diff-mode when editing Git commit messages.
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
+
 (require 'mmm-mode)
 (setq mmm-global-mode 't)
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
@@ -134,10 +137,6 @@
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
 
-(defvar org-sys-directory "/home/jerrell/org-6.31a/lisp" "The directory containing the org distribution.")
-(setq load-path (cons org-sys-directory load-path))
-(setq org-startup-indented t)
-
 ;; Automatically use Imenu, as needed
 (defun try-to-add-imenu ()
   (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
@@ -150,6 +149,9 @@
 
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
+
+;; Turn on org-indent-mode for all files
+(setq org-startup-indented t)
 
 ;; disable the splash screen
 (setq inhibit-splash-screen t)
