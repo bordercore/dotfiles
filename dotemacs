@@ -52,6 +52,11 @@
 (global-set-key (quote [f5]) 'my-copy-line)
 (global-set-key "\C-x\C-g" 'goto-line)
 
+;; The <home> and <end> keys should move to the beginning
+;;  and end of the buffer, respectively
+(global-set-key [home] 'beginning-of-buffer)
+(global-set-key [end] 'end-of-buffer)
+
 (add-hook 'c-mode-common-hook
 	  (lambda ()
 	    (c-set-style "k&r")
