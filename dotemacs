@@ -98,10 +98,16 @@
 ;; Use diff-mode when editing Git commit messages.
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
 
+;; Use HTML Mode for html, autohandler, and dhandler files
+(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))          
+
 (require 'mmm-mode)
 (setq mmm-global-mode 't)
-(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (mmm-add-mode-ext-class 'html-mode "\\.html\\'" 'mason)
+
+;; Don't color submode regions
+(setq mmm-submode-decoration-level 0)    
 
 ;; Load the Emacs Code Browser
 ;;(require 'ecb)
@@ -145,9 +151,13 @@
 ;; Automatically use Imenu, as needed
 (defun try-to-add-imenu ()
   (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
- (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+(add-hook 'font-lock-mode-hook 'try-to-add-imenu)
 
+;; Imenu: display 50 items in each submenu
 (setq imenu-max-items 50)
+
+;; Imenu: sort functions alphabetically
+(setq imenu-sort-function 'imenu--sort-by-name)
 
 ;; Always show trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -157,6 +167,10 @@
 
 ;; Turn on org-indent-mode for all files
 (setq org-startup-indented t)
+
+;; Add an intermediate 'IN PROGRESS' todo state
+(setq org-todo-keywords
+      '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
 
 ;; disable the splash screen
 (setq inhibit-splash-screen t)
