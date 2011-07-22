@@ -55,6 +55,14 @@
 (global-set-key [home] 'beginning-of-buffer)
 (global-set-key [end] 'end-of-buffer)
 
+(global-set-key (kbd "C-x <left>") 'windmove-left)   ; move to left windnow
+(global-set-key (kbd "C-x <right>") 'windmove-right) ; move to right window
+(global-set-key (kbd "C-x <up>") 'windmove-up)       ; move to upper window
+(global-set-key (kbd "C-x <down>") 'windmove-down)   ; move to lower window
+
+;; Change 'yes or no' prompt to 'y or n' prompts
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (add-hook 'c-mode-common-hook
 	  (lambda ()
 	    (c-set-style "k&r")
@@ -89,6 +97,13 @@
 ;; Visual feedback on selections
 (setq-default transient-mark-mode t)
 
+;; Uniquify changes conflicting buffer names from file<2> etc
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+
 ;; Enable wheelmouse support by default
 (cond (window-system
        (mwheel-install)
@@ -99,7 +114,7 @@
 
 ;; Use HTML Mode for html, autohandler, and dhandler files
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))          
+(add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))
 
 ;; Use color-theme mode for skinning Emacs
 (require 'color-theme)
@@ -113,7 +128,7 @@
 (mmm-add-mode-ext-class 'html-mode "\\.html\\'" 'mason)
 
 ;; Don't color submode regions
-(setq mmm-submode-decoration-level 0)    
+(setq mmm-submode-decoration-level 0)
 
 ;; Load the Emacs Code Browser
 ;;(require 'ecb)
@@ -197,7 +212,7 @@
 ;; support for Magit, which provides nice Git integration with Emacs
 (require 'magit)
 
-(global-set-key (kbd "C-x <left>") 'windmove-left)   ; move to left windnow
-(global-set-key (kbd "C-x <right>") 'windmove-right) ; move to right window
-(global-set-key (kbd "C-x <up>") 'windmove-up)       ; move to upper window
-(global-set-key (kbd "C-x <down>") 'windmove-down)   ; move to lower window
+;; On "OS X", set the default font to "Monaco 18"
+(when (equal system-type 'darwin)
+  (set-face-attribute 'default nil :font "Monaco 18")
+)
