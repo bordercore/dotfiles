@@ -160,11 +160,6 @@
 ;;	(font . "-bitstream-courier-*-r-*-*-18-*-*-*-*-*-*-*")
 ;;))
 
-;;(require 'mailcrypt-init)
-
-;; (load-library "mailcrypt")
-;; (mc-setversion "gpg")
-
 ;; turn on font-lock mode in all modes that support it
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
