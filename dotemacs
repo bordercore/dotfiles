@@ -1,6 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Macros
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun insert-java-print ()
   "Macro for inserting Java print command."
@@ -77,7 +75,8 @@
       (append load-path
 	      '("/usr/local/share/emacs/site-lisp")))
 
-(autoload 'maniac-fill-mode "maniac" nil t)
+;; Third-party packages go here
+(add-to-list 'load-path "~/.emacs.d/elisp")
 
 ;; Enable mouse scroller on vertical scroll bar
 (global-set-key [vertical-scroll-bar mouse-4] 'scroll-down)
@@ -101,6 +100,13 @@
 ;; Use HTML Mode for html, autohandler, and dhandler files
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))          
+
+;; Use color-theme mode for skinning Emacs
+(require 'color-theme)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-arjen)))  ;; Choose your color theme here
 
 (require 'mmm-mode)
 (setq mmm-global-mode 't)
@@ -177,6 +183,16 @@
 
 ;; for re-builder mode, set the syntax to 'string' to avoid extra escaping
 (setq reb-re-syntax 'string)
+
+;; backup file management
+(setq
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
 
 ;; support for Magit, which provides nice Git integration with Emacs
 (require 'magit)
