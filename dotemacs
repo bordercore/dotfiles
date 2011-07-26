@@ -207,6 +207,11 @@
 ;; support for Magit, which provides nice Git integration with Emacs
 (require 'magit)
 
+;; Use apache-mode when editing Apache config files
+(autoload 'apache-mode "apache-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
+(add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
+
 ;; On "OS X", set the default font to "Monaco 18"
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco 18")
