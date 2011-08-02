@@ -19,24 +19,6 @@
   ;(kill-ring-save)
 )
 
-(defun html-href ()
-  "Macro for generating the HTML for an HREF tag."
-  (interactive)
-  ;(set-mark-command)
-  ;(forward-char)
-  ;(forward-char)
-  ;(forward-char)
-  ;(kill-region)
-  (insert "<A HREF=\"\"></A>")
-  (backward-char) ; Move cursor just after the initial quote
-  (backward-char)
-  (backward-char)
-  (backward-char)
-  (backward-char)
-  (backward-char)
-  ;(kill-ring-save)
-)
-
 (fset 'insert-warn
    [?w ?a ?r ?n ?( ?" ?\\ ?n ?" ?) ?; left left left left left])
 
@@ -99,6 +81,12 @@
 
 ;; Visual feedback on selections
 (setq-default transient-mark-mode t)
+
+;; Set the default tab width to 4
+(setq-default tab-width 4)
+
+;; Make sure spaces are used when indenting code
+(setq-default indent-tabs-mode nil)
 
 ;; Uniquify changes conflicting buffer names from file<2> etc
 (require 'uniquify)
@@ -178,6 +166,9 @@
 ;; Imenu: sort functions alphabetically
 (setq imenu-sort-function 'imenu--sort-by-name)
 
+;; Rescan the buffer automatically for new functions
+(setq imenu-auto-rescan t)
+
 ;; Always show trailing whitespace
 (setq-default show-trailing-whitespace t)
 
@@ -248,3 +239,24 @@
                 (setq matching-text (blink-matching-open)))
             (if (not (null matching-text))
                 (message matching-text)))))
+
+;; GUI stuff
+(when window-system
+  (mouse-wheel-mode t)	  ; enable mouse wheel support
+  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+  (tooltip-mode t)        ; show tooltips
+  (tool-bar-mode -1)      ; don't show the toolbar
+  (blink-cursor-mode -1)  ; don't blink the cursor
+  )
+
+;; Init ido
+(ido-mode t)
+(setq ido-enable-prefix nil
+      ido-enable-flex-matching t
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point t
+      ido-max-prospects 10)
+
+ ; (setq ido-enable-flex-matching t)
+ ;  (setq ido-everywhere t)
+ ;  (ido-mode 1)
