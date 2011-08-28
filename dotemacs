@@ -88,7 +88,8 @@
 (setq-default indent-tabs-mode t)
 
 ;; Use tabs when indenting code, use spaces for alignment
-(require 'smarttabs)
+(require 'smart-tab)
+(global-smart-tab-mode 1)
 
 ;; Uniquify changes conflicting buffer names from file<2> etc
 (require 'uniquify)
@@ -177,6 +178,7 @@
 ;; Always show trailing whitespace
 (setq-default show-trailing-whitespace t)
 
+(require 'org)
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
 
