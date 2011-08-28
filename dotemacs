@@ -85,8 +85,10 @@
 ;; Set the default tab width to 4
 (setq-default tab-width 4)
 
-;; Make sure spaces are used when indenting code
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
+
+;; Use tabs when indenting code, use spaces for alignment
+(require 'smarttabs)
 
 ;; Uniquify changes conflicting buffer names from file<2> etc
 (require 'uniquify)
@@ -106,6 +108,9 @@
 ;; Use HTML Mode for html, autohandler, and dhandler files
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))
+
+;; cperl-mode indentation offset
+(setq cperl-indent-level 4)
 
 ;; Use color-theme mode for skinning Emacs
 (require 'color-theme)
@@ -215,6 +220,10 @@
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
 (add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
 
+;; Use cperl-mode when editing Perl files
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.pm\\'" . cperl-mode))
+
 ;; On "OS X", set the default font to "Monaco 18"
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco 18")
@@ -252,11 +261,11 @@
 ;; Init ido
 (ido-mode t)
 (setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point t
-      ido-max-prospects 10)
+	  ido-enable-flex-matching t
+	  ido-create-new-buffer 'always
+	  ido-use-filename-at-point t
+	  ido-max-prospects 10)
 
- ; (setq ido-enable-flex-matching t)
- ;  (setq ido-everywhere t)
- ;  (ido-mode 1)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
