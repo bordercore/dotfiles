@@ -180,6 +180,9 @@
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
 
+;; The return key creates a new heading by default
+(define-key org-mode-map (kbd "RET") 'org-meta-return)
+
 ;; Turn on org-indent-mode for all files
 (setq org-startup-indented t)
 
