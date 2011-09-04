@@ -191,6 +191,9 @@
 ;; Turn on org-indent-mode for all files
 (setq org-startup-indented t)
 
+;; Don't insert blank lines before new entries/items
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+
 ;; Add an intermediate 'IN PROGRESS' todo state
 (setq org-todo-keywords
       '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
