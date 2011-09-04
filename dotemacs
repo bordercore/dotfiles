@@ -182,6 +182,9 @@
 (setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
 
+;; Use visual-line-mode everywhere
+(global-visual-line-mode 1)
+
 ;; The return key creates a new heading by default
 (define-key org-mode-map (kbd "RET") 'org-meta-return)
 
