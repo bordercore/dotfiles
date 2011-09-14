@@ -1,0 +1,17 @@
+[user]
+	name = F. Jerrell Schivers
+	email = jerrell@bordercore.com
+[color]
+	ui = true
+[branch]
+  autosetuprebase = always
+[color "diff"]
+    meta = yellow
+    frag = cyan
+    old = red
+    new = green
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
