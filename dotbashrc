@@ -30,8 +30,9 @@ export VISUAL="emacs -nw"
 # Use emacs for git commit log messages
 export GIT_EDITOR=emacs
 
-# Searches in less should not be case-sensitive
-export LESS="--ignore-case"
+# Searches in less should not be case-sensitive.
+# Set tab stops to be multiples of 4.
+export LESS="--ignore-case --tabs=4"
 
 export GREP_OPTIONS="--directories=skip --color=auto"
 
