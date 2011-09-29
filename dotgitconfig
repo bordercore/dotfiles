@@ -4,14 +4,20 @@
 [color]
 	ui = true
 [branch]
-  autosetuprebase = always
+	autosetuprebase = always
 [color "diff"]
-    meta = yellow
-    frag = cyan
-    old = red
-    new = green
+	meta = yellow
+	frag = cyan
+	old = white
+	new = green bold
+	whitespace = red reverse
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
-
+	added = yellow
+	changed = green
+	untracked = cyan
+[core]
+	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+[alias]
+	s = status -sb
+	l = log --oneline --decorate
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
