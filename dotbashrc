@@ -150,10 +150,23 @@ psgrep () {
 	fi
 }
 
+# Mac-specific stuff here
+if [ `uname` == "Darwin" ]; then
+
+    # I install MacPorts binaries by default in /opt
+	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+	# The bash-completion package installed by MacPorts
+	if [ -f /opt/local/etc/bash_completion ]; then
+		. /opt/local/etc/bash_completion
+	fi
+
+fi
+
 #
 # Source your location or host specific .bashrc file here
 #
-# Eg: . $HOME/.bashrc-bordercore
 #
-. $HOME/.bashrc-bordercore
+# . $HOME/.bashrc-bordercore
+# . $HOME/.bashrc-blackduck
 
