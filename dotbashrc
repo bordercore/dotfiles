@@ -32,18 +32,13 @@ export GIT_EDITOR=emacs
 
 # Searches in less should not be case-sensitive.
 # Set tab stops to be multiples of 4.
-export LESS="--ignore-case --tabs=4"
+# Cause ANSI "color" escape sequences to be output in "raw" form
+export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 
 export GREP_OPTIONS="--directories=skip --color=auto"
 
-# define color to additional file types
-export LS_COLORS=$LS_COLORS:"*.gif=01;35":"*.jpg=01;35":"*.png=01;35":
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
-
-#setup color ls
-#eval `dircolors /etc/DIR_COLORS.xterm`
 
 # Point nethack to my personal config file
 #export NETHACKOPTIONS="@/usr/lib/games/nethackdir/config/nethackrc-jerrell"
@@ -66,12 +61,26 @@ alias sniff="sudo tethereal -n -l"
 alias f="find . |grep "
 alias tf='tail -f'
 
-# Handle Linux and OS X differences here
+# Mac-specific stuff here
 if [ `uname` == "Darwin" ]; then
-    alias ls='ls -G -F'
-else
-       #eval "`dircolors -b`"
-    alias ls='ls -F --color=auto'
+
+    # I install MacPorts binaries by default in /opt
+	# The GNU version of various commands are in /opt/local/libexec/gnubin
+	export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
+
+	# The bash-completion package installed by MacPorts
+	if [ -f /opt/local/etc/bash_completion ]; then
+		. /opt/local/etc/bash_completion
+	fi
+
+fi
+
+# Customize ls colors.  On OS X we assume the coreutils package has been installed
+#  via MacPorts to provide 'dircolors' and the GNU ls.  You must also place
+#  /opt/local/libexec/gnubin at the front of your PATH
+if which dircolors > /dev/null && [ -f $HOME/.dir_colors ]; then
+   eval `dircolors $HOME/.dir_colors`
+   alias ls='ls -F --color=auto'
 fi
 
 # Directory navigation aliases
@@ -151,19 +160,6 @@ psgrep () {
 	echo "!! Need name to grep for"
 	fi
 }
-
-# Mac-specific stuff here
-if [ `uname` == "Darwin" ]; then
-
-    # I install MacPorts binaries by default in /opt
-	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-
-	# The bash-completion package installed by MacPorts
-	if [ -f /opt/local/etc/bash_completion ]; then
-		. /opt/local/etc/bash_completion
-	fi
-
-fi
 
 #
 # Source your location or host specific .bashrc file here
