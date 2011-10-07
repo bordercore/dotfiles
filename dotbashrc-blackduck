@@ -29,7 +29,9 @@ export KODERS_SQL_SERVER_DB=Test1_Working
 export KODERS_SQL_SERVER_HOST=kodespiderdev
 
 # Apache convenience functions
-source $HOME/bin/apache_util
+if [ -e $HOME/bin/apache_util ]; then
+   source $HOME/bin/apache_util
+fi
 
 # bashDir -- directory navigation made easy
 . $HOME/bashDirB
