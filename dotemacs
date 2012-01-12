@@ -246,6 +246,9 @@
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.pm\\'" . cperl-mode))
 
+;; Use Rainbow minor mode when in CSS mode
+(add-hook 'css-mode-hook 'rainbow-mode)
+
 ;; On "OS X", set the default font to "Monaco 18"
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco 18")
