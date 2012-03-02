@@ -28,6 +28,9 @@ export SPIDERDB=test_db
 export KODERS_SQL_SERVER_DB=Test1_Working
 export KODERS_SQL_SERVER_HOST=kodespiderdev
 
+# Setup GIT environment
+export GIT_AUTHOR_EMAIL=jschivers@blackducksoftware.com
+
 # Apache convenience functions
 if [ -e $HOME/bin/apache_util ]; then
    source $HOME/bin/apache_util

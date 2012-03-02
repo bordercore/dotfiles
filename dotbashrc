@@ -27,8 +27,10 @@ export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
 # Set the default editor
 export VISUAL="emacs -nw"
 
-# Use emacs for git commit log messages
+# Setup GIT environment
 export GIT_EDITOR=emacs
+export GIT_AUTHOR_EMAIL=jerrell@bordercore.com
+export GIT_AUTHOR_NAME='F. Jerrell Schivers'
 
 # Searches in less should not be case-sensitive.
 # Set tab stops to be multiples of 4.
