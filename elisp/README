@@ -1,0 +1,6 @@
+Here I'm storing Emacs packages referenced in my .emacs file which aren't included in the primary ELPA or Marmalade repos.  In a few cases I've stashed forked versions of ELPA packages, such as smart-tab.
+
+package.el: http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el
+
+smart-tab.el:
+https://github.com/genehack/smart-tab
