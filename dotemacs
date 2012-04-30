@@ -47,6 +47,9 @@
 ;; Turn on Column Number mode
 (setq column-number-mode 1)
 
+;; Turn on Size Indication mode
+(setq size-indication-mode 1)
+
 ;(global-set-key "\C-h" 'delete-backward-char)
 ;(global-set-key "\C-?" 'delete-char)
 
@@ -201,8 +204,8 @@
 (setq org-todo-keywords
       '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
 
-;; disable the splash screen
-(setq inhibit-splash-screen t)
+;; disable the startup screen
+(setq inhibit-startup-screen t)
 
 ;; create a list of recently opened files
 (require 'recentf)
@@ -280,7 +283,6 @@
 (setq ido-enable-prefix nil
 	  ido-enable-flex-matching t
 	  ido-create-new-buffer 'always
-	  ido-use-filename-at-point t
 	  ido-max-prospects 10)
 
 (setq ido-enable-flex-matching t)
