@@ -1,5 +1,31 @@
-;; Macros
 
+;; Load support for ELPA (package.el), the package archive.  Emacs 24 includes
+;;   this natively.  For earlier versions, package.el needs to be installed manually.
+;;   See http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el
+(cond
+ ((string-match "GNU Emacs 2[23]" (emacs-version))
+  (when
+	  (load
+	   (expand-file-name "~/.emacs.d/elpa/package.el"))
+	(package-initialize))
+  )
+)
+
+(require 'package)
+
+(package-initialize)
+
+(defmacro when-package-installed (package-name &rest body)
+  `(if (package-installed-p ,package-name)
+	   (progn ,@body)
+	 (warn "package %s is not installed" ,package-name)))
+(setplist 'when-package-installed '(lisp-indent-function defun))
+
+;; Add the Marmalade external repo to ELPA
+(add-to-list 'package-archives
+			 '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+;; Macros
 (defun copy-line ()
   "Macro for copying the current line into the buffer."
   (interactive)
@@ -10,7 +36,7 @@
 )
 
 (fset 'insert-warn
-   [?w ?a ?r ?n ?( ?" ?\\ ?n ?" ?) ?; left left left left left])
+   [?w ?a ?r ?n ?( ?" ?\\ ?n ?" ?) ?\; left left left left left])
 
 (fset 'my-copy-line
    [?\C-a ?\C-  ?\C-e escape ?w return ?\C-y ?\C-a])
@@ -79,7 +105,9 @@
 
 (setq-default indent-tabs-mode t)
 
-;; Use tabs when indenting code, use spaces for alignment
+;; Use tabs when indenting code, use spaces for alignment.
+;;   Note: this version of smart-tab is *NOT* the one found in ELPA.
+;;   See https://github.com/genehack/smart-tab
 (require 'smart-tab)
 (global-smart-tab-mode 1)
 
@@ -111,20 +139,21 @@
 ;; Use the new defthemes system for Emacs 24...
 (cond
  ((string-match "GNU Emacs 24" (emacs-version))
-  (load-theme 'tango-dark)  ;; Choose your color theme here
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  (load-theme 'manoj-dark)  ;; Choose your color theme here
   )
  )
 
 ;; ...use color-theme mode for Emacs 23
-(cond
- ((string-match "GNU Emacs 23" (emacs-version))
-  (require 'color-theme)
-  (eval-after-load "color-theme"
-	'(progn
-	   (color-theme-initialize)
-	   (color-theme-arjen)))  ;; Choose your color theme here
-  )
- )
+;; (cond
+;;  ((string-match "GNU Emacs 23" (emacs-version))
+;;   (require 'color-theme)
+;;   (eval-after-load "color-theme"
+;; 	'(progn
+;; 	   (color-theme-initialize)
+;; 	   (color-theme-arjen)))  ;; Choose your color theme here
+;;   )
+;;  )
 
 (require 'mmm-mode)
 (setq mmm-global-mode 't)
@@ -229,8 +258,10 @@
 (setq-default save-place t)                   ;; activate it for all buffers
 (require 'saveplace)                          ;; get the package
 
+
 ;; support for Magit, which provides nice Git integration with Emacs
-(require 'magit)
+(when-package-installed 'magit
+						(require 'magit))
 
 ;; Use apache-mode when editing Apache config files
 (autoload 'apache-mode "apache-mode" nil t)
@@ -247,27 +278,27 @@
 ;; On "OS X", set the default font to "Monaco 18"
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco 18")
-)
+  )
 
 ;; hilight matching pairs of parentheses and other characters
 (show-paren-mode 1)
 
 (defadvice show-paren-function
-      (after show-matching-paren-offscreen activate)
-      "If the matching paren is offscreen, show the matching line in the
+  (after show-matching-paren-offscreen activate)
+  "If the matching paren is offscreen, show the matching line in the
         echo area. Has no effect if the character before point is not of
         the syntax class ')'."
-      (interactive)
-      (if (not (minibuffer-prompt))
-          (let ((matching-text nil))
-            ;; Only call `blink-matching-open' if the character before point
-            ;; is a close parentheses type character. Otherwise, there's not
-            ;; really any point, and `blink-matching-open' would just echo
-            ;; "Mismatched parentheses", which gets really annoying.
-            (if (char-equal (char-syntax (char-before (point))) ?\))
-                (setq matching-text (blink-matching-open)))
-            (if (not (null matching-text))
-                (message matching-text)))))
+  (interactive)
+  (if (not (minibuffer-prompt))
+	  (let ((matching-text nil))
+		;; Only call `blink-matching-open' if the character before point
+		;; is a close parentheses type character. Otherwise, there's not
+		;; really any point, and `blink-matching-open' would just echo
+		;; "Mismatched parentheses", which gets really annoying.
+		(if (char-equal (char-syntax (char-before (point))) ?\))
+			(setq matching-text (blink-matching-open)))
+		(if (not (null matching-text))
+			(message matching-text)))))
 
 ;; GUI stuff
 (when window-system
