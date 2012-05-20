@@ -233,6 +233,9 @@
 (setq org-todo-keywords
       '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
 
+;; Hit <RETURN> to follow the link at point
+(setq org-return-follows-link t)
+
 ;; disable the startup screen
 (setq inhibit-startup-screen t)
 
