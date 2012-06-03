@@ -236,6 +236,16 @@
 ;; Hit <RETURN> to follow the link at point
 (setq org-return-follows-link t)
 
+;; TODO statistics covers all entries in the subtree, not just direct children
+(setq org-hierarchical-todo-statistics t)
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+	(org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
 ;; disable the startup screen
 (setq inhibit-startup-screen t)
 
