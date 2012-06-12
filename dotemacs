@@ -136,25 +136,6 @@
 ;; cperl-mode indentation offset
 (setq cperl-indent-level 4)
 
-;; Use the new defthemes system for Emacs 24...
-(cond
- ((string-match "GNU Emacs 24" (emacs-version))
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (load-theme 'manoj-dark)  ;; Choose your color theme here
-  )
- )
-
-;; ...use color-theme mode for Emacs 23
-;; (cond
-;;  ((string-match "GNU Emacs 23" (emacs-version))
-;;   (require 'color-theme)
-;;   (eval-after-load "color-theme"
-;; 	'(progn
-;; 	   (color-theme-initialize)
-;; 	   (color-theme-arjen)))  ;; Choose your color theme here
-;;   )
-;;  )
-
 (require 'mmm-mode)
 (setq mmm-global-mode 't)
 (mmm-add-mode-ext-class 'html-mode "\\.html\\'" 'mason)
@@ -333,12 +314,16 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
-;; Set the 'org-hide' face to match the background color of your theme
-;;  so that leading stars are hidden in your outlines.
+;; Use color-theme mode for Emacs 23
+(cond
+ ((string-match "GNU Emacs 23" (emacs-version))
+  (require 'color-theme)
+  (eval-after-load "color-theme"
+	'(progn
+	   (color-theme-initialize)
+	   (color-theme-arjen)))  ;; Choose your color theme here
+  )
+ )
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-hide ((t (:foreground "#2E3436")))))
+;; Local settings are stored here, for example the current Emacs 24 color theme.
+(load-file ".emacs-local")
