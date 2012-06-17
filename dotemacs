@@ -326,4 +326,4 @@
  )
 
 ;; Local settings are stored here, for example the current Emacs 24 color theme.
-(load-file ".emacs-local")
+(load-file "~/.emacs-local")
