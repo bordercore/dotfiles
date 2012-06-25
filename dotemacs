@@ -303,6 +303,11 @@
   (blink-cursor-mode -1)  ; don't blink the cursor
   )
 
+;; Automatically save and restore sessions
+(desktop-save-mode 1)
+;; Store the session file here
+(setq desktop-path '("~/.emacs.d/"))
+
 ;; Init ido
 (ido-mode t)
 (setq ido-enable-prefix nil
