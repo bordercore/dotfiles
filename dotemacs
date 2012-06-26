@@ -308,6 +308,13 @@
 ;; Store the session file here
 (setq desktop-path '("~/.emacs.d/"))
 
+;; Save mini-buffer history between sessions
+(setq savehist-additional-variables        ;; also save...
+	  '(search-ring regexp-search-ring)    ;; ... my search entries
+	  savehist-file "~/.emacs.d/savehist") ;; keep my home clean
+(savehist-mode t)                          ;; do customization before activate
+
+
 ;; Init ido
 (ido-mode t)
 (setq ido-enable-prefix nil
