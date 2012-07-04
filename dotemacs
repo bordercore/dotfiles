@@ -339,3 +339,29 @@
 
 ;; Local settings are stored here, for example the current Emacs 24 color theme.
 (load-file "~/.emacs-local")
+
+;; Cut and Copy acts on the entire line if not text is selected.  See:
+;; http://emacsblog.org/2009/05/18/copying-lines-not-killing/#comments
+;; http://www.emacswiki.org/emacs-fr/WholeLineOrRegion
+
+(defadvice kill-ring-save (around slick-copy activate)
+  "When called interactively with no active region, copy a single line instead."
+  (if (or (use-region-p) (not (called-interactively-p)))
+	  ad-do-it
+	(kill-new (buffer-substring (line-beginning-position)
+								(line-beginning-position 2))
+			  nil '(yank-line))
+	(message "Copied line")))
+(defadvice kill-region (around slick-copy activate)
+  "When called interactively with no active region, kill a single line instead."
+  (if (or (use-region-p) (not (called-interactively-p)))
+	  ad-do-it
+	(kill-new (filter-buffer-substring (line-beginning-position)
+									   (line-beginning-position 2) t)
+			  nil '(yank-line))))
+(defun yank-line (string)
+  "Insert STRING above the current line."
+  (beginning-of-line)
+  (unless (= (elt string (1- (length string))) ?\n)
+	(save-excursion (insert "\n")))
+  (insert string))
