@@ -221,7 +221,7 @@
 (setq org-return-follows-link t)
 
 ;; TODO statistics covers all entries in the subtree, not just direct children
-(setq org-hierarchical-todo-statistics t)
+(setq org-hierarchical-todo-statistics nil)
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
