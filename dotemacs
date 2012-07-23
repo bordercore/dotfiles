@@ -233,6 +233,27 @@
 ;; disable the startup screen
 (setq inhibit-startup-screen t)
 
+;; Some initial langauges we want org-babel to support
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (sh . t)
+   (python . t)
+   (R . t)
+   (ruby . t)
+   (ditaa . t)
+   (dot . t)
+   (octave . t)
+   (sqlite . t)
+   (perl . t)
+   ))
+
+;; Turn on native code fontification
+(setq org-src-fontify-natively t)
+
+;; Don't confirm before evaluating code
+(setq org-confirm-babel-evaluate nil)
+
 ;; create a list of recently opened files
 (require 'recentf)
 (recentf-mode 1)
@@ -340,9 +361,6 @@
   )
  )
 
-;; Local settings are stored here, for example the current Emacs 24 color theme.
-(load-file "~/.emacs-local")
-
 ;; Cut and Copy acts on the entire line if not text is selected.  See:
 ;; http://emacsblog.org/2009/05/18/copying-lines-not-killing/#comments
 ;; http://www.emacswiki.org/emacs-fr/WholeLineOrRegion
@@ -368,3 +386,7 @@
   (unless (= (elt string (1- (length string))) ?\n)
 	(save-excursion (insert "\n")))
   (insert string))
+
+;; Local settings are stored here, for example the current Emacs 24 color theme.
+(load-file "~/.emacs-local")
+
