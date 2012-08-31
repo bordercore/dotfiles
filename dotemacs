@@ -121,6 +121,9 @@
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
 
+;; By default sort the buffer list by column 'Mode'
+(setq Buffer-menu-sort-column 4)
+
 ;; Enable wheelmouse support by default
 (cond (window-system
        (mwheel-install)
