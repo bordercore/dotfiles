@@ -204,9 +204,6 @@
 ;; Use visual-line-mode everywhere
 (global-visual-line-mode 1)
 
-;; The return key creates a new heading by default
-(define-key org-mode-map (kbd "RET") 'org-meta-return)
-
 ;; Turn on org-indent-mode for all files
 (setq org-startup-indented t)
 
@@ -281,6 +278,9 @@
 (when-package-installed 'magit
 						(require 'magit))
 
+;; Custom key binding for the often-used "magit-status" command
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; Use apache-mode when editing Apache config files
 (autoload 'apache-mode "apache-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
@@ -350,6 +350,10 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; A list of directories containing TAGS files
+(setq tags-table-list
+	  '("~/dev"))
+
 ;; Use color-theme mode for Emacs 23
 (cond
  ((string-match "GNU Emacs 23" (emacs-version))
@@ -386,6 +390,13 @@
   (unless (= (elt string (1- (length string))) ?\n)
 	(save-excursion (insert "\n")))
   (insert string))
+
+;; Insert parentheses, braces, quotes and the like in matching pairs
+(cond
+ ((string-match "GNU Emacs 24" (emacs-version))
+  (electric-pair-mode)
+  )
+ )
 
 ;; Local settings are stored here, for example the current Emacs 24 color theme.
 (load-file "~/.emacs-local")
