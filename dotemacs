@@ -245,6 +245,9 @@
    (perl . t)
    ))
 
+;; Use bash (rather than the default sh) as the command to invoke a shell
+(setq org-babel-sh-command "bash")
+
 ;; Turn on native code fontification
 (setq org-src-fontify-natively t)
 
