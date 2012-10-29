@@ -230,9 +230,6 @@
 
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
-;; disable the startup screen
-(setq inhibit-startup-screen t)
-
 ;; Some initial langauges we want org-babel to support
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -244,6 +241,7 @@
    (ditaa . t)
    (dot . t)
    (octave . t)
+   (sql    . t)
    (sqlite . t)
    (perl . t)
    ))
@@ -256,6 +254,9 @@
 
 ;; Don't confirm before evaluating code
 (setq org-confirm-babel-evaluate nil)
+
+;; disable the startup screen
+(setq inhibit-startup-screen t)
 
 ;; create a list of recently opened files
 (require 'recentf)
