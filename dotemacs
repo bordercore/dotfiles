@@ -241,7 +241,7 @@
    (ditaa . t)
    (dot . t)
    (octave . t)
-   (sql    . t)
+   (sql . t)
    (sqlite . t)
    (perl . t)
    ))
@@ -408,3 +408,5 @@
 ;; Local settings are stored here, for example the current Emacs 24 color theme.
 (load-file "~/.emacs-local")
 
+;; Be sure this loads *after* any color themes are loaded from ~/.emacs-local above
+(load "~/.emacs-modeline")
