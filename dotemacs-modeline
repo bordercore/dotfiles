@@ -1,0 +1,79 @@
+(set-face-background 'mode-line "#000000")
+(set-face-foreground 'mode-line "#999999")
+(set-face-background 'modeline-inactive "#666666")
+
+(defun shorten-directory (dir max-length)
+  "Show up to `max-length' characters of a directory name `dir'."
+  (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
+        (output ""))
+    (when (and path (equal "" (car path)))
+      (setq path (cdr path)))
+    (while (and path (< (length output) (- max-length 4)))
+      (setq output (concat (car path) "/" output))
+      (setq path (cdr path)))
+    (when path
+      (setq output (concat ".../" output)))
+    output))
+
+;; use setq-default to set it for /all/ modes
+(setq-default mode-line-format
+	  (list
+	   ;; '(:eval (propertize "%b " 'face 'font-lock-keyword-face
+	   " "
+	   ;; A shortened version of the directory path
+	   ;;(propertize default-directory 'face 'outline-3)
+
+	   '(:eval (propertize (eval (shorten-directory default-directory 60))
+	   			   'face 'outline-3))
+
+	   ;; the buffer name; the file name as a tool tip
+	   '(:eval (propertize "%b " 'face 'outline-5
+						   'help-echo (buffer-file-name)))
+
+	   ;; line and column
+	   "<" ;; '%02' to set to 2 chars at least; prevents flickering
+	   (propertize "%02l" 'face 'font-lock-type-face) ","
+	   (propertize "%02c" 'face 'font-lock-type-face)
+	   "> "
+
+	   ;; relative position, size of file
+	   "<"
+	   (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
+	   "/"
+	   (propertize "%I" 'face 'font-lock-constant-face) ;; size
+	   "> "
+
+	   ;; the current major mode for the buffer.
+	   "<"
+
+	   '(:eval (propertize "%m" 'face 'font-lock-string-face
+						   'help-echo buffer-file-coding-system))
+	   "> "
+
+
+	   "<" ;; insert vs overwrite mode, input-method in a tooltip
+	   '(:eval (propertize (if overwrite-mode "Ovr" "Ins")
+						   'face 'font-lock-preprocessor-face
+						   'help-echo (concat "Buffer is in "
+											  (if overwrite-mode "overwrite" "insert") " mode")))
+
+	   ;; was this buffer modified since the last save?
+	   '(:eval (when (buffer-modified-p)
+				 (concat ","  (propertize "Mod"
+										  'face 'font-lock-type-face
+										  'help-echo "Buffer has been modified"))))
+
+	   ;; is this buffer read-only?
+	   '(:eval (when buffer-read-only
+				 (concat ","  (propertize "RO"
+										  'face 'font-lock-type-face
+										  'help-echo "Buffer is read-only"))))
+	   "> "
+
+	   ;; add the time, with the date and the emacs uptime in the tooltip
+	   ;;'(:eval (propertize (emacs-uptime "Uptime: %hh")))
+	   "--"
+	   minor-mode-alist  ;; list of minor modes
+	   "%" ;; fill with '-'
+	   ))
+
