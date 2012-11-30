@@ -67,6 +67,7 @@ alias dls="ls -l | grep \"^d\""
 alias sniff="sudo tethereal -n -l"
 alias f="find . |grep "
 alias tf='tail -f'
+alias pp='python -mjson.tool'  # JSON pretty-printer
 
 # Mac-specific stuff here
 if [ `uname` == "Darwin" ]; then
