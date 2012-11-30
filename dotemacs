@@ -377,6 +377,9 @@
   )
  )
 
+;; I store my custom color themes here
+(setq custom-theme-directory "~/.emacs.d/themes/")
+
 ;; Cut and Copy acts on the entire line if not text is selected.  See:
 ;; http://emacsblog.org/2009/05/18/copying-lines-not-killing/#comments
 ;; http://www.emacswiki.org/emacs-fr/WholeLineOrRegion
