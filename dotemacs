@@ -367,6 +367,10 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; hilight the current line in dired mode
+(add-hook 'dired-mode-hook
+		  'hl-line-mode)
+
 ;; A list of directories containing TAGS files
 (setq tags-table-list
 	  '("~/dev"))
