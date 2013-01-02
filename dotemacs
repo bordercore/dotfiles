@@ -197,6 +197,22 @@
 ;; Use visual-line-mode everywhere
 (global-visual-line-mode 1)
 
+;; Define a function which toggles the return key binding between
+;; 'org-return' and 'org-insert-respect-content'
+(defun toggle-org-return-key ()
+  (interactive)
+  (if (string= (key-binding (kbd "RET")) "org-return")
+	  (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)
+	(define-key org-mode-map (kbd "RET") 'org-return))
+  )
+
+(global-set-key (quote [f1]) 'toggle-org-return-key)
+
+;; By default, the return key inserts a new heading
+(add-hook 'org-mode-hook
+  (lambda ()
+    (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
+
 ;; Turn on org-indent-mode for all files
 (setq org-startup-indented t)
 
