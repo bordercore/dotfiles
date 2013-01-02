@@ -40,13 +40,9 @@
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
-(fset 'insert-warn
-   [?w ?a ?r ?n ?( ?" ?\\ ?n ?" ?) ?\; left left left left left])
-
 (fset 'my-copy-line
    [?\C-a ?\C-  ?\C-e escape ?w return ?\C-y ?\C-a])
 
-(global-set-key (quote [f1]) 'insert-warn)
 (global-set-key (quote [f2]) 'query-replace)
 (global-set-key (quote [f3]) 'font-lock-mode)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
@@ -169,17 +165,6 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/nethack/")
 (autoload 'nethack "nethack" "Play Nethack." t)
 (setq nethack-program "/usr/games/nethack-lisp")
-
-;; Set the default font
-;;(setq initial-frame-alist
-;;      '((top . 40) (left . -15)
-;;	(width . 80) (height . 40)
-;;	(background-color . "Gray94")
-;;	(foreground-color . "Black")
-;;	(cursor-color . "red3")
-;;	(user-position t)
-;;	(font . "-bitstream-courier-*-r-*-*-18-*-*-*-*-*-*-*")
-;;))
 
 ;; turn on font-lock mode in all modes that support it
 (when (fboundp 'global-font-lock-mode)
