@@ -14,7 +14,7 @@ function set_prompt {
     #  replace the '0' with '1', eg turn green to
     #  light green 0;32m => 1;32m
 
-    local OFF="\[\e[m\]"
+    local color_off="\[\e[m\]"
     local BOLD="\[\e[1m\]"
     local black="\[\e[30m\]"
     local red="\[\e[31m\]"
@@ -33,7 +33,7 @@ function set_prompt {
 
     # If the last command resulted in an error, prominently display the exit status
     if [ "$EXITSTATUS" -ne "0" ]; then
-	    ERROR=" $BOLD$white$bakred$EXITSTATUS$OFF"
+	    ERROR=" $BOLD$white$bakred$EXITSTATUS$color_off"
     fi
 
     # Capture the number of jobs
@@ -41,9 +41,9 @@ function set_prompt {
 
     if [ $JOBS -ne 0 ]; then
 	if [ $JOBS -eq 1 ]; then
-	    JOBS=" $green($BOLD${red}1 job$OFF$green)"
+	    JOBS=" $green($BOLD${red}1 job$color_off$green)"
 	else
-	    JOBS=" $green($BOLD$red$JOBS jobs$OFF$green)"
+	    JOBS=" $green($BOLD$red$JOBS jobs$color_off$green)"
 	fi
     else
 	JOBS=""
@@ -73,9 +73,16 @@ function set_prompt {
         GIT="$yellow$(__git_ps1 ' (%s)')"
     fi
 
+	# Determine active Python virtualenv details.
+	if test -z "$VIRTUAL_ENV" ; then
+		PYTHON_VIRTUALENV=""
+	else
+		PYTHON_VIRTUALENV="${blue}[`basename \"$VIRTUAL_ENV\"`]${color_off}"
+	fi
+
 #    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white"
 
-    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white"
+    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white"
 
     export P2="> "
 
