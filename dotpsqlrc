@@ -4,7 +4,19 @@
 
 \set PROMPT1 %n @ %m : %/ => %x
 
-\pset pager off 
+\pset pager off
+
+\pset linestyle unicode
+
+\pset null '¤'
+
+\pset border 2
+
+\pset format wrapped
+
+\timing
+
+set application_name to "Jerrell Desktop"; commit;
 
 set bytea_output to escape; commit;
 
