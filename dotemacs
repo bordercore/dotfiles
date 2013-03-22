@@ -332,6 +332,15 @@
 (global-set-key (kbd "C-x r") 'git-gutter:revert-hunk)
 
 
+;; Use Jedi.el for Python
+(add-hook 'python-mode-hook 'jedi:setup)
+(autoload 'jedi:setup "jedi" nil t)
+(setq jedi:setup-keys t)
+
+;; Enable auto-complete mode globally
+(require 'auto-complete)
+(global-auto-complete-mode t)
+
 ;; Use apache-mode when editing Apache config files
 (autoload 'apache-mode "apache-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
