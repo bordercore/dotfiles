@@ -24,10 +24,6 @@ export PERL5LIB=/home/sauto
 export SPIDERSERVER=tick
 export SPIDERDB=test_db
 
-# Koders stuff
-export KODERS_SQL_SERVER_DB=Test1_Working
-export KODERS_SQL_SERVER_HOST=kodespiderdev
-
 # Setup GIT environment
 export GIT_AUTHOR_EMAIL=jschivers@blackducksoftware.com
 
