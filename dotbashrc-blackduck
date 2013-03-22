@@ -19,6 +19,8 @@ alias ptrack="psql --pset null=\"(null)\" -h track bds_stdproj44_daemon"
 
 export PATH=$PATH:$HOME/bin/:/usr/local/bin:/sbin:~jschivers/bin:/opt/postgres-8.4.4/bin/
 
+export JAVA_HOME=/usr
+
 export PERL5LIB=/home/sauto
 
 export SPIDERSERVER=tick
