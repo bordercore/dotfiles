@@ -6,18 +6,18 @@
 #
 
 # Postgres connection parameters
-export PGHOST=tick
-export PGUSER=blackduck
-export PGDATABASE=test_db
+# export PGHOST=tick
+# export PGUSER=blackduck
+# export PGDATABASE=test_db
 
 # Set the default search path for schemas
-export PGOPTIONS="-c search_path=public,lscan2,f451"
+export PGOPTIONS="-c search_path=public"
 
 # Aliases for connecting to various databases
 alias plewis="psql --pset null=\"(null)\" -h lewis --set=search_path=public,lscan2,f451 spider_db";
 alias ptrack="psql --pset null=\"(null)\" -h track bds_stdproj44_daemon"
 
-export PATH=$PATH:$HOME/bin/:/usr/local/bin:/sbin:~jschivers/bin:/opt/postgres-8.4.4/bin/
+export PATH=$PATH:$HOME/bin/:/usr/local/bin:/sbin:~jschivers/bin:/usr/local/gradle-1.5/bin
 
 export JAVA_HOME=/usr
 
