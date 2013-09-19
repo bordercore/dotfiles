@@ -170,6 +170,10 @@
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
 
+;; Add more keywords for font-lock hilighlighting
+(font-lock-add-keywords 'lisp-mode
+  '(("\\<\\(add-hook\\|setq\\|autoload\\|add-to-list\\|setq-default\\)\\>" . font-lock-keyword-face)))
+
 ;; Flash the frame to represent a bell rather than play a sound
 (setq visible-bell 1)
 
