@@ -21,9 +21,12 @@
 	 (warn "package %s is not installed" ,package-name)))
 (setplist 'when-package-installed '(lisp-indent-function defun))
 
-;; Add the Marmalade external repo to ELPA
+;; Add the Marmalade and MELPA external repos to ELPA
 (add-to-list 'package-archives
 			 '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 ;; Macros
 (defun copy-line ()
