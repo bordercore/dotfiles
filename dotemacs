@@ -390,6 +390,9 @@
 		(if (not (null matching-text))
 			(message matching-text)))))
 
+;; Don't underline highlighted text
+(set-face-underline-p 'highlight nil)
+
 ;; GUI stuff
 (when window-system
   (mouse-wheel-mode t)	  ; enable mouse wheel support
