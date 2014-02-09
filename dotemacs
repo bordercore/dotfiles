@@ -22,11 +22,12 @@
 (setplist 'when-package-installed '(lisp-indent-function defun))
 
 ;; Add the Marmalade and MELPA external repos to ELPA
-(add-to-list 'package-archives
-			 '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+;; org-mode archives.  provides packages org and org-plus-contrib
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 ;; Macros
 (defun copy-line ()
@@ -338,11 +339,10 @@
 ;; Revert current hunk
 (global-set-key (kbd "C-x r") 'git-gutter:revert-hunk)
 
-
 ;; Use Jedi.el for Python
-(add-hook 'python-mode-hook 'jedi:setup)
-(autoload 'jedi:setup "jedi" nil t)
-(setq jedi:setup-keys t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (autoload 'jedi:setup "jedi" nil t)
+;; (setq jedi:setup-keys t)
 
 ;; Enable auto-complete mode globally
 (require 'auto-complete)
@@ -492,3 +492,11 @@
 
 ;; Be sure this loads *after* any color themes are loaded from ~/.emacs-local above
 (load "~/.emacs-modeline")
+
+;; /home/jerrell/.emacs.d/elpa/esup-0.3/esup.el
+
+;; Third-party packages go here
+(add-to-list 'load-path "~/.emacs.d/elpa/esup-0.3/esup.el")
+
+(autoload 'esup "esup" "Emacs Start Up Profiler." nil)
+
