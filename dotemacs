@@ -144,12 +144,20 @@
 ;; cperl-mode indentation offset
 (setq cperl-indent-level 4)
 
-(require 'mmm-mode)
-(setq mmm-global-mode 't)
-(mmm-add-mode-ext-class 'html-mode "\\.html\\'" 'mason)
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-;; Don't color submode regions
-(setq mmm-submode-decoration-level 0)
+(setq web-mode-engines-alist
+      '(("django"    . "\\.html\\'"))
+)
+
+;; web-mode customizations
+(setq web-mode-markup-indent-offset 4)
+(setq web-mode-css-indent-offset 4)
+(setq web-mode-code-indent-offset 4)
+(setq web-mode-indent-style 4)
+(setq web-mode-style-padding 4)
+(setq web-mode-script-padding 4)
 
 ;; Load the Emacs Code Browser
 ;;(require 'ecb)
