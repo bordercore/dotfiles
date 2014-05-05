@@ -1,5 +1,7 @@
 \set AUTOCOMMIT off
 
+\set ON_ERROR_ROLLBACK interactive
+
 -- \set PROMPT1 '%[%033[1;31m%]%n%[%033[0;37m%]@%[%033[0;33m%]%m%[%033[0;37m%]:%[%033[1;34m%]%/%[%033[0;37m%]=>%[%033[1;35m%]%x%[%033[0;37m%] '
 
 \set PROMPT1 %n @ %m : %/ => %x
