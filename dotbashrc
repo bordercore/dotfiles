@@ -139,6 +139,12 @@ function dis {
 
 }
 
+findclass () {
+
+	find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep "$1.class"; done
+
+}
+
 extract () {
     if [ -f $1 ] ; then
 	case $1 in
