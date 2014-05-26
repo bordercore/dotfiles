@@ -50,10 +50,6 @@ export GREP_OPTIONS="--directories=skip --color=auto"
 # Point nethack to my personal config file
 #export NETHACKOPTIONS="@/usr/lib/games/nethackdir/config/nethackrc-jerrell"
 
-export CLASSPATH=/usr/share/java/xerces-1.4.4.jar
-export CLASSPATH=$CLASSPATH:/usr/share/java/gnumail.jar
-export CLASSPATH=$CLASSPATH:/usr/share/java/activation.jar
-export CLASSPATH=$CLASSPATH:/usr/share/java/inetlib.jar
 export CLASSPATH=$CLASSPATH:.
 
 # Options for the ack grep replacement
