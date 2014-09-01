@@ -56,14 +56,15 @@ export CLASSPATH=$CLASSPATH:.
 export ACK_OPTIONS="--ignore-case --ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
 
 # Set up the aliases
-alias rm="rm -i"
 alias ccc="rm *~"
-alias rls="ls -l -r -h -B -t"
 alias dls="ls -l | grep \"^d\""
-alias sniff="sudo tethereal -n -l"
 alias f="find . |grep "
-alias tf='tail -f'
+alias mv="mv -i"
 alias pp='python -mjson.tool'  # JSON pretty-printer
+alias rls="ls -l -r -h -B -t"
+alias rm="rm -i"
+alias sniff="sudo tethereal -n -l"
+alias tf='tail -f'
 
 # Mac-specific stuff here
 if [ `uname` == "Darwin" ]; then
