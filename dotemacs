@@ -108,17 +108,6 @@
 ;; Set the default tab width to 4
 (setq-default tab-width 4)
 
-(setq-default indent-tabs-mode t)
-
-;; Use tabs when indenting code, use spaces for alignment.
-;;   Note: this version of smart-tab is *NOT* the one found in ELPA.
-;;   See https://github.com/genehack/smart-tab
-(require 'smart-tab)
-(global-smart-tab-mode 1)
-
-;; However, don't use smart tabs in shell mode
-(add-to-list 'smart-tab-disabled-major-modes 'shell-mode)
-
 ;; Uniquify changes conflicting buffer names from file<2> etc
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
