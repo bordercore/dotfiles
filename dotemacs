@@ -1,3 +1,5 @@
+;; NOTE: As of 12/7/2014 this file is no longer used.
+;; My Emacs config is now controlled by org-mode.  See ~/.emacs.d/emacs.org
 
 ;; Load support for ELPA (package.el), the package archive.  Emacs 24 includes
 ;;   this natively.  For earlier versions, package.el needs to be installed manually.
