@@ -84,10 +84,6 @@
 ;(global-set-key "\C-h" 'delete-backward-char)
 ;(global-set-key "\C-?" 'delete-char)
 
-(setq load-path
-      (append load-path
-	      '("/usr/local/share/emacs/site-lisp")))
-
 ;; Third-party packages go here
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
