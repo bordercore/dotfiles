@@ -1,0 +1,665 @@
+#+TITLE: Emacs Config File
+#+AUTHOR: F. Jerrell Schivers
+#+EMAIL: jerrell@bordercore.com
+
+Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
+
+* Emacs initialization
+
+Set the initial value of the load-path
+#+BEGIN_SRC emacs-lisp
+(setq load-path
+      (append load-path
+	      '("/usr/local/share/emacs/site-lisp")))
+
+#+END_SRC
+
+Third party packages go here
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/elisp")
+#+END_SRC
+
+* Add Package Sources
+
+Load support for ELPA (package.el), the package archive.  Emacs 24 includes
+this natively.  For earlier versions, package.el needs to be installed manually.
+See http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el
+#+BEGIN_SRC emacs-lisp
+(cond
+ ((string-match "GNU Emacs 2[23]" (emacs-version))
+  (when
+	  (load
+	   (expand-file-name "~/.emacs.d/elpa/package.el"))
+	(package-initialize))
+  )
+)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+(package-initialize)
+
+(defmacro when-package-installed (package-name &rest body)
+  `(if (package-installed-p ,package-name)
+	   (progn ,@body)
+	 (warn "package %s is not installed" ,package-name)))
+(setplist 'when-package-installed '(lisp-indent-function defun))
+#+END_SRC
+
+Add the Marmalade and MELPA external repos to ELPA
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+#+END_SRC
+
+org-mode archives.  provides packages org and org-plus-contrib
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+#+END_SRC
+
+* General Configuration
+** Color Theme
+
+Use color-theme mode for Emacs 23
+#+BEGIN_SRC emacs-lisp
+(cond
+ ((string-match "GNU Emacs 23" (emacs-version))
+  (require 'color-theme)
+  (eval-after-load "color-theme"
+	'(progn
+	   (color-theme-initialize)
+	   (color-theme-arjen)))  ;; Choose your color theme here
+  )
+ )
+#+END_SRC
+
+I store my custom color themes here
+#+BEGIN_SRC emacs-lisp
+(setq custom-theme-directory "~/.emacs.d/themes/")
+#+END_SRC
+
+Load the current theme
+current-theme.el is a symlink to the currently used theme
+#+BEGIN_SRC emacs-lisp
+(load-file "~/.emacs.d/themes/current-theme.el")
+#+END_SRC
+
+** Misc
+
+Change 'yes or no' prompt to 'y or n' prompts
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+Stop at the end of a file when moving the cursor down, don't just add lines
+#+BEGIN_SRC emacs-lisp
+(setq next-line-add-newlines nil)
+#+END_SRC
+
+TODO: Is there a better section for this?
+makes killing/yanking interact with clipboard X11 selection
+#+BEGIN_SRC emacs-lisp
+(setq x-select-enable-clipboard t)
+#+END_SRC
+
+Flash the frame to represent a bell rather than play a sound
+#+BEGIN_SRC emacs-lisp
+(setq visible-bell t)
+#+END_SRC
+
+Always show trailing whitespace
+#+BEGIN_SRC emacs-lisp
+(setq-default show-trailing-whitespace t)
+#+END_SRC
+
+Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
+#+BEGIN_SRC emacs-lisp
+(global-visual-line-mode t)
+#+END_SRC
+
+Disable the startup screen
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-screen t)
+#+END_SRC
+
+Allow functions to operate on the current line when they would normally operate on the region,
+eg kill-region when no region is selected will delete the current line.
+See http://www.emacswiki.org/WholeLineOrRegion#toc3
+#+BEGIN_SRC emacs-lisp
+(whole-line-or-region-mode t)
+#+END_SRC
+
+** User Interface
+
+Display the cursor's column number
+#+BEGIN_SRC emacs-lisp
+(setq column-number-mode t)
+#+END_SRC
+
+Display the buffer size
+#+BEGIN_SRC emacs-lisp
+(setq size-indication-mode t)
+#+END_SRC
+
+Enable mouse scroller on vertical scroll bar
+#+BEGIN_SRC emacs-lisp
+(global-set-key [vertical-scroll-bar mouse-4] 'scroll-down)
+(global-set-key [vertical-scroll-bar mouse-5] 'scroll-up)
+#+END_SRC
+
+Enable mouse scroller in active window
+#+BEGIN_SRC emacs-lisp
+(global-set-key [mouse-4] 'scroll-down)
+(global-set-key [mouse-5] 'scroll-up)
+#+END_SRC
+
+Enable wheelmouse support
+#+BEGIN_SRC emacs-lisp
+(cond (window-system
+       (mwheel-install)
+))
+#+END_SRC
+
+On "OS X", set the default font to "Monaco 18"
+#+BEGIN_SRC emacs-lisp
+(when (equal system-type 'darwin)
+  (set-face-attribute 'default nil :font "Monaco 18")
+  )
+#+END_SRC
+
+Window configuration
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (mouse-wheel-mode t)	  ; enable mouse wheel support
+  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+  (tooltip-mode t)        ; show tooltips
+  (tool-bar-mode -1)      ; don't show the toolbar
+  (blink-cursor-mode -1)  ; don't blink the cursor
+  )
+#+END_SRC
+
+Don't underline highlighted text
+#+BEGIN_SRC emacs-lisp
+(set-face-underline-p 'highlight nil)
+#+END_SRC
+
+Mode line format
+#+BEGIN_SRC emacs-lisp
+;; I use Donald Ephraim Curtis' version of powerline
+;; https://github.com/milkypostman/powerline
+;; I've made a few modifications, located in the following directory
+(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+(require 'powerline)
+(powerline-default-theme)
+#+END_SRC
+
+** Key Bindings
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (quote [f1]) 'toggle-org-return-key)
+(global-set-key (quote [f9]) 'eval-region)
+(global-set-key (quote [f2]) 'query-replace)
+(global-set-key (quote [f3]) 'font-lock-mode)
+(global-set-key (quote [f5]) 'revert-buffer-no-confirm)
+#+END_SRC
+
+** Backups
+
+backup file management
+#+BEGIN_SRC emacs-lisp
+(defvar backup-dir (expand-file-name ".backups" user-emacs-directory))
+
+(setq
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist (list (cons "." backup-dir))
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
+#+END_SRC
+
+** Buffer Switching
+
+Uniquify changes conflicting buffer names from file<2> etc
+#+BEGIN_SRC emacs-lisp
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+#+END_SRC
+
+Rename after killing uniquified
+#+BEGIN_SRC emacs-lisp
+(setq uniquify-after-kill-buffer-p t)
+#+END_SRC
+
+Don't muck with special buffers
+#+BEGIN_SRC emacs-lisp
+(setq uniquify-ignore-buffers-re "^\\*")
+#+END_SRC
+
+** Buffer Menu
+
+By default sort the buffer list by column 'Mode'
+#+BEGIN_SRC emacs-lisp
+(setq Buffer-menu-sort-column 4)
+#+END_SRC
+
+** Sessions
+
+save my place in files between sessions
+#+BEGIN_SRC emacs-lisp
+(require 'saveplace)
+(setq save-place-file (expand-file-name ".saveplaces" user-emacs-directory))
+#+END_SRC
+
+activate it for all buffers
+#+BEGIN_SRC emacs-lisp
+(setq-default save-place t)
+#+END_SRC
+
+Automatically save and restore sessions
+#+BEGIN_SRC emacs-lisp
+(desktop-save-mode t)
+#+END_SRC
+
+Store the session file here
+#+BEGIN_SRC emacs-lisp
+(setq desktop-dirname "~/.emacs.d/")
+(setq desktop-path (list desktop-dirname))
+#+END_SRC
+
+Save mini-buffer history between sessions
+#+BEGIN_SRC emacs-lisp
+(setq savehist-additional-variables        ;; also save...
+	  '(search-ring regexp-search-ring)    ;; ... my search entries
+	  savehist-file "~/.emacs.d/savehist") ;; keep my home clean
+(savehist-mode t)                          ;; do customization before activate
+#+END_SRC
+
+* Nagivation
+
+The <home> and <end> keys should move to the beginning and end of the buffer, respectively
+#+BEGIN_SRC emacs-lisp
+(global-set-key [home] 'beginning-of-buffer)
+(global-set-key [end] 'end-of-buffer)
+#+END_SRC
+
+Window navigation
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+#+END_SRC
+
+create a list of recently opened files
+#+BEGIN_SRC emacs-lisp
+(require 'recentf)
+(recentf-mode t)
+#+END_SRC
+
+Init ido
+#+BEGIN_SRC emacs-lisp
+(ido-mode t)
+(setq ido-enable-prefix nil
+	  ido-enable-flex-matching t
+	  ido-create-new-buffer 'always
+	  ido-max-prospects 10)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+#+END_SRC
+
+hilight the current line in dired mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'dired-mode-hook
+		  'hl-line-mode)
+#+END_SRC
+
+Auto refresh dired buffers, but be quiet about it
+#+BEGIN_SRC emacs-lisp
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+#+END_SRC
+
+** Imenu
+
+Automatically use Imenu, as needed
+#+BEGIN_SRC emacs-lis
+(defun try-to-add-imenu ()
+  (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
+(add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+#+END_SRC
+
+Imenu: display 50 items in each submenu
+#+BEGIN_SRC emacs-lisp
+(setq imenu-max-items 50)
+#+END_SRC
+
+Imenu: sort functions alphabetically
+#+BEGIN_SRC emacs-lisp
+(setq imenu-sort-function 'imenu--sort-by-name)
+#+END_SRC
+
+Rescan the buffer automatically for new functions
+#+BEGIN_SRC emacs-lisp
+(setq imenu-auto-rescan t)
+#+END_SRC
+
+* Org Mode
+** Setup
+
+#+BEGIN_SRC emacs-lisp
+(require 'org)
+(setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
+(setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
+#+END_SRC
+
+** Key Bindings
+
+Define a function which toggles the return key binding between
+'org-return' and 'org-insert-respect-content'
+#+BEGIN_SRC emacs-lisp
+(defun toggle-org-return-key ()
+  (interactive)
+  (if (string= (key-binding (kbd "RET")) "org-return")
+	  (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)
+	(define-key org-mode-map (kbd "RET") 'org-return))
+  )
+(global-set-key (quote [f1]) 'toggle-org-return-key)
+#+END_SRC
+
+By default, the return key inserts a new heading
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook
+  (lambda ()
+    (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
+#+END_SRC
+
+Turn on org-indent-mode for all files
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-indented t)
+#+END_SRC
+
+Don't insert blank lines before new entries/items
+#+BEGIN_SRC emacs-lisp
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+#+END_SRC
+
+Hit <RETURN> to follow the link at point
+#+BEGIN_SRC emacs-lisp
+(setq org-return-follows-link t)
+#+END_SRC
+
+** Todo
+
+Add an intermediate 'IN PROGRESS' todo state
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords
+      '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
+#+END_SRC
+
+TODO statistics covers all entries in the subtree, not just direct children
+#+BEGIN_SRC emacs-lisp
+(setq org-hierarchical-todo-statistics nil)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+	(org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+#+END_SRC
+
+** Babel Mode
+
+Some initial langauges we want org-babel to support
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (sh . t)
+   (python . t)
+   (R . t)
+   (ruby . t)
+   (ditaa . t)
+   (dot . t)
+   (octave . t)
+   (sql . t)
+   (sqlite . t)
+   (perl . t)
+   ))
+#+END_SRC
+
+Use bash (rather than the default sh) as the command to invoke a shell
+#+BEGIN_SRC emacs-lisp
+(setq org-babel-sh-command "bash")
+#+END_SRC
+
+Turn on native code fontification
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+Don't confirm before evaluating code
+#+BEGIN_SRC emacs-lisp
+(setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+* Coding
+** Misc
+
+Enable auto-complete mode globally
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
+(global-auto-complete-mode t)
+#+END_SRC
+
+hilight matching pairs of parentheses and other characters
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode t)
+#+END_SRC
+
+Insert parentheses, braces, quotes and the like in matching pairs
+#+BEGIN_SRC emacs-lisp
+(cond
+ ((string-match "GNU Emacs 24" (emacs-version))
+  (electric-pair-mode)
+  )
+ )
+#+END_SRC
+
+C stuff
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c-mode-common-hook
+	  (lambda ()
+	    (c-set-style "k&r")
+	    (setq c-basic-offset 4)))
+#+END_SRC
+
+Perl stuff
+cperl-mode indentation offset
+#+BEGIN_SRC emacs-lisp
+(setq cperl-indent-level 4)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.pm\\'" . cperl-mode))
+#+END_SRC
+
+for re-builder mode, set the syntax to 'string' to avoid extra escaping
+#+BEGIN_SRC emacs-lisp
+(setq reb-re-syntax 'string)
+#+END_SRC
+
+Use apache-mode when editing Apache config files
+#+BEGIN_SRC emacs-lisp
+(autoload 'apache-mode "apache-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.htaccess\\'"   . apache-mode))
+(add-to-list 'auto-mode-alist '("httpd\\.conf\\'"  . apache-mode))
+#+END_SRC
+
+Hilight Postgres keywords in SQL mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'sql-mode-hook
+          (lambda ()
+            (sql-highlight-postgres-keywords)))
+#+END_SRC
+
+** Tabs
+
+Set the default tab width to 4
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
+#+END_SRC
+
+Don't use tabs for indentation
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+#+END_SRC
+
+** Web Development
+
+Use HTML Mode for html, autohandler, and dhandler files
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\(auto\\|d\\)handler\\'" . html-mode))
+#+END_SRC
+
+I use web-mode for Django development
+#+BEGIN_SRC emacs-lisp
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(setq web-mode-engines-alist
+      '(("django"    . "\\.html\\'"))
+)
+#+END_SRC
+
+web-mode customizations
+#+BEGIN_SRC emacs-lisp
+(setq web-mode-markup-indent-offset 4)
+(setq web-mode-css-indent-offset 4)
+(setq web-mode-code-indent-offset 4)
+(setq web-mode-indent-style 4)
+(setq web-mode-style-padding 4)
+(setq web-mode-script-padding 4)
+#+END_SRC
+
+Use Rainbow minor mode when in CSS mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'css-mode-hook 'rainbow-mode)
+#+END_SRC
+
+** Lisp
+
+Add more keywords for font-lock hilighlighting
+#+BEGIN_SRC emacs-lisp
+(font-lock-add-keywords 'lisp-mode
+  '(("\\<\\(add-hook\\|setq\\|autoload\\|add-to-list\\|setq-default\\)\\>" . font-lock-keyword-face)))
+#+END_SRC
+
+If the matching paren is offscreen, show the matching line in the echo area
+See http://www.emacswiki.org/emacs/ShowParenMode
+#+BEGIN_SRC emacs-lisp
+(defadvice show-paren-function
+      (after show-matching-paren-offscreen activate)
+      "If the matching paren is offscreen, show the matching line in the
+        echo area. Has no effect if the character before point is not of
+        the syntax class ')'."
+      (interactive)
+      (let* ((cb (char-before (point)))
+             (matching-text (and cb
+                                 (char-equal (char-syntax cb) ?\) )
+                                 (blink-matching-open))))
+        (when matching-text (message matching-text))))
+#+END_SRC
+
+** Magit
+
+support for Magit, which provides nice Git integration with Emacs
+#+BEGIN_SRC emacs-lisp
+(when-package-installed 'magit
+						(require 'magit))
+#+END_SRC
+
+Custom key binding for the often-used "magit-status" command
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x g") 'magit-status)
+#+END_SRC
+
+full screen magit-status
+http://whattheemacsd.com/setup-magit.el-01.html
+#+BEGIN_SRC emacs-lisp
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+#+END_SRC
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
+
+(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+
+** git-gutter
+
+;; Enable git-gutter as a global minor mode
+#+BEGIN_SRC emacs-lisp
+(global-git-gutter-mode t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
+(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+#+END_SRC
+
+Jump to next/previous hunk
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+#+END_SRC
+
+Revert current hunk
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x r") 'git-gutter:revert-hunk)
+#+END_SRC
+
+* Games
+** Nethack
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'nethack-map-mode-hook
+	  (lambda ()
+	    (define-key nh-map-mode-map (kbd "<left>") 'nethack-command-west)
+	    (define-key nh-map-mode-map (kbd "<up>") 'nethack-command-north)
+	    (define-key nh-map-mode-map (kbd "<down>") 'nethack-command-south)
+	    (define-key nh-map-mode-map (kbd "<right>") 'nethack-command-east)
+	    (define-key nh-map-mode-map (kbd "<kp-add>") 'nethack-command-northwest)
+	    (define-key nh-map-mode-map (kbd "<prior>") 'nethack-command-northeast)
+	    (define-key nh-map-mode-map (kbd "<end>") 'nethack-command-southwest)
+	    (define-key nh-map-mode-map (kbd "<next>") 'nethack-command-southeast)
+))
+
+(add-to-list 'load-path "~/.emacs.d/elisp/nethack/")
+(autoload 'nethack "nethack" "Play Nethack." t)
+#+END_SRC
+
+You'll need to apt-get this if using Ubuntu or Debian
+#+BEGIN_SRC emacs-lisp
+(setq nethack-program "/usr/games/nethack-lisp")
+#+END_SRC
+
+* Wrapup
+
+Local or experimental settings are stored here
+#+BEGIN_SRC emacs-lisp
+(load-file "~/.emacs-local")
+#+END_SRC
+
