@@ -104,6 +104,8 @@
 ;; Set the default tab width to 4
 (setq-default tab-width 4)
 
+(setq-default indent-tabs-mode nil)
+
 ;; Uniquify changes conflicting buffer names from file<2> etc
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
