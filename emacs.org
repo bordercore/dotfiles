@@ -113,6 +113,15 @@ Always show trailing whitespace
 (setq-default show-trailing-whitespace t)
 #+END_SRC
 
+Draw tabs with the same color as trailing whitespace
+#+BEGIN_SRC emacs-lisp
+(add-hook 'font-lock-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("\t" 0 'trailing-whitespace prepend)))))
+#+END_SRC
+
 Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
 #+BEGIN_SRC emacs-lisp
 (global-visual-line-mode t)
@@ -146,9 +155,6 @@ See http://www.emacswiki.org/WholeLineOrRegion#toc3
   PERSISTENT-SCRATCH-FILENAME, making a backup copy in
   PERSISTENT-SCRATCH-BACKUP-DIRECTORY."
   (with-current-buffer (get-buffer "*scratch*")
-    (if (file-exists-p persistent-scratch-filename)
-        (copy-file persistent-scratch-filename
-                   (make-persistent-scratch-backup-name)))
     (write-region (point-min) (point-max)
                   persistent-scratch-filename)))
 
