@@ -9,7 +9,7 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+    . /etc/bashrc
 fi
 
 # If not running interactively, don't do anything
@@ -74,16 +74,16 @@ alias tw='tmux rename-window'
 if [ `uname` == "Darwin" ]; then
 
     # I install MacPorts binaries by default in /opt
-	# The GNU version of various commands are in /opt/local/libexec/gnubin
-	export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
+    # The GNU version of various commands are in /opt/local/libexec/gnubin
+    export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
 
-	# The bash-completion package installed by MacPorts
-	if [ -f /opt/local/etc/bash_completion ]; then
-		. /opt/local/etc/bash_completion
-	fi
+    # The bash-completion package installed by MacPorts
+    if [ -f /opt/local/etc/bash_completion ]; then
+        . /opt/local/etc/bash_completion
+    fi
 
-	# The MacPorts version of 'lesspipe'
-	export LESSOPEN='| /opt/local/bin/lesspipe.sh %s'
+    # The MacPorts version of 'lesspipe'
+    export LESSOPEN='| /opt/local/bin/lesspipe.sh %s'
 
 fi
 
@@ -146,14 +146,14 @@ function dis {
 
 findclass () {
 
-	find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep "$1.class"; done
+    find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep "$1.class"; done
 
 }
 
 extract () {
     if [ -f $1 ] ; then
-	case $1 in
-	    *.tar.bz2)  tar xjf $1    ;;
+    case $1 in
+        *.tar.bz2)  tar xjf $1    ;;
             *.tar.gz)   tar xzf $1    ;;
             *.bz2)      bunzip2 $1    ;;
             *.rar)      rar x $1      ;;
@@ -172,11 +172,11 @@ extract () {
 
 psgrep () {
     if [ ! -z $1 ] ; then
-	echo "Grepping for processes matching $1..."
-	ps aux | grep $1 | grep -v grep
-	else
-	echo "!! Need name to grep for"
-	fi
+    echo "Grepping for processes matching $1..."
+    ps aux | grep $1 | grep -v grep
+    else
+    echo "!! Need name to grep for"
+    fi
 }
 
 #
