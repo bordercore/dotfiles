@@ -28,7 +28,7 @@ export HISTFILESIZE=10000
 export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
 
 # Set the default editor
-export VISUAL="emacs -nw"
+export VISUAL="emacs -nw --no-desktop"
 
 # Setup GIT environment
 export GIT_EDITOR="emacs --no-desktop"
