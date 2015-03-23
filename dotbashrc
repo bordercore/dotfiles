@@ -181,7 +181,15 @@ psgrep () {
 #
 # Source your location or host specific .bashrc file here
 #
-#
-# . $HOME/.bashrc-bordercore
-# . $HOME/.bashrc-blackduck
+for f in $HOME/.bashrc-*; do
+
+    ## Check if the glob gets expanded to existing files.
+    ## If not, f here will be exactly the pattern above
+    ## and the exists test will evaluate to false.
+    [ -e "$f" ] && . "$f"
+
+    ## Break after the first match
+    break
+
+done
 
