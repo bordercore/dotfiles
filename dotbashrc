@@ -55,7 +55,10 @@ export CLASSPATH=$CLASSPATH:.
 # Options for the ack grep replacement
 export ACK_OPTIONS="--ignore-case --ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
 
-# Set up the aliases
+# Create an alias for emacsclient, starting (and connecting to) an Emacs daemon if one already isn't running
+alias e='emacsclient --no-wait --alternate-editor=""'
+
+# Set up misc aliases
 alias ccc="rm *~"
 alias dls="ls -l | grep \"^d\""
 alias f="find . |grep "
