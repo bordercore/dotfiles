@@ -19,6 +19,11 @@ Third party packages go here
 (add-to-list 'load-path "~/.emacs.d/elisp")
 #+END_SRC
 
+Start the Emacs server
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
 * Add Package Sources
 
 Load support for ELPA (package.el), the package archive.  Emacs 24 includes
