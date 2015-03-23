@@ -68,6 +68,7 @@ alias rls="ls -l -r -h -B -t"
 alias rm="rm -i"
 alias sniff="sudo tethereal -n -l"
 alias tf='tail -f'
+alias tw='tmux rename-window'
 
 # Mac-specific stuff here
 if [ `uname` == "Darwin" ]; then
