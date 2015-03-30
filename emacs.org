@@ -251,6 +251,13 @@ Mode line format
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
 #+END_SRC
 
+Rebind "expand-region"
+http://endlessparentheses.com/where-do-you-bind-expand-region-.html?source=rss
+#+BEGIN_SRC emacs-lisp
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+#+END_SRC
+
 ** Backups
 
 backup file management
