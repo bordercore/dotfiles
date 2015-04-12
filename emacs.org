@@ -495,6 +495,22 @@ Don't confirm before evaluating code
 (setq org-confirm-babel-evaluate nil)
 #+END_SRC
 
+** Capture Mode
+
+Set notes file and key binding
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file (concat "~/Dropbox/life.org"))
+(define-key global-map "\C-cc" 'org-capture)
+#+END_SRC
+
+This is my default template for todo items
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+             "* TODO %?  %t  %^g")
+))
+#+END_SRC
+
 * Coding
 ** Misc
 
