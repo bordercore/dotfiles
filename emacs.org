@@ -54,6 +54,7 @@ See http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033b
 
 Add the Marmalade and MELPA external repos to ELPA
 #+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+END_SRC
