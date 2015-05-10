@@ -410,6 +410,12 @@ Rescan the buffer automatically for new functions
 (setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
 #+END_SRC
 
+Show org-mode bullets as UTF-8 characters
+#+BEGIN_SRC emacs-lisp
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+END_SRC
+
 ** Key Bindings
 
 Define a function which toggles the return key binding between
