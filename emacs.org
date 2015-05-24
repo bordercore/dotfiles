@@ -147,8 +147,8 @@ See http://www.emacswiki.org/WholeLineOrRegion#toc3
 
 ** Scratch Buffer
 
-;; Save the scratch buffer when Emacs quits
-;; See http://dorophone.blogspot.fr/2011/11/how-to-make-emacs-scratch-buffer.html
+Save the scratch buffer when Emacs quits
+See http://dorophone.blogspot.fr/2011/11/how-to-make-emacs-scratch-buffer.html
 
 #+BEGIN_SRC emacs-lisp
 
@@ -233,10 +233,10 @@ Don't underline highlighted text
 #+END_SRC
 
 Mode line format
+I use Donald Ephraim Curtis' version of powerline
+https://github.com/milkypostman/powerline
+I've made a few modifications, located in the following directory
 #+BEGIN_SRC emacs-lisp
-;; I use Donald Ephraim Curtis' version of powerline
-;; https://github.com/milkypostman/powerline
-;; I've made a few modifications, located in the following directory
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
 (powerline-default-theme)
@@ -687,7 +687,7 @@ http://whattheemacsd.com/setup-magit.el-01.html
 
 ** git-gutter
 
-;; Enable git-gutter as a global minor mode
+Enable git-gutter as a global minor mode
 #+BEGIN_SRC emacs-lisp
 (global-git-gutter-mode t)
 #+END_SRC
