@@ -548,7 +548,12 @@ Insert parentheses, braces, quotes and the like in matching pairs
  )
 #+END_SRC
 
-C stuff
+Python support
+#+BEGIN_SRC emacs-lisp
+(add-hook 'after-init-hook #'global-flycheck-mode)
+#+END_SRC
+
+C support
 #+BEGIN_SRC emacs-lisp
 (add-hook 'c-mode-common-hook
 	  (lambda ()
@@ -556,7 +561,7 @@ C stuff
 	    (setq c-basic-offset 4)))
 #+END_SRC
 
-Perl stuff
+Perl support
 cperl-mode indentation offset
 #+BEGIN_SRC emacs-lisp
 (setq cperl-indent-level 4)
