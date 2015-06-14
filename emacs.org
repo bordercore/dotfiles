@@ -299,6 +299,18 @@ By default sort the buffer list by column 'Mode'
 #+BEGIN_SRC emacs-lisp
 (setq Buffer-menu-sort-column 4)
 #+END_SRC
+** Custom Faces
+
+#+BEGIN_SRC emacs-lisp
+(custom-set-faces
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+
+;; fly-check
+'(flycheck-info ((t (:underline "ForestGreen"))))
+'(flycheck-warning ((t (:underline "DarkOrange"))))
+'(flycheck-error ((t (:underline "Red1")))))
+#+END_SRC
 
 ** Sessions
 
