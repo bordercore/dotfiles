@@ -114,18 +114,15 @@ Flash the frame to represent a bell rather than play a sound
 (setq visible-bell t)
 #+END_SRC
 
-Always show trailing whitespace
+Always show trailing whitespace and tabs, but don't show a glyph for tabs
 #+BEGIN_SRC emacs-lisp
-(setq-default show-trailing-whitespace t)
-#+END_SRC
-
-Draw tabs with the same color as trailing whitespace
-#+BEGIN_SRC emacs-lisp
-(add-hook 'font-lock-mode-hook
-          (lambda ()
-            (font-lock-add-keywords
-             nil
-             '(("\t" 0 'trailing-whitespace prepend)))))
+(setq whitespace-style
+      '(face empty tabs tab-mark trailing))
+(setq whitespace-display-mappings
+      '(
+        (tab-mark 9 [9])
+        ))
+(global-whitespace-mode 1)
 #+END_SRC
 
 Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
@@ -299,6 +296,7 @@ By default sort the buffer list by column 'Mode'
 #+BEGIN_SRC emacs-lisp
 (setq Buffer-menu-sort-column 4)
 #+END_SRC
+
 ** Custom Faces
 
 #+BEGIN_SRC emacs-lisp
@@ -695,6 +693,7 @@ http://whattheemacsd.com/setup-magit.el-01.html
   (delete-other-windows))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
 (defun magit-quit-session ()
   "Restores the previous window configuration and kills the magit buffer"
   (interactive)
@@ -702,6 +701,7 @@ http://whattheemacsd.com/setup-magit.el-01.html
   (jump-to-register :magit-fullscreen))
 
 (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+#+END_SRC
 
 ** git-gutter
 
