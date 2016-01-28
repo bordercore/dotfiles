@@ -42,8 +42,6 @@ export GIT_AUTHOR_NAME='F. Jerrell Schivers'
 #   Cause ANSI "color" escape sequences to be output in "raw" form
 export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 
-export GREP_OPTIONS="--directories=skip --color=auto"
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
@@ -62,6 +60,7 @@ alias e='emacsclient --no-wait --alternate-editor=""'
 alias ccc="rm *~"
 alias dls="ls -l | grep \"^d\""
 alias f="find . |grep "
+alias grep="grep --directories=skip --color=auto"
 alias mv="mv -i"
 alias pp='python -mjson.tool'  # JSON pretty-printer
 alias rls="ls -l -r -h -B -t"
