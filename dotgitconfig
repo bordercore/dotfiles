@@ -1,23 +1,26 @@
 [user]
-	name = F. Jerrell Schivers
-	email = jerrell@bordercore.com
+    name = F. Jerrell Schivers
+    email = jerrell@bordercore.com
 [color]
-	ui = true
+    ui = true
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
 [color "diff"]
-	meta = yellow
-	frag = cyan
-	old = white
-	new = green bold
-	whitespace = red reverse
+    meta = yellow
+    frag = cyan
+    old = white
+    new = green bold
+    whitespace = red reverse
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+    added = yellow
+    changed = green
+    untracked = cyan
 [core]
-	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [alias]
-	s = status -sb
-	l = log --oneline --decorate
-	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    s = status -sb
+    l = log --oneline --decorate
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[credential]
+    helper = cache --timeout=7200
