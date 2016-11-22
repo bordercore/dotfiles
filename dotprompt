@@ -16,6 +16,7 @@ function set_prompt {
 
     local color_off="\[\e[m\]"
     local BOLD="\[\e[1m\]"
+    local NORMAL="\[\e[0m\]"
     local black="\[\e[30m\]"
     local red="\[\e[31m\]"
     local yellow="\[\e[33m\]"
@@ -80,9 +81,9 @@ function set_prompt {
 		PYTHON_VIRTUALENV="${blue}[`basename \"$VIRTUAL_ENV\"`]${color_off}"
 	fi
 
-#    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white"
+#    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white$NORMAL"
 
-    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white"
+    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white$NORMAL"
 
     export P2="> "
 
