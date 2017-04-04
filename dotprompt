@@ -69,6 +69,16 @@ function set_prompt {
 	MYPWD="...$MYPWD"
     fi
 
+    # bash completion support for Git: Ubuntu
+    GIT_BASH_SCRIPT=/etc/bash_completion.d/git-prompt && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
+
+    # bash completion support for Git: CentOS (various versions)
+    GIT_BASH_SCRIPT=/etc/bash_completion.d/git && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
+    GIT_BASH_SCRIPT=/usr/share/git-core/contrib/completion/git-prompt.sh && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
+
+    GIT_PS1_SHOWDIRTYSTATE=1  # show unstaged (*) and staged (+) changes
+    GIT_PS1_SHOWUNTRACKEDFILES=1 # show untracked files
+
     GIT=
     if [ `type -t __git_ps1` ]; then
         GIT="$yellow$(__git_ps1 ' (%s)')"
