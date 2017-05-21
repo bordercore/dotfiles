@@ -20,5 +20,5 @@ export PATH=$PATH:/usr/local/gradle-1.6/bin
 export LDAPBINDDN="cn=Manager,dc=bordercore,dc=com"
 
 # Django dev
-export PYTHONPATH=$HOME/dev/django:$HOME/dev/django/bordercore
-export DJANGO_SETTINGS_MODULE=bordercore.settings
+export PYTHONPATH=$HOME/dev/django/bordercore_project
+export DJANGO_SETTINGS_MODULE=bordercore.config.settings.dev
