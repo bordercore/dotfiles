@@ -735,6 +735,11 @@ Revert current hunk
 (global-set-key (kbd "C-x r") 'git-gutter:revert-hunk)
 #+END_SRC
 
+Enable live updating
+#+BEGIN_SRC emacs-lisp
+(setq git-gutter:update-interval 1)
+#+END_SRC
+
 * Games
 ** Nethack
 
