@@ -608,7 +608,13 @@ Elpy
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
+#+END_SRC
 
+Use isort to automatically sort Python imports on save
+To install isort: pip install isort
+#+BEGIN_SRC emacs-lisp
+(require 'py-isort)
+(add-hook 'before-save-hook 'py-isort-before-save)
 #+END_SRC
 
 ** Tabs
