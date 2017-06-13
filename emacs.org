@@ -617,6 +617,14 @@ To install isort: pip install isort
 (add-hook 'before-save-hook 'py-isort-before-save)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+;; Use jedi for the backend rather than rope
+(setq elpy-rpc-backend "jedi")
+#+END_SRC
+
 ** Tabs
 
 Set the default tab width to 4
