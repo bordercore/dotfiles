@@ -24,7 +24,8 @@ Start the Emacs server
 (server-start)
 #+END_SRC
 
-* Add Package Sources
+* Packages Setup
+** Sources
 
 Load support for ELPA (package.el), the package archive.  Emacs 24 includes
 this natively.  For earlier versions, package.el needs to be installed manually.
@@ -62,6 +63,17 @@ Add the Marmalade and MELPA external repos to ELPA
 org-mode archives.  provides packages org and org-plus-contrib
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+#+END_SRC
+** Packages
+
+Configure use-package
+#+BEGIN_SRC emacs-lisp
+(eval-when-compile
+  (require 'use-package))
+;; Ensure that packages are installed automatically if not already present on your system
+(setq use-package-always-ensure t)
+;; Prefer melpa-stable
+(setq use-package-always-pin "melpa-stable")
 #+END_SRC
 
 * General Configuration
@@ -140,6 +152,13 @@ eg kill-region when no region is selected will delete the current line.
 See http://www.emacswiki.org/WholeLineOrRegion#toc3
 #+BEGIN_SRC emacs-lisp
 (whole-line-or-region-mode t)
+#+END_SRC
+
+auto-save buffers when switching between buffers or when an Emacs frame lose focus
+#+BEGIN_SRC emacs-lisp
+(use-package super-save
+   :config
+(super-save-mode +1))
 #+END_SRC
 
 ** Scratch Buffer
@@ -234,9 +253,12 @@ I use Donald Ephraim Curtis' version of powerline
 https://github.com/milkypostman/powerline
 I've made a few modifications, located in the following directory
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
-(require 'powerline)
-(powerline-default-theme)
+(use-package powerline
+  :ensure t
+  :init
+  (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+  :config
+  (powerline-default-theme))
 #+END_SRC
 
 ** Key Bindings
@@ -252,8 +274,8 @@ I've made a few modifications, located in the following directory
 Rebind "expand-region"
 http://endlessparentheses.com/where-do-you-bind-expand-region-.html?source=rss
 #+BEGIN_SRC emacs-lisp
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 #+END_SRC
 
 ** Backups
@@ -271,26 +293,20 @@ backup file management
  version-control t)       ; use versioned backups
 #+END_SRC
 
-** Buffer Switching
+** Buffers
 
 Uniquify changes conflicting buffer names from file<2> etc
 #+BEGIN_SRC emacs-lisp
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
+(use-package uniquify
+   :ensure nil
+   :config
+   (setq uniquify-buffer-name-style 'forward)
+   (setq uniquify-separator "/")
+   ;; Rename after killing uniquified
+   (setq uniquify-after-kill-buffer-p t)
+   ;; Don't muck with special buffers
+   (setq uniquify-ignore-buffers-re "^\\*"))
 #+END_SRC
-
-Rename after killing uniquified
-#+BEGIN_SRC emacs-lisp
-(setq uniquify-after-kill-buffer-p t)
-#+END_SRC
-
-Don't muck with special buffers
-#+BEGIN_SRC emacs-lisp
-(setq uniquify-ignore-buffers-re "^\\*")
-#+END_SRC
-
-** Buffer Menu
 
 By default sort the buffer list by column 'Mode'
 #+BEGIN_SRC emacs-lisp
@@ -314,13 +330,12 @@ By default sort the buffer list by column 'Mode'
 
 save my place in files between sessions
 #+BEGIN_SRC emacs-lisp
-(require 'saveplace)
-(setq save-place-file (expand-file-name ".saveplaces" user-emacs-directory))
-#+END_SRC
-
-activate it for all buffers
-#+BEGIN_SRC emacs-lisp
-(setq-default save-place t)
+(use-package saveplace
+  :config
+  (setq save-place-file (expand-file-name ".saveplaces" user-emacs-directory))
+  ;; activate it for all buffers
+  (setq-default save-place t)
+)
 #+END_SRC
 
 Automatically save and restore sessions
@@ -360,8 +375,9 @@ Window navigation
 
 create a list of recently opened files
 #+BEGIN_SRC emacs-lisp
-(require 'recentf)
-(recentf-mode t)
+(use-package recentf
+  :config
+  (recentf-mode t))
 #+END_SRC
 
 Init ido
@@ -412,22 +428,64 @@ Rescan the buffer automatically for new functions
 #+END_SRC
 
 * Org Mode
-** Setup
 
 #+BEGIN_SRC emacs-lisp
-(require 'org)
-(setq org-mobile-inbox-for-pull "/home/www/htdocs/bordercore/dav/mobileorg.org/")
-(setq org-mobile-directory "/home/www/htdocs/bordercore/dav/")
+(use-package org
+  :config
+  ;; Turn on org-indent-mode for all files
+  (setq org-startup-indented t)
+  ;; Don't insert blank lines before new entries/items
+  (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+  ;; Hit <RETURN> to follow the link at point
+  (setq org-return-follows-link t)
+  ;; By default, the return key inserts a new heading
+  (add-hook 'org-mode-hook
+  (lambda ()
+    (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
+  ;; Add an intermediate 'IN PROGRESS' todo state
+  (setq org-todo-keywords '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
+  ;; TODO statistics covers all entries in the subtree, not just direct children
+  (setq org-hierarchical-todo-statistics nil)
+
+  ;; Babel Mode
+  ;; Some initial languages we want org-babel to support
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((sh . t)
+                                (python . t)
+                                (R . t)
+                                (ruby . t)
+                                (ditaa . t)
+                                (dot . t)
+                                (octave . t)
+                                (sql . t)
+                                (sqlite . t)
+                                (perl . t)))
+  ;; Use bash (rather than the default sh) as the command to invoke a shell
+  (setq org-babel-sh-command "bash")
+  ;; Turn on native code fontification
+  (setq org-src-fontify-natively t)
+  ;; Don't confirm before evaluating code
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; Capture Mode
+  ;; Set notes file and key binding
+  (setq org-default-notes-file (concat "~/Dropbox/life.org"))
+  (define-key global-map "\C-cc" 'org-capture)
+  ;; This is my default template for todo items
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+           "* TODO %?  %t  %^g")
+  ))
+)
 #+END_SRC
 
 Show org-mode bullets and ellipses as UTF-8 characters
 #+BEGIN_SRC emacs-lisp
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(setq org-ellipsis "⤵")
+(use-package org-bullets
+  :init
+  (setq org-ellipsis "⤵")
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
-
-** Key Bindings
 
 Define a function which toggles the return key binding between
 'org-return' and 'org-insert-respect-content'
@@ -441,41 +499,6 @@ Define a function which toggles the return key binding between
 (global-set-key (quote [f1]) 'toggle-org-return-key)
 #+END_SRC
 
-By default, the return key inserts a new heading
-#+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook
-  (lambda ()
-    (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
-#+END_SRC
-
-Turn on org-indent-mode for all files
-#+BEGIN_SRC emacs-lisp
-(setq org-startup-indented t)
-#+END_SRC
-
-Don't insert blank lines before new entries/items
-#+BEGIN_SRC emacs-lisp
-(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-#+END_SRC
-
-Hit <RETURN> to follow the link at point
-#+BEGIN_SRC emacs-lisp
-(setq org-return-follows-link t)
-#+END_SRC
-
-** Todo
-
-Add an intermediate 'IN PROGRESS' todo state
-#+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords
-      '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
-#+END_SRC
-
-TODO statistics covers all entries in the subtree, not just direct children
-#+BEGIN_SRC emacs-lisp
-(setq org-hierarchical-todo-statistics nil)
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -485,64 +508,14 @@ TODO statistics covers all entries in the subtree, not just direct children
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 #+END_SRC
 
-** Babel Mode
-
-Some initial langauges we want org-babel to support
-#+BEGIN_SRC emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (sh . t)
-   (python . t)
-   (R . t)
-   (ruby . t)
-   (ditaa . t)
-   (dot . t)
-   (octave . t)
-   (sql . t)
-   (sqlite . t)
-   (perl . t)
-   ))
-#+END_SRC
-
-Use bash (rather than the default sh) as the command to invoke a shell
-#+BEGIN_SRC emacs-lisp
-(setq org-babel-sh-command "bash")
-#+END_SRC
-
-Turn on native code fontification
-#+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
-#+END_SRC
-
-Don't confirm before evaluating code
-#+BEGIN_SRC emacs-lisp
-(setq org-confirm-babel-evaluate nil)
-#+END_SRC
-
-** Capture Mode
-
-Set notes file and key binding
-#+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file (concat "~/Dropbox/life.org"))
-(define-key global-map "\C-cc" 'org-capture)
-#+END_SRC
-
-This is my default template for todo items
-#+BEGIN_SRC emacs-lisp
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-             "* TODO %?  %t  %^g")
-))
-#+END_SRC
-
 * Coding
 ** Misc
 
 Enable auto-complete mode globally
 #+BEGIN_SRC emacs-lisp
-(require 'auto-complete)
-(global-auto-complete-mode t)
+(use-package auto-complete
+  :config
+  (global-auto-complete-mode t))
 #+END_SRC
 
 hilight matching pairs of parentheses and other characters
@@ -600,29 +573,32 @@ Hilight Postgres keywords in SQL mode
 
 Elpy
 #+BEGIN_SRC emacs-lisp
-(pyvenv-activate "~/dev/envs/elpy/")
-
-(elpy-enable)
+(use-package elpy
+  :init
+  (pyvenv-activate "~/dev/envs/elpy/")
+  :config
+  (elpy-enable))
 
 ;; Use flycheck rather than the default flymake
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+  (add-hook 'elpy-mode-hook 'flycheck-mode)
+
+;; Use jedi for the backend rather than rope
+(setq elpy-rpc-backend "jedi"))
 #+END_SRC
 
 Use isort to automatically sort Python imports on save
 To install isort: pip install isort
 #+BEGIN_SRC emacs-lisp
-(require 'py-isort)
-(add-hook 'before-save-hook 'py-isort-before-save)
+(use-package py-isort
+  :config
+  (add-hook 'before-save-hook 'py-isort-before-save))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
-
-;; Use jedi for the backend rather than rope
-(setq elpy-rpc-backend "jedi")
 #+END_SRC
 
 ** Tabs
@@ -647,22 +623,19 @@ Use HTML Mode for html, autohandler, and dhandler files
 
 I use web-mode for Django development
 #+BEGIN_SRC emacs-lisp
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-(setq web-mode-engines-alist
-      '(("django"    . "\\.html\\'"))
-)
-#+END_SRC
-
-web-mode customizations
-#+BEGIN_SRC emacs-lisp
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 4)
-(setq web-mode-code-indent-offset 4)
-(setq web-mode-indent-style 4)
-(setq web-mode-style-padding 4)
-(setq web-mode-script-padding 4)
+(use-package web-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  :config
+  (setq web-mode-engines-alist
+      '(("django"    . "\\.html\\'")))
+  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-css-indent-offset 4)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-indent-style 4)
+  (setq web-mode-style-padding 4)
+  (setq web-mode-script-padding 4)
+  (setq web-mode-enable-css-colorization t))
 #+END_SRC
 
 Use Rainbow minor mode when in CSS mode
@@ -730,28 +703,17 @@ http://whattheemacsd.com/setup-magit.el-01.html
 
 Enable git-gutter as a global minor mode
 #+BEGIN_SRC emacs-lisp
-(global-git-gutter-mode t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
-(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
-#+END_SRC
-
-Jump to next/previous hunk
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
-(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
-#+END_SRC
-
-Revert current hunk
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x r") 'git-gutter:revert-hunk)
-#+END_SRC
-
-Enable live updating
-#+BEGIN_SRC emacs-lisp
-(setq git-gutter:update-interval 1)
+(use-package git-gutter
+  :init
+  (global-git-gutter-mode t)
+  :bind (("C-x C-g" . git-gutter:toggle)
+         ("C-x v =" . git-gutter:popup-hunk)
+         ("C-x p" . git-gutter:previous-hunk)
+         ("C-x n" . git-gutter:next-hunk)
+         ("C-x r" . git-gutter:revert-hunk))
+  :config
+  ;; Enable live updating
+  (setq git-gutter:update-interval 1))
 #+END_SRC
 
 * Games
