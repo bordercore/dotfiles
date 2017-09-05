@@ -26,3 +26,6 @@
     helper = cache --timeout=7200
 [push]
     default = simple
+[status]
+    # show individual files in untracked directories
+    showUntrackedFiles = all
