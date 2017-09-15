@@ -74,6 +74,8 @@ Configure use-package
 (setq use-package-always-ensure t)
 ;; Prefer melpa-stable
 (setq use-package-always-pin "melpa-stable")
+;; Packages that take longer than 0.1s to load are logged in the *Messages* buffer
+(setq use-package-verbose t)
 #+END_SRC
 
 * General Configuration
