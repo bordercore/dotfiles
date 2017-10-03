@@ -579,15 +579,18 @@ Elpy
   :init
   (pyvenv-activate "~/dev/envs/elpy/")
   :config
+  ;; Stop elpy from enabling highlight-indentation-mode
+  (delete `elpy-module-highlight-indentation elpy-modules)
+
+  ;; Use flycheck rather than the default flymake
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  ;; Use jedi for the backend rather than rope
+  (setq elpy-rpc-backend "jedi")
+
   (elpy-enable))
-
-;; Use flycheck rather than the default flymake
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode)
-
-;; Use jedi for the backend rather than rope
-(setq elpy-rpc-backend "jedi"))
 #+END_SRC
 
 Use isort to automatically sort Python imports on save
