@@ -79,32 +79,6 @@ Configure use-package
 #+END_SRC
 
 * General Configuration
-** Color Theme
-
-Use color-theme mode for Emacs 23
-#+BEGIN_SRC emacs-lisp
-(cond
- ((string-match "GNU Emacs 23" (emacs-version))
-  (require 'color-theme)
-  (eval-after-load "color-theme"
-	'(progn
-	   (color-theme-initialize)
-	   (color-theme-arjen)))  ;; Choose your color theme here
-  )
- )
-#+END_SRC
-
-I store my custom color themes here
-#+BEGIN_SRC emacs-lisp
-(setq custom-theme-directory "~/.emacs.d/themes/")
-#+END_SRC
-
-Load the current theme
-current-theme.el is a symlink to the currently used theme
-#+BEGIN_SRC emacs-lisp
-(load-file "~/.emacs.d/themes/current-theme.el")
-#+END_SRC
-
 ** Misc
 
 Change 'yes or no' prompt to 'y or n' prompts
@@ -313,19 +287,6 @@ Uniquify changes conflicting buffer names from file<2> etc
 By default sort the buffer list by column 'Mode'
 #+BEGIN_SRC emacs-lisp
 (setq Buffer-menu-sort-column 4)
-#+END_SRC
-
-** Custom Faces
-
-#+BEGIN_SRC emacs-lisp
-(custom-set-faces
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-
-;; fly-check
-'(flycheck-info ((t (:underline "ForestGreen"))))
-'(flycheck-warning ((t (:underline "DarkOrange"))))
-'(flycheck-error ((t (:underline "Red1")))))
 #+END_SRC
 
 ** Sessions
@@ -746,10 +707,38 @@ You'll need to apt-get this if using Ubuntu or Debian
 (setq nethack-program "/usr/games/nethack-lisp")
 #+END_SRC
 
+* Color Theme
+
+This should be run near the end, since custom face attributes are set in current-theme.el which
+all already need to be defined.
+
+Use color-theme mode for Emacs 23
+#+BEGIN_SRC emacs-lisp
+(cond
+ ((string-match "GNU Emacs 23" (emacs-version))
+  (require 'color-theme)
+  (eval-after-load "color-theme"
+	'(progn
+	   (color-theme-initialize)
+	   (color-theme-arjen)))  ;; Choose your color theme here
+  )
+ )
+#+END_SRC
+
+I store my custom color themes here
+#+BEGIN_SRC emacs-lisp
+(setq custom-theme-directory "~/.emacs.d/themes/")
+#+END_SRC
+
+Load the current theme
+current-theme.el is a symlink to the currently used theme
+#+BEGIN_SRC emacs-lisp
+(load-file "~/.emacs.d/themes/current-theme.el")
+#+END_SRC
+
 * Wrapup
 
 Local or experimental settings are stored here
 #+BEGIN_SRC emacs-lisp
 (load-file "~/.emacs-local")
 #+END_SRC
-
