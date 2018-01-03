@@ -34,9 +34,9 @@ See http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033b
 (cond
  ((string-match "GNU Emacs 2[23]" (emacs-version))
   (when
-	  (load
-	   (expand-file-name "~/.emacs.d/elpa/package.el"))
-	(package-initialize))
+    (load
+      (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
   )
 )
 #+END_SRC
@@ -321,6 +321,7 @@ Save mini-buffer history between sessions
 #+END_SRC
 
 * Nagivation
+** General
 
 The <home> and <end> keys should move to the beginning and end of the buffer, respectively
 #+BEGIN_SRC emacs-lisp
@@ -347,20 +348,14 @@ Init ido
 #+BEGIN_SRC emacs-lisp
 (ido-mode t)
 (setq ido-enable-prefix nil
-	  ido-enable-flex-matching t
-	  ido-create-new-buffer 'always
-	  ido-max-prospects 10)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+  ido-enable-flex-matching t
+  ido-create-new-buffer 'always
+  ido-max-prospects 10
+  ido-enable-flex-matching t
+  ido-everywhere t)
 #+END_SRC
 
-hilight the current line in dired mode
-#+BEGIN_SRC emacs-lisp
-(add-hook 'dired-mode-hook
-		  'hl-line-mode)
-#+END_SRC
-
-Auto refresh dired buffers, but be quiet about it
+Auto refresh buffers, but be quiet about it
 #+BEGIN_SRC emacs-lisp
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
@@ -390,6 +385,17 @@ Rescan the buffer automatically for new functions
 (setq imenu-auto-rescan t)
 #+END_SRC
 
+** Dired
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired+
+  :ensure t
+  :config
+  ;; Don't disable "dired-find-alternate-file"
+  (put 'dired-find-alternate-file 'disabled nil))
+  ;; Hilight the current line in dired mode
+  (add-hook 'dired-mode-hook 'hl-line-mode)
+#+END_SRC
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
