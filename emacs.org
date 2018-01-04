@@ -62,7 +62,7 @@ Add the Marmalade and MELPA external repos to ELPA
 
 org-mode archives.  provides packages org and org-plus-contrib
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 #+END_SRC
 ** Packages
 
