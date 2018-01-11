@@ -68,6 +68,7 @@ alias rm="rm -i"
 alias sniff="sudo tethereal -n -l"
 alias tf='tail -f'
 alias tw='tmux rename-window'
+alias html2md="xclip -o -selection clipboard -t text/html | pandoc -r html -w markdown | xclip -i -selection clipboard"
 
 # Mac-specific stuff here
 if [ `uname` == "Darwin" ]; then
