@@ -456,6 +456,16 @@ Show org-mode bullets and ellipses as UTF-8 characters
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(use-package org-fancy-priorities
+  :diminish
+  :ensure t
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("HIGH" "MED" "LOW")))
+#+END_SRC
+
 Define a function which toggles the return key binding between
 'org-return' and 'org-insert-respect-content'
 #+BEGIN_SRC emacs-lisp
