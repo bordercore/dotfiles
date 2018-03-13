@@ -386,7 +386,7 @@ Rescan the buffer automatically for new functions
 ** Dired
 
 #+BEGIN_SRC emacs-lisp
-(use-package dired+
+(use-package diredfl
   :ensure t
   :config
   ;; Don't disable "dired-find-alternate-file"
