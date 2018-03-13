@@ -72,8 +72,6 @@ Configure use-package
   (require 'use-package))
 ;; Ensure that packages are installed automatically if not already present on your system
 (setq use-package-always-ensure t)
-;; Prefer melpa-stable
-(setq use-package-always-pin "melpa-stable")
 ;; Packages that take longer than 0.1s to load are logged in the *Messages* buffer
 (setq use-package-verbose t)
 #+END_SRC
