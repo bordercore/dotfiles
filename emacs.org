@@ -489,12 +489,13 @@ Automatically add a timestamp property to new TODO items, based on this:
 https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-in-org-mode
 
 #+BEGIN_SRC emacs-lisp
-(require 'org-expiry)
-;; Configure it a bit to my liking
-(setq
-  org-expiry-created-property-name "CREATED" ; Name of property when an item is created
-  org-expiry-inactive-timestamps   t         ; Don't have everything in the agenda view
-)
+(use-package org-expiry
+  :ensure org-plus-contrib
+  :config
+  (setq
+    org-expiry-created-property-name "CREATED" ; Name of property when an item is created
+    org-expiry-inactive-timestamps   t         ; Don't have everything in the agenda view
+  ))
 
 (defun mrb/insert-created-timestamp()
   "Insert a CREATED property using org-expiry.el for TODO entries"
@@ -678,8 +679,7 @@ See http://www.emacswiki.org/emacs/ShowParenMode
 
 support for Magit, which provides nice Git integration with Emacs
 #+BEGIN_SRC emacs-lisp
-(when-package-installed 'magit
-						(require 'magit))
+(use-package magit)
 #+END_SRC
 
 Custom key binding for the often-used "magit-status" command
