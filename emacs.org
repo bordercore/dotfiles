@@ -774,12 +774,18 @@ I store my custom color themes here
 Load the current theme
 current-theme.el is a symlink to the currently used theme
 #+BEGIN_SRC emacs-lisp
-(load-file "~/.emacs.d/themes/current-theme.el")
+(let ((current-theme "~/.emacs.d/themes/current-theme.el"))
+(when (file-exists-p current-theme)
+   (load-file current-theme))
+)
 #+END_SRC
 
 * Wrapup
 
 Local or experimental settings are stored here
 #+BEGIN_SRC emacs-lisp
-(load-file "~/.emacs-local")
+(let ((local-settings "~/.emacs-local"))
+(when (file-exists-p local-settings)
+   (load-file local-settings))
+)
 #+END_SRC
