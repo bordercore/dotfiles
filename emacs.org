@@ -135,6 +135,14 @@ auto-save buffers when switching between buffers or when an Emacs frame lose foc
 (super-save-mode +1))
 #+END_SRC
 
+Avoid "Symbolic link to Git-controlled source file; follow link?" prompt
+by automatically answering "Yes". This only works when opening up new files.
+It does not apply to existing files that need to be opened on startup
+due to session saving.
+#+BEGIN_SRC emacs-lisp
+(setq vc-follow-symlinks t)
+#+END_SRC
+
 ** Scratch Buffer
 
 Save the scratch buffer when Emacs quits
