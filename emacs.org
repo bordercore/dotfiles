@@ -207,8 +207,11 @@ Enable wheelmouse support
 ))
 #+END_SRC
 
+Set the fonts.
 On "OS X", set the default font to "Monaco 18"
 #+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil :height 140)
+
 (when (equal system-type 'darwin)
   (set-face-attribute 'default nil :font "Monaco 18")
   )
@@ -794,6 +797,6 @@ Local or experimental settings are stored here
 #+BEGIN_SRC emacs-lisp
 (let ((local-settings "~/.emacs-local"))
 (when (file-exists-p local-settings)
-   (load-file local-settings))
+  (load-file local-settings))
 )
 #+END_SRC
