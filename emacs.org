@@ -353,15 +353,13 @@ create a list of recently opened files
   (recentf-mode t))
 #+END_SRC
 
-Init ido
+Helm Config
 #+BEGIN_SRC emacs-lisp
-(ido-mode t)
-(setq ido-enable-prefix nil
-  ido-enable-flex-matching t
-  ido-create-new-buffer 'always
-  ido-max-prospects 10
-  ido-enable-flex-matching t
-  ido-everywhere t)
+(use-package helm
+  :ensure t
+  :bind (("C-x C-f" . helm-find-files))
+  :config
+  (helm-mode 1))
 #+END_SRC
 
 Auto refresh buffers, but be quiet about it
