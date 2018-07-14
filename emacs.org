@@ -10,8 +10,16 @@ Set the initial value of the load-path
 #+BEGIN_SRC emacs-lisp
 (setq load-path
       (append load-path
-	      '("/usr/local/share/emacs/site-lisp")))
+         '("/usr/local/share/emacs/site-lisp")))
 
+#+END_SRC
+
+Add /opt/local/bin to the exec-path. Aspell, which is used by
+flyspell-mode, is installed here by MacPorts on OS X.
+#+BEGIN_SRC emacs-lisp
+(setq exec-path
+      (append exec-path
+        '("/opt/local/bin")))
 #+END_SRC
 
 Third party packages go here
