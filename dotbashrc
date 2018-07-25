@@ -132,7 +132,7 @@ function dis {
 
 findclass () {
 
-    find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep "$1.class"; done
+    find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep -i "$1.class"; done
 
 }
 
