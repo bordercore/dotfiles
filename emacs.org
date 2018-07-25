@@ -336,6 +336,20 @@ Save mini-buffer history between sessions
 	  savehist-file "~/.emacs.d/savehist") ;; keep my home clean
 (savehist-mode t)                          ;; do customization before activate
 #+END_SRC
+** Typing and Spelling
+
+Use abbrev mode to correct often misspelled words
+#+BEGIN_SRC emacs-lisp
+(use-package abbrev
+  :defer 1
+  :ensure nil
+  :custom
+  (abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory))
+  (abbrev-mode 1)
+  :config
+  (if (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file)))
+#+END_SRC
 
 * Nagivation
 ** General
