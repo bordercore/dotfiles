@@ -50,9 +50,6 @@ function set_prompt {
 	JOBS=""
     fi
 
-    # Are we running in a screen?
-    [ "$STY" != "" ] && SFLAG='-SCR' || SFLAG=''
-
     # Set SSH_FLAG only if this is a remote (ssh) connection.  This will be used in the prompt
     local SSH_IP=`echo $SSH_CLIENT | awk '{ print $1 }'`
     if [ $SSH_IP ]; then
