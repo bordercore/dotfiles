@@ -306,6 +306,11 @@ By default sort the buffer list by column 'Mode'
 (setq Buffer-menu-sort-column 4)
 #+END_SRC
 
+Focus the buffer window when listing the buffers
+#+BEGIN_SRC emacs-lisp
+(define-key global-map [remap list-buffers] 'buffer-menu-other-window)
+#+END_SRC
+
 ** Sessions
 
 save my place in files between sessions
