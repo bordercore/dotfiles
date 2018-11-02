@@ -82,8 +82,11 @@ if [ `uname` == "Darwin" ]; then
         . /opt/local/etc/bash_completion
     fi
 
-    # The MacPorts version of 'lesspipe'
-    export LESSOPEN='| /opt/local/bin/lesspipe.sh %s'
+    # Set the LESSOPEN variable to use lesspipe, if installed
+    less_output=$(lesspipe.sh 2> /dev/null)
+    if [ $? -eq 0 ] ; then
+        eval "$less_output"
+    fi
 
 fi
 
