@@ -356,6 +356,14 @@ Use abbrev mode to correct often misspelled words
       (quietly-read-abbrev-file)))
 #+END_SRC
 
+** File Editing
+*** Tramp
+
+Decrease tramp's verbosity level
+#+BEGIN_SRC emacs-lisp
+(setq tramp-verbose 2)
+#+END_SRC
+
 * Nagivation
 ** General
 
@@ -430,6 +438,7 @@ Rescan the buffer automatically for new functions
   ;; Hilight the current line in dired mode
   (add-hook 'dired-mode-hook 'hl-line-mode)
 #+END_SRC
+
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
