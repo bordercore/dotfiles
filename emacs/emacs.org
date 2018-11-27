@@ -559,6 +559,11 @@ https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-
 (ad-activate 'org-todo)
 #+END_SRC
 
+;; Disable displaying the outline path in the echo area
+#+BEGIN_SRC emacs-lisp
+(remove-hook 'org-mode-hook 'org-eldoc-load)
+#+END_SRC
+
 * Coding
 ** Misc
 
