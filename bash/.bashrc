@@ -80,7 +80,7 @@ if [ `uname` == "Darwin" ]; then
 
     # Inspired by https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
 
-    alias html2md="swift $HOME/pbpaste.swift \
+    alias html2md="swift $HOME/bin/pbpaste.swift \
           | pandoc -r html -w markdown-raw_html-native_divs-native_spans+fenced_divs-bracketed_spans-link_attributes-header_attributes \
           | grep -vEa '^:::' \
           | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
