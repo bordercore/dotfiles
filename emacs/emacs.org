@@ -730,7 +730,10 @@ See http://www.emacswiki.org/emacs/ShowParenMode
 
 support for Magit, which provides nice Git integration with Emacs
 #+BEGIN_SRC emacs-lisp
-(use-package magit)
+(use-package magit
+    :init
+    (setq magit-log-margin '(t "%b %d, %Y " magit-log-margin-width t 21))
+)
 #+END_SRC
 
 Custom key binding for the often-used "magit-status" command
