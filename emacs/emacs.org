@@ -627,7 +627,16 @@ Hilight Postgres keywords in SQL mode
 #+END_SRC
 ** Python
 
-Elpy
+#+begin_example
+Install Elpy, the Emacs Lisp Python Environment
+
+Populate a virtualenv with the required Python packages:
+
+    $ python3 -m venv ~/dev/envs/elpy
+    $ . ~/dev/envs/elpy/bin/activate
+    $ pip install autopep8 epc flake8 importmagic jedi rope yapf
+#+end_example
+
 #+BEGIN_SRC emacs-lisp
 (use-package elpy
   :init
@@ -647,8 +656,9 @@ Elpy
   (elpy-enable))
 #+END_SRC
 
-Use isort to automatically sort Python imports on save
+Use isort to automatically sort Python imports on save.
 To install isort: pip install isort
+
 #+BEGIN_SRC emacs-lisp
 (use-package py-isort
   :config
