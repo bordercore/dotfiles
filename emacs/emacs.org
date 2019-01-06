@@ -488,6 +488,17 @@ Rescan the buffer automatically for new functions
         '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
            "* TODO %?  %t  %^g")
   ))
+
+  ;; Customize the faces. I prefer the font sizes to be consistent across levels
+  (set-face-attribute 'org-level-1 nil :height 1.0)
+  (set-face-attribute 'org-level-2 nil :height 1.0)
+  (set-face-attribute 'org-level-3 nil :height 1.0)
+  (set-face-attribute 'org-level-4 nil :height 1.0)
+  (set-face-attribute 'org-level-5 nil :height 1.0)
+  (set-face-attribute 'org-level-6 nil :height 1.0)
+  (set-face-attribute 'org-level-7 nil :height 1.0)
+  (set-face-attribute 'org-level-8 nil :height 1.0)
+
 )
 #+END_SRC
 
