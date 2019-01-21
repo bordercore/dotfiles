@@ -70,8 +70,9 @@ alias tf='tail -f'
 alias tw='tmux rename-window'
 
 alias html2md="xclip -o -selection clipboard -t text/html \
-      | pandoc -r html -w markdown-raw_html-native_divs-native_spans+fenced_divs-bracketed_spans-link_attributes-header_attributes \
-      | grep -vEa '^:::' \
+      | pandoc -r html-native_divs-native_spans \
+      --filter $HOME/.pandoc_filter.py \
+      -w markdown-raw_html-link_attributes-header_attributes-smart \
       | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
       | xclip -i -selection clipboard"
 
@@ -81,8 +82,9 @@ if [ `uname` == "Darwin" ]; then
     # Inspired by https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
 
     alias html2md="swift $HOME/bin/pbpaste.swift \
-          | pandoc -r html -w markdown-raw_html-native_divs-native_spans+fenced_divs-bracketed_spans-link_attributes-header_attributes \
-          | grep -vEa '^:::' \
+          | pandoc -r html-native_divs-native_spans \
+          --filter $HOME/.pandoc_filter.py \
+          -w markdown-raw_html-link_attributes-header_attributes-smart \
           | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
           | pbcopy"
 
