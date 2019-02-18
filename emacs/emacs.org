@@ -260,7 +260,6 @@ I've made a few modifications, located in the following directory
 (global-set-key (quote [f1]) 'toggle-org-return-key)
 (global-set-key (quote [f9]) 'eval-region)
 (global-set-key (quote [f2]) 'query-replace)
-(global-set-key (quote [f3]) 'font-lock-mode)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
 #+END_SRC
 
@@ -570,9 +569,17 @@ https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-
 (ad-activate 'org-todo)
 #+END_SRC
 
-;; Disable displaying the outline path in the echo area
+Disable displaying the outline path in the echo area
 #+BEGIN_SRC emacs-lisp
 (remove-hook 'org-mode-hook 'org-eldoc-load)
+#+END_SRC
+
+Use org-cliplink to insert org-mode links from clipboard.
+Bind to F3.
+#+BEGIN_SRC emacs-lisp
+(use-package org-cliplink
+  :config
+  (global-set-key (quote [f3]) 'org-cliplink))
 #+END_SRC
 
 * Coding
