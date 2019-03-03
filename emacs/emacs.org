@@ -287,6 +287,8 @@ backup file management
 
 ** Buffers
 
+*** General
+
 Uniquify changes conflicting buffer names from file<2> etc
 #+BEGIN_SRC emacs-lisp
 (use-package uniquify
@@ -310,6 +312,51 @@ Focus the buffer window when listing the buffers
 (define-key global-map [remap list-buffers] 'buffer-menu-other-window)
 #+END_SRC
 
+*** Ibuffer
+
+Use Ibuffer for buffer list
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+
+Create custom Ibuffer groups
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-saved-filter-groups
+      '(("home"
+         ("Org" (or (mode . org-mode)
+                    (filename . "OrgMode")))
+         ("Web" (or (mode . web-mode)
+                    (name . ".css")))
+         ("Python" (or (mode . python-mode)
+                       (filename . "LaTeXMode")))
+         ("Helm" (name . "helm"))
+         ("Magit" (name . "magit"))
+         ("Emacs" (or
+                   (name . "^\\*scratch\\*$")
+                   (name . "^\\*Messages\\*$")))
+         ("Text" (or (name . ".txt")
+                     (name . ".md")
+                     (name . ".xml"))))))
+
+(add-hook 'ibuffer-mode-hook
+    '(lambda ()
+        (ibuffer-switch-to-saved-filter-groups "home")))
+#+END_SRC
+
+Customize the column widths
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-formats
+      '((mark modified read-only " "
+              (name 30 30 :left :elide) ; change: 30s were originally 18s
+              " "
+              (size 9 -1 :right)
+              " "
+              (mode 16 16 :left :elide)
+              " " filename-and-process)
+        (mark " "
+              (name 16 -1)
+              " " filename)))
+#+END_SRC
 ** Sessions
 
 save my place in files between sessions
