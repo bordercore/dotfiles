@@ -72,7 +72,7 @@ alias tw='tmux rename-window'
 alias html2md="xclip -o -selection clipboard -t text/html \
       | pandoc -r html-native_divs-native_spans \
       --filter $HOME/.pandoc_filter.py \
-      -w markdown-raw_html-link_attributes-header_attributes-smart \
+      -w markdown-raw_html-link_attributes-header_attributes-smart-smart-tex_math_dollars \
       | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
       | xclip -i -selection clipboard"
 
