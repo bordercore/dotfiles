@@ -484,6 +484,21 @@ Rescan the buffer automatically for new functions
   ;; Hilight the current line in dired mode
   (add-hook 'dired-mode-hook 'hl-line-mode)
 #+END_SRC
+** Search
+*** The Silver Searcher
+
+ag.el is a frontend to the Silver Searcher.
+This requires installation of the "ag" binary.
+#+BEGIN_SRC emacs-lisp
+(use-package ag
+  :commands ag
+  :init
+  (setq ag-highlight-search 't)
+  :config
+  ;; Focus the search buffer after a search
+  (add-hook 'ag-search-finished-hook (lambda () (pop-to-buffer next-error-last-buffer))))
+#+END_SRC
+
 
 * Org Mode
 
