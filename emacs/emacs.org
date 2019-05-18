@@ -534,7 +534,7 @@ This requires installation of the "ag" binary.
   ;; Babel Mode
   ;; Some initial languages we want org-babel to support
   (org-babel-do-load-languages 'org-babel-load-languages
-                               '((sh . t)
+                               '((shell . t)
                                 (python . t)
                                 (R . t)
                                 (ruby . t)
