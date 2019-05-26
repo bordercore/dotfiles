@@ -4,6 +4,41 @@
 
 Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 
+* Table of Contents                                                     :TOC:
+- [[#emacs-initialization][Emacs initialization]]
+- [[#packages][Packages]]
+  - [[#sources][Sources]]
+  - [[#setup][Setup]]
+- [[#general-configuration][General Configuration]]
+  - [[#misc][Misc]]
+  - [[#scratch-buffer][Scratch Buffer]]
+  - [[#user-interface][User Interface]]
+  - [[#key-bindings][Key Bindings]]
+  - [[#backups][Backups]]
+  - [[#buffers][Buffers]]
+  - [[#sessions][Sessions]]
+  - [[#typing-and-spelling][Typing and Spelling]]
+  - [[#file-editing][File Editing]]
+- [[#nagivation][Nagivation]]
+  - [[#general][General]]
+  - [[#imenu][Imenu]]
+  - [[#dired][Dired]]
+  - [[#search][Search]]
+  - [[#treemacs][Treemacs]]
+- [[#org-mode][Org Mode]]
+- [[#coding][Coding]]
+  - [[#misc-1][Misc]]
+  - [[#python][Python]]
+  - [[#tabs][Tabs]]
+  - [[#web-development][Web Development]]
+  - [[#lisp][Lisp]]
+  - [[#magit][Magit]]
+  - [[#git-gutter][git-gutter]]
+- [[#games][Games]]
+  - [[#nethack][Nethack]]
+- [[#color-theme][Color Theme]]
+- [[#wrapup][Wrapup]]
+
 * Emacs initialization
 
 Set the initial value of the load-path
@@ -567,6 +602,14 @@ This requires installation of the "ag" binary.
   (set-face-attribute 'org-level-8 nil :height 1.0)
 
 )
+#+END_SRC
+
+Include a Table of Contents, primarily for the benefit of Github.
+The TOC automatically gets updated when the buffer is saved under the heading with the "TOC" tag.
+#+BEGIN_SRC emacs-lisp
+(use-package toc-org
+  :hook
+  (org-mode . toc-org-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
