@@ -470,8 +470,7 @@ Decrease tramp's verbosity level
 #+BEGIN_SRC emacs-lisp
 (setq tramp-verbose 2)
 #+END_SRC
-
-* Nagivation
+* Navigation
 ** General
 
 The <home> and <end> keys should move to the beginning and end of the buffer, respectively
