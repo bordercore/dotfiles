@@ -286,6 +286,21 @@ Don't underline highlighted text
 (set-face-underline-p 'highlight nil)
 #+END_SRC
 
+Use "delight" to hide certain modes from the Modeline
+#+BEGIN_SRC emacs-lisp
+(use-package delight
+  :ensure t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+  :delight
+  (global-whitespace-mode)
+  (visual-line-mode)
+  (whole-line-or-region-mode)
+)
+#+END_SRC
+
 Mode line format
 I use Donald Ephraim Curtis' version of powerline
 https://github.com/milkypostman/powerline
@@ -444,7 +459,8 @@ Use abbrev mode to correct often misspelled words
   (abbrev-mode 1)
   :config
   (if (file-exists-p abbrev-file-name)
-      (quietly-read-abbrev-file)))
+      (quietly-read-abbrev-file))
+  :delight)
 #+END_SRC
 
 ** File Editing
@@ -482,6 +498,7 @@ create a list of recently opened files
 Helm Config
 #+BEGIN_SRC emacs-lisp
 (use-package helm
+  :delight
   :ensure t
   :bind (("C-x C-f" . helm-find-files))
   :config
@@ -490,8 +507,11 @@ Helm Config
 
 Auto refresh buffers, but be quiet about it
 #+BEGIN_SRC emacs-lisp
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-verbose nil)
+(use-package autorevert
+  :delight auto-revert-mode
+  :config
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil))
 #+END_SRC
 
 ** Imenu
@@ -601,6 +621,7 @@ This requires installation of the "ag" binary.
   (set-face-attribute 'org-level-7 nil :height 1.0)
   (set-face-attribute 'org-level-8 nil :height 1.0)
 
+  :delight org-indent-mode
 )
 #+END_SRC
 
@@ -730,7 +751,8 @@ Enable auto-complete mode globally
 #+BEGIN_SRC emacs-lisp
 (use-package auto-complete
   :config
-  (global-auto-complete-mode t))
+  (global-auto-complete-mode t)
+  :delight)
 #+END_SRC
 
 hilight matching pairs of parentheses and other characters
@@ -974,7 +996,8 @@ Enable git-gutter as a global minor mode
          ("C-x r" . git-gutter:revert-hunk))
   :config
   ;; Enable live updating
-  (setq git-gutter:update-interval 1))
+  (setq git-gutter:update-interval 1)
+  :delight)
 #+END_SRC
 
 * Games
