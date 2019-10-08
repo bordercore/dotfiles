@@ -806,20 +806,6 @@ Hilight Postgres keywords in SQL mode
             (sql-highlight-postgres-keywords)))
 #+END_SRC
 
-Enable highlight-indent-guides for Python
-#+BEGIN_SRC emacs-lisp
-(use-package highlight-indent-guides
-  :config
-  ;; Use "column" display method
-  (setq highlight-indent-guides-method 'column)
-
-  ;; Enable a Responsive Guide to visualize not only the indentation itself, but your place in it
-  (setq highlight-indent-guides-responsive 'top)
-
-  ;; Enable this mode when coding
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
-#+END_SRC
-
 ** Python
 
 #+begin_example
