@@ -33,7 +33,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#web-development][Web Development]]
   - [[#lisp][Lisp]]
   - [[#magit][Magit]]
-  - [[#git-gutter][git-gutter]]
+  - [[#diff-hl][diff-hl]]
 - [[#games][Games]]
   - [[#nethack][Nethack]]
 - [[#color-theme][Color Theme]]
@@ -967,22 +967,14 @@ Always display the process buffer
 
 (advice-add 'magit-process-insert-section :before #'auto-display-magit-process-buffer)
 #+END_SRC
-** git-gutter
+** diff-hl
 
-Enable git-gutter as a global minor mode
 #+BEGIN_SRC emacs-lisp
-(use-package git-gutter
+(use-package diff-hl
+  :ensure t
   :init
-  (global-git-gutter-mode t)
-  :bind (("C-x C-g" . git-gutter:toggle)
-         ("C-x v =" . git-gutter:popup-hunk)
-         ("C-x p" . git-gutter:previous-hunk)
-         ("C-x n" . git-gutter:next-hunk)
-         ("C-x r" . git-gutter:revert-hunk))
-  :config
-  ;; Enable live updating
-  (setq git-gutter:update-interval 1)
-  :delight)
+  (global-diff-hl-mode)
+)
 #+END_SRC
 
 * Games
