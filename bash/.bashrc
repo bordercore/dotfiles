@@ -88,6 +88,8 @@ if [ `uname` == "Darwin" ]; then
           | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
           | pbcopy"
 
+    # Required for building some packages using Catalina
+    export CPATH=`xcrun --show-sdk-path`/usr/include
 
     # Set the LESSOPEN variable to use lesspipe, if installed
     less_output=$(lesspipe.sh 2> /dev/null)
