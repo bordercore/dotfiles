@@ -88,14 +88,6 @@ if [ `uname` == "Darwin" ]; then
           | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
           | pbcopy"
 
-    # I install MacPorts binaries by default in /opt
-    # The GNU version of various commands are in /opt/local/libexec/gnubin
-    export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
-
-    # The bash-completion package installed by MacPorts
-    if [ -f /opt/local/etc/bash_completion ]; then
-        . /opt/local/etc/bash_completion
-    fi
 
     # Set the LESSOPEN variable to use lesspipe, if installed
     less_output=$(lesspipe.sh 2> /dev/null)
