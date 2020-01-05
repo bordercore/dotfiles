@@ -19,7 +19,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#sessions][Sessions]]
   - [[#typing-and-spelling][Typing and Spelling]]
   - [[#file-editing][File Editing]]
-- [[#nagivation][Nagivation]]
+- [[#navigation][Navigation]]
   - [[#general][General]]
   - [[#imenu][Imenu]]
   - [[#dired][Dired]]
