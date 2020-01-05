@@ -567,61 +567,61 @@ This requires installation of the "ag" binary.
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :ensure org-plus-contrib
-  :config
-  ;; Turn on org-indent-mode for all files
-  (setq org-startup-indented t)
-  ;; Don't insert blank lines before new entries/items
-  (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-  ;; Hit <RETURN> to follow the link at point
-  (setq org-return-follows-link t)
-  ;; By default, the return key inserts a new heading
-  (add-hook 'org-mode-hook
-  (lambda ()
-    (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
-  ;; Add an intermediate 'IN PROGRESS' todo state
-  (setq org-todo-keywords '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
-  ;; TODO statistics covers all entries in the subtree, not just direct children
-  (setq org-hierarchical-todo-statistics nil)
+  (use-package org
+    :ensure org-plus-contrib
+    :config
+    ;; Turn on org-indent-mode for all files
+    (setq org-startup-indented t)
+    ;; Don't insert blank lines before new entries/items
+    (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+    ;; Hit <RETURN> to follow the link at point
+    (setq org-return-follows-link t)
+    ;; By default, the return key inserts a new heading
+    ;; (add-hook 'org-mode-hook
+    ;; (lambda ()
+    ;;   (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)))
+    ;; Add an intermediate 'IN PROGRESS' todo state
+    (setq org-todo-keywords '((sequence "TODO" "IN PROGRESS" "|" "DONE")))
+    ;; TODO statistics covers all entries in the subtree, not just direct children
+    (setq org-hierarchical-todo-statistics nil)
 
-  ;; Babel Mode
-  ;; Some initial languages we want org-babel to support
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((shell . t)
-                                (python . t)
-                                (R . t)
-                                (ruby . t)
-                                (ditaa . t)
-                                (dot . t)
-                                (octave . t)
-                                (sql . t)
-                                (sqlite . t)
-                                (perl . t)))
-  ;; Use bash (rather than the default sh) as the command to invoke a shell
-  (setq org-babel-sh-command "bash")
-  ;; Turn on native code fontification
-  (setq org-src-fontify-natively t)
-  ;; Don't confirm before evaluating code
-  (setq org-confirm-babel-evaluate nil)
+    ;; Babel Mode
+    ;; Some initial languages we want org-babel to support
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 '((shell . t)
+                                  (python . t)
+                                  (R . t)
+                                  (ruby . t)
+                                  (ditaa . t)
+                                  (dot . t)
+                                  (octave . t)
+                                  (sql . t)
+                                  (sqlite . t)
+                                  (perl . t)))
+    ;; Use bash (rather than the default sh) as the command to invoke a shell
+    (setq org-babel-sh-command "bash")
+    ;; Turn on native code fontification
+    (setq org-src-fontify-natively t)
+    ;; Don't confirm before evaluating code
+    (setq org-confirm-babel-evaluate nil)
 
-  ;; Capture Mode
-  ;; Set notes file and key binding
-  (setq org-default-notes-file (concat "~/Dropbox/life.org"))
-  (define-key global-map "\C-cc" 'org-capture)
+    ;; Capture Mode
+    ;; Set notes file and key binding
+    (setq org-default-notes-file (concat "~/Dropbox/life.org"))
+    (define-key global-map "\C-cc" 'org-capture)
 
-  ;; Customize the faces. I prefer the font sizes to be consistent across levels
-  (set-face-attribute 'org-level-1 nil :height 1.0)
-  (set-face-attribute 'org-level-2 nil :height 1.0)
-  (set-face-attribute 'org-level-3 nil :height 1.0)
-  (set-face-attribute 'org-level-4 nil :height 1.0)
-  (set-face-attribute 'org-level-5 nil :height 1.0)
-  (set-face-attribute 'org-level-6 nil :height 1.0)
-  (set-face-attribute 'org-level-7 nil :height 1.0)
-  (set-face-attribute 'org-level-8 nil :height 1.0)
+    ;; Customize the faces. I prefer the font sizes to be consistent across levels
+    (set-face-attribute 'org-level-1 nil :height 1.0)
+    (set-face-attribute 'org-level-2 nil :height 1.0)
+    (set-face-attribute 'org-level-3 nil :height 1.0)
+    (set-face-attribute 'org-level-4 nil :height 1.0)
+    (set-face-attribute 'org-level-5 nil :height 1.0)
+    (set-face-attribute 'org-level-6 nil :height 1.0)
+    (set-face-attribute 'org-level-7 nil :height 1.0)
+    (set-face-attribute 'org-level-8 nil :height 1.0)
 
-  :delight org-indent-mode
-)
+    :delight org-indent-mode
+  )
 #+END_SRC
 
 Include a Table of Contents, primarily for the benefit of Github.
