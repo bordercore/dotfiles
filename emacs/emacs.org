@@ -390,6 +390,8 @@ Create custom Ibuffer groups
          ("Python" (or (mode . python-mode)
                        (filename . "LaTeXMode")))
          ("Helm" (name . "helm"))
+         ("Dired" (mode . dired-mode))
+         ("Elisp" (mode . emacs-lisp-mode))
          ("Magit" (name . "magit"))
          ("Emacs" (or
                    (name . "^\\*scratch\\*$")
