@@ -318,8 +318,9 @@ I've made a few modifications, located in the following directory
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (quote [f1]) 'toggle-org-return-key)
-(global-set-key (quote [f9]) 'eval-region)
 (global-set-key (quote [f2]) 'query-replace)
+(global-set-key (quote [f4]) 'org-footnote-action)
+(global-set-key (quote [f9]) 'eval-region)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
 #+END_SRC
 
