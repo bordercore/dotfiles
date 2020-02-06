@@ -829,6 +829,15 @@ Use flycheck for on-the-fly syntax checking
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (use-package elpy
   :init
   (pyvenv-activate "~/dev/envs/elpy/")
@@ -856,12 +865,7 @@ To install isort: pip install isort
   (add-hook 'before-save-hook 'py-isort-before-save))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-#+END_SRC
-
-** Tabs
+Tabs
 
 Set the default tab width to 4
 #+BEGIN_SRC emacs-lisp
