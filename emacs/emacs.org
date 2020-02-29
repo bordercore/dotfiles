@@ -34,6 +34,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#lisp][Lisp]]
   - [[#magit][Magit]]
   - [[#diff-hl][diff-hl]]
+  - [[#yaml][YAML]]
 - [[#games][Games]]
   - [[#nethack][Nethack]]
 - [[#color-theme][Color Theme]]
@@ -982,6 +983,14 @@ Always display the process buffer
   :init
   (global-diff-hl-mode)
 )
+#+END_SRC
+
+** YAML
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :mode (("\\.yaml\\'" . yaml-mode)
+         ("\\.yml\\'"       . yaml-mode)))
 #+END_SRC
 
 * Games
