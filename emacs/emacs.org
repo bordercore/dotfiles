@@ -566,7 +566,28 @@ This requires installation of the "ag" binary.
   ;; Focus the search buffer after a search
   (add-hook 'ag-search-finished-hook (lambda () (pop-to-buffer next-error-last-buffer))))
 #+END_SRC
+** Treemacs
 
+#+BEGIN_SRC emacs-lisp
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  :bind
+  (:map global-map
+    ([f8] . treemacs)
+  :config
+  (progn
+    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+          treemacs-deferred-git-apply-delay      0.5))
+
+  (treemacs-follow-mode nil)
+)
+
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+#+END_SRC
 
 * Org Mode
 
