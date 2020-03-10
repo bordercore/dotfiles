@@ -573,15 +573,15 @@ This requires installation of the "ag" binary.
   :ensure t
   :defer t
   :init
-  :bind
-  (:map global-map
-    ([f8] . treemacs)
   :config
   (progn
     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
           treemacs-deferred-git-apply-delay      0.5))
 
   (treemacs-follow-mode nil)
+    :bind
+      (:map global-map
+        ([f8] . treemacs))
 )
 
 (use-package treemacs-magit
