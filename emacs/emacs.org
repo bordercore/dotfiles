@@ -520,7 +520,7 @@ Auto refresh buffers, but be quiet about it
 ** Imenu
 
 Automatically use Imenu, as needed
-#+BEGIN_SRC emacs-lis
+#+BEGIN_SRC emacs-lisp
 (defun try-to-add-imenu ()
   (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
 (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
@@ -548,9 +548,9 @@ Rescan the buffer automatically for new functions
   :ensure t
   :config
   ;; Don't disable "dired-find-alternate-file"
-  (put 'dired-find-alternate-file 'disabled nil))
+  (put 'dired-find-alternate-file 'disabled nil)
   ;; Hilight the current line in dired mode
-  (add-hook 'dired-mode-hook 'hl-line-mode)
+  (add-hook 'dired-mode-hook 'hl-line-mode))
 #+END_SRC
 ** Search
 *** The Silver Searcher
