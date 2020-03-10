@@ -645,6 +645,9 @@ This requires installation of the "ag" binary.
     (set-face-attribute 'org-level-7 nil :height 1.0)
     (set-face-attribute 'org-level-8 nil :height 1.0)
 
+    ;; TABs in code blocks should act as if they were issued in the language major mode buffer
+    (setq org-src-tab-acts-natively t)
+
     :delight org-indent-mode
   )
 #+END_SRC
