@@ -421,6 +421,12 @@ Customize the column widths
               (name 16 -1)
               " " filename)))
 #+END_SRC
+
+Enabling this lets you delete buffers without confirmation
+#+BEGIN_SRC emacs-lisp
+(setq ibuffer-expert t)
+#+END_SRC
+
 ** Sessions
 
 save my place in files between sessions
