@@ -126,6 +126,7 @@ Use Paradox for modernizing the package menu
 (use-package paradox
   :init
   (setq paradox-github-token t)
+  (setq paradox-execute-asynchronously t)
   :config
   (paradox-enable))
 #+END_SRC
