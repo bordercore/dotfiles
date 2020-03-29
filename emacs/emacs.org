@@ -717,7 +717,7 @@ Show org-mode bullets and ellipses as UTF-8 characters
   :hook
   (org-mode . org-fancy-priorities-mode)
   :config
-  (setq org-fancy-priorities-list '("HIGH" "MED" "LOW")))
+  (setq org-fancy-priorities-list '("MED", "HIGH", "LOW")))
 #+END_SRC
 
 Define a function which toggles the return key binding between
