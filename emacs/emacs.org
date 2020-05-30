@@ -23,6 +23,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#general][General]]
   - [[#imenu][Imenu]]
   - [[#dired][Dired]]
+  - [[#projectile][Projectile]]
   - [[#search][Search]]
   - [[#treemacs][Treemacs]]
 - [[#org-mode][Org Mode]]
@@ -322,8 +323,9 @@ I've made a few modifications, located in the following directory
 (global-set-key (quote [f1]) 'toggle-org-return-key)
 (global-set-key (quote [f2]) 'query-replace)
 (global-set-key (quote [f4]) 'org-footnote-action)
-(global-set-key (quote [f9]) 'eval-region)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
+(global-set-key (quote [f8]) 'projectile-find-file)
+(global-set-key (quote [f9]) 'eval-region)
 #+END_SRC
 
 Rebind "expand-region"
@@ -559,6 +561,21 @@ Rescan the buffer automatically for new functions
   ;; Hilight the current line in dired mode
   (add-hook 'dired-mode-hook 'hl-line-mode))
 #+END_SRC
+** Projectile
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+    (use-package helm-projectile
+      :ensure t
+      :config
+      (helm-projectile-on))
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1))
+#+END_SRC
+
 ** Search
 *** The Silver Searcher
 
@@ -588,7 +605,7 @@ This requires installation of the "ag" binary.
   (treemacs-follow-mode nil)
     :bind
       (:map global-map
-        ([f8] . treemacs))
+        ([f7] . treemacs))
 )
 
 (use-package treemacs-magit
