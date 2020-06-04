@@ -72,20 +72,6 @@ Start the Emacs server
 * Packages
 ** Sources
 
-Load support for ELPA (package.el), the package archive.  Emacs 24 includes
-this natively.  For earlier versions, package.el needs to be installed manually.
-See http://repo.or.cz/w/emacs.git/blob_plain/1a0a666f941c99882093d7bd08ced15033bc3f0c:/lisp/emacs-lisp/package.el
-#+BEGIN_SRC emacs-lisp
-(cond
- ((string-match "GNU Emacs 2[23]" (emacs-version))
-  (when
-    (load
-      (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
-  )
-)
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -1074,19 +1060,6 @@ You'll need to apt-get this if using Ubuntu or Debian
 
 This should be run near the end, since custom face attributes are set in current-theme.el which
 all already need to be defined.
-
-Use color-theme mode for Emacs 23
-#+BEGIN_SRC emacs-lisp
-(cond
- ((string-match "GNU Emacs 23" (emacs-version))
-  (require 'color-theme)
-  (eval-after-load "color-theme"
-	'(progn
-	   (color-theme-initialize)
-	   (color-theme-arjen)))  ;; Choose your color theme here
-  )
- )
-#+END_SRC
 
 I store my custom color themes here
 #+BEGIN_SRC emacs-lisp
