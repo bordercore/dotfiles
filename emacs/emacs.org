@@ -945,6 +945,11 @@ Use Rainbow minor mode when in CSS mode
 (add-hook 'css-mode-hook 'rainbow-mode)
 #+END_SRC
 
+Use C-Style indentation in CSS mode
+#+BEGIN_SRC emacs-lisp
+(setq cssm-indent-function #'cssm-c-style-indenter)
+#+END_SRC
+
 ** Lisp
 
 Add more keywords for font-lock hilighlighting
