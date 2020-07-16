@@ -658,6 +658,11 @@ This requires installation of the "ag" binary.
     (set-face-attribute 'org-level-7 nil :height 1.0)
     (set-face-attribute 'org-level-8 nil :height 1.0)
 
+    ;; Make list markers a little more visually appealing
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
     ;; Hide the emphasis markers in *bold* and /italics/
     (setq org-hide-emphasis-markers t)
 
