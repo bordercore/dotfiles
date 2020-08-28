@@ -164,7 +164,8 @@ Disable the startup screen
 
 Allow functions to operate on the current line when they would normally operate on the region,
 eg kill-region when no region is selected will delete the current line.
-See http://www.emacswiki.org/WholeLineOrRegion#toc3
+See http://www.emacswiki.org/WholeLineOrRegion#toc3.
+Most useful feature: C-w will delete the current line if no region is selected.
 #+BEGIN_SRC emacs-lisp
 (whole-line-or-region-mode t)
 #+END_SRC
