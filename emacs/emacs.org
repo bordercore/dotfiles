@@ -321,6 +321,20 @@ http://endlessparentheses.com/where-do-you-bind-expand-region-.html?source=rss
   :bind ("C-=" . er/expand-region))
 #+END_SRC
 
+A function that simply duplicates the current line, bound to F12
+#+BEGIN_SRC emacs-lisp
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+(global-set-key (quote [f12]) 'duplicate-line)
+#+END_SRC
+
 ** Backups
 
 backup file management
