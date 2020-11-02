@@ -530,9 +530,11 @@ Auto refresh buffers, but be quiet about it
 
 Automatically use Imenu, as needed
 #+BEGIN_SRC emacs-lisp
-(defun try-to-add-imenu ()
-  (condition-case nil (imenu-add-to-menubar "Functions") (error nil)))
-(add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+  (add-hook 'org-mode-hook
+            (lambda () (imenu-add-to-menubar "Org Nodes")))
+
+  ;; Disable this to improve performance in large documents
+  (setq org-imenu-depth 0)
 #+END_SRC
 
 Imenu: display 50 items in each submenu
