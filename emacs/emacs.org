@@ -11,6 +11,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#setup][Setup]]
 - [[#general-configuration][General Configuration]]
   - [[#misc][Misc]]
+  - [[#help-and-documentation][Help and Documentation]]
   - [[#scratch-buffer][Scratch Buffer]]
   - [[#user-interface][User Interface]]
   - [[#key-bindings][Key Bindings]]
@@ -183,6 +184,24 @@ It does not apply to existing files that need to be opened on startup
 due to session saving.
 #+BEGIN_SRC emacs-lisp
 (setq vc-follow-symlinks t)
+#+END_SRC
+** Help and Documentation
+
+Helpful is an alternative to the built-in Emacs help that provides much more contextual information
+#+BEGIN_SRC emacs-lisp
+(use-package helpful
+  :bind ("C-h f" . #'helpful-callable)
+  :bind ("C-h v" . #'helpful-variable)
+  :bind ("C-h k" . #'helpful-key)
+  :config
+  (add-hook 'lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
+  (add-hook 'lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-h F") #'helpful-function)))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-h F") #'helpful-function))))
 #+END_SRC
 
 ** Scratch Buffer
