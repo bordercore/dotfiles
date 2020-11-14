@@ -828,6 +828,20 @@ Bind to F3.
   (global-set-key (quote [f3]) 'org-cliplink))
 #+END_SRC
 
+org-refile settings
+https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
+#+begin_src emacs-lisp
+
+;; defines the possible targets
+(setq org-refile-targets '((nil :maxlevel . 5)
+                           (org-agenda-files :maxlevel . 5)))
+
+;; better interoperate with Helm
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-use-outline-path t)
+
+#+end_src
+
 * Coding
 ** Misc
 
