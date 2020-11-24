@@ -204,6 +204,14 @@ Helpful is an alternative to the built-in Emacs help that provides much more con
             (lambda () (local-set-key (kbd "C-h F") #'helpful-function))))
 #+END_SRC
 
+Use which-key to display the key bindings following your currently entered incomplete command (a prefix) in a popup
+#+begin_src emacs-lisp
+(use-package which-key
+  :init (which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.3))
+#+end_src
+
 ** Scratch Buffer
 
 Save the scratch buffer when Emacs quits
