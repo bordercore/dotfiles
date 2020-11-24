@@ -1143,6 +1143,10 @@ current-theme.el is a symlink to the currently used theme
 (when (file-exists-p current-theme)
    (load-file current-theme))
 )
+
+(let ((current-theme "~/.emacs.d/themes/current-theme-custom.el"))
+(when (file-exists-p current-theme)
+   (load-file current-theme)))
 #+END_SRC
 
 * Wrapup
