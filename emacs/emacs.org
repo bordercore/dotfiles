@@ -934,6 +934,12 @@ Hilight Postgres keywords in SQL mode
             (sql-highlight-postgres-keywords)))
 #+END_SRC
 
+Enable json-mode when editing JSON files
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :mode ("\\.json" . json-mode))
+#+END_SRC
+
 ** Python
 
 #+begin_example
