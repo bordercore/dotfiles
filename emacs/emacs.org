@@ -1039,6 +1039,30 @@ I use web-mode for Django and Vue.js development
   (setq web-mode-enable-css-colorization t))
 #+END_SRC
 
+Use highlight-indent-guides mode to display indentation levels
+#+begin_src emacs-lisp
+    (use-package highlight-indent-guides
+      :config
+
+      ;; Use the 'character' display method
+      (setq highlight-indent-guides-method 'character)
+
+      ;; Use different colors for odd and even indentation levels
+      ;; https://github.com/DarthFennec/highlight-indent-guides/issues/64
+      (defface my-highlighter-even-face '((t :foreground "#292929")) "")
+      (defface my-highlighter-odd-face '((t :foreground "#191919")) "")
+
+      (defun my-highlighter (level responsive display)
+        (if (cl-evenp level)
+          'my-highlighter-even-face
+          'my-highlighter-odd-face))
+
+      (setq highlight-indent-guides-highlighter-function 'my-highlighter)
+
+      ;; Use this mode when in web-mode
+      (add-hook 'web-mode-hook 'highlight-indent-guides-mode)
+      )
+#+end_src
 Use Rainbow minor mode when in CSS mode
 #+BEGIN_SRC emacs-lisp
 (add-hook 'css-mode-hook 'rainbow-mode)
