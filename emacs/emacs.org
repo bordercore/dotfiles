@@ -185,6 +185,15 @@ due to session saving.
 #+BEGIN_SRC emacs-lisp
 (setq vc-follow-symlinks t)
 #+END_SRC
+
+Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
+#+begin_src emacs-lisp
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
+#+end_src
+
 ** Help and Documentation
 
 Helpful is an alternative to the built-in Emacs help that provides much more contextual information
