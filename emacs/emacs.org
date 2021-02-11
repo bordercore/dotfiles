@@ -145,6 +145,11 @@ Always show trailing whitespace and tabs, but don't show a glyph for tabs
 (global-whitespace-mode 1)
 #+END_SRC
 
+Delete trailing whitespace on save
+#+begin_src emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
 Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
 #+BEGIN_SRC emacs-lisp
 (global-visual-line-mode t)
