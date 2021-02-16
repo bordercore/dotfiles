@@ -733,15 +733,17 @@ This requires installation of the "ag" binary.
     ;; Some initial languages we want org-babel to support
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((shell . t)
-                                  (python . t)
-                                  (R . t)
-                                  (ruby . t)
-                                  (ditaa . t)
-                                  (dot . t)
-                                  (octave . t)
-                                  (sql . t)
-                                  (sqlite . t)
-                                  (perl . t)))
+                                   (emacs-lisp . t)
+                                   (python . t)
+                                   (R . t)
+                                   (ruby . t)
+                                   (ditaa . t)
+                                   (dot . t)
+                                   (octave . t)
+                                   (sql . t)
+                                   (sqlite . t)
+                                   (perl . t)
+                                   (jupyter . t)))
     ;; Use bash (rather than the default sh) as the command to invoke a shell
     (setq org-babel-sh-command "bash")
     ;; Turn on native code fontification
