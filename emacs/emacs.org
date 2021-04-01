@@ -172,7 +172,8 @@ Most useful feature: C-w will delete the current line if no region is selected.
 auto-save buffers when switching between buffers or when an Emacs frame lose focus
 #+BEGIN_SRC emacs-lisp
 (use-package super-save
-   :config
+  :delight
+  :config
 (super-save-mode +1))
 #+END_SRC
 
@@ -214,6 +215,7 @@ Helpful is an alternative to the built-in Emacs help that provides much more con
 Use which-key to display the key bindings following your currently entered incomplete command (a prefix) in a popup
 #+begin_src emacs-lisp
 (use-package which-key
+  :delight
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 0.3))
@@ -513,6 +515,7 @@ Use abbrev mode to correct often misspelled words
 Use the YASnippet template system
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
+  :delight
   :ensure t
   :config
   (setq
