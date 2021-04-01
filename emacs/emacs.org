@@ -646,11 +646,20 @@ Rescan the buffer automatically for new functions
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :delight
     :ensure t
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode +1))
 #+END_SRC
+
+Define the list of directories that counsel-projectile-ag should ignore
+#+begin_src emacs-lisp
+  (defun projectile-ignored-directories-rel ()
+    "Return list of ignored directories, relative to the root."
+    '("htmlcov" "bordercore/static")
+    )
+#+end_src
 
 Use Ivy/counsel when running projectile commands, eg ~counsel-projectile-ag~
 instead of ~projectile-ag~ when searching a project.
