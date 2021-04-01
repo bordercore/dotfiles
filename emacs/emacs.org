@@ -24,10 +24,11 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#general][General]]
   - [[#completions][Completions]]
   - [[#imenu][Imenu]]
-  - [[#dired][Dired]]
   - [[#projectile][Projectile]]
   - [[#search][Search]]
   - [[#treemacs][Treemacs]]
+- [[#file-browsing][File Browsing]]
+  - [[#dired][Dired]]
 - [[#org-mode][Org Mode]]
 - [[#coding][Coding]]
   - [[#misc-1][Misc]]
@@ -641,17 +642,6 @@ Rescan the buffer automatically for new functions
 (setq imenu-auto-rescan t)
 #+END_SRC
 
-** Dired
-
-#+BEGIN_SRC emacs-lisp
-(use-package diredfl
-  :ensure t
-  :config
-  ;; Don't disable "dired-find-alternate-file"
-  (put 'dired-find-alternate-file 'disabled nil)
-  ;; Hilight the current line in dired mode
-  (add-hook 'dired-mode-hook 'hl-line-mode))
-#+END_SRC
 ** Projectile
 
 #+BEGIN_SRC emacs-lisp
@@ -708,7 +698,30 @@ This requires installation of the "ag" binary.
   :after treemacs magit
   :ensure t)
 #+END_SRC
+* File Browsing
 
+** Dired
+
+#+begin_src emacs-lisp
+  (use-package dired
+  :ensure nil
+  :config
+  (define-key dired-mode-map "H" 'dired-omit-mode)
+  )
+#+end_src
+
+#+RESULTS:
+: t
+
+#+BEGIN_SRC emacs-lisp
+(use-package diredfl
+  :ensure t
+  :config
+  ;; Don't disable "dired-find-alternate-file"
+  (put 'dired-find-alternate-file 'disabled nil)
+  ;; Hilight the current line in dired mode
+  (add-hook 'dired-mode-hook 'hl-line-mode))
+#+END_SRC
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
