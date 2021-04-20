@@ -602,6 +602,12 @@ Use ivy for file and buffer completions
 #+end_src
 
 #+begin_src emacs-lisp
+  (use-package all-the-icons-ivy-rich
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package ivy-rich
     :init
     (ivy-rich-mode 1)
