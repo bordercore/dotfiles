@@ -595,6 +595,10 @@ Use ivy for file and buffer completions
     (setq ivy-use-virtual-buffers t)
     (setq ivy-count-format "(%d/%d) ")
 
+    ;; Set this to avoid performance problems when editing large
+    ;;  buffers in Visual Line Mode
+    (setq swiper-use-visual-line-p #'ignore)
+
     (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     (global-set-key (kbd "C-h f") 'counsel-describe-function)
