@@ -193,6 +193,11 @@ Whenever the window scrolls a light will shine on top of your cursor so you know
   (beacon-mode 1))
 #+end_src
 
+Disabling "auto-window-vscroll" improves scroll performance
+#+begin_src emacs-lisp
+(setq auto-window-vscroll nil)
+#+end_src
+
 ** Help and Documentation
 
 Helpful is an alternative to the built-in Emacs help that provides much more contextual information
