@@ -347,7 +347,7 @@ I've made a few modifications, located in the following directory
 ** Key Bindings
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (quote [f1]) 'toggle-org-return-key)
+(global-set-key (quote [f1]) '(lambda () (interactive) (dired "/home/jerrell/docs/*org") (revert-buffer)))
 (global-set-key (quote [f2]) 'query-replace)
 (global-set-key (quote [f4]) 'org-footnote-action)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
@@ -895,7 +895,7 @@ Define a function which toggles the return key binding between
     (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)
     (define-key org-mode-map (kbd "RET") 'org-return))
   )
-(global-set-key (quote [f1]) 'toggle-org-return-key)
+(global-set-key (quote [f6]) 'toggle-org-return-key)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
