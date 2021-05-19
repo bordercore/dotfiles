@@ -1133,6 +1133,7 @@ I use web-mode for Django and Vue.js development
 Use highlight-indent-guides mode to display indentation levels
 #+begin_src emacs-lisp
     (use-package highlight-indent-guides
+      :delight
       :config
 
       ;; Use the 'character' display method
