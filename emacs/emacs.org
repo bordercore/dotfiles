@@ -770,6 +770,9 @@ This requires installation of the "ag" binary.
     ;; TODO statistics covers all entries in the subtree, not just direct children
     (setq org-hierarchical-todo-statistics nil)
 
+    ;; Disable indentation of code blocks. The default is 2.
+    (setq org-edit-src-content-indentation 0)
+
     ;; With this set, hitting 's' at the beginning of a headline will narrow to the
     ;;  current subtree. Hitting 's' again will unnarrow the buffer.
     (setq org-use-speed-commands t)
