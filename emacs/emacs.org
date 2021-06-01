@@ -30,7 +30,10 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 - [[#file-browsing][File Browsing]]
   - [[#dired][Dired]]
 - [[#org-mode][Org Mode]]
-- [[#coding][Coding]]
+  - [[#items][items]]
+  - [[#auto-show-emphasis-markers][Auto-show Emphasis Markers]]
+  - [[#eye-candy][Eye Candy]]
+- [[#development][Development]]
   - [[#misc-1][Misc]]
   - [[#python][Python]]
   - [[#web-development][Web Development]]
@@ -867,25 +870,6 @@ The TOC automatically gets updated when the buffer is saved under the heading wi
   "* TODO %?  %t  %^g"))))
 #+END_SRC
 
-Show org-mode bullets and ellipses as UTF-8 characters
-#+BEGIN_SRC emacs-lisp
-(use-package org-bullets
-  :init
-  (setq org-ellipsis " ⬎")
-  (set-face-attribute 'org-ellipsis nil :underline nil)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-fancy-priorities
-  :diminish
-  :ensure t
-  :hook
-  (org-mode . org-fancy-priorities-mode)
-  :config
-  (setq org-fancy-priorities-list '("MED", "HIGH", "LOW")))
-#+END_SRC
-
 Define a function which toggles the return key binding between
 'org-return' and 'org-insert-respect-content'
 #+BEGIN_SRC emacs-lisp
@@ -898,17 +882,6 @@ Define a function which toggles the return key binding between
 (global-set-key (quote [f6]) 'toggle-org-return-key)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-#+END_SRC
-
-Automatically add a timestamp property to new TODO items, based on this:
-https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-in-org-mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-expiry
@@ -918,21 +891,6 @@ https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-
     org-expiry-created-property-name "CREATED" ; Name of property when an item is created
     org-expiry-inactive-timestamps   t         ; Don't have everything in the agenda view
   ))
-
-(defun mrb/insert-created-timestamp()
-  "Insert a CREATED property using org-expiry.el for TODO entries"
-  (org-expiry-insert-created)
-  (org-back-to-heading)
-  (org-end-of-line)
-)
-
-;; Whenever a TODO entry is created, I want a timestamp
-(defadvice org-todo (after mrb/created-timestamp-advice activate)
-  "Insert a CREATED property using org-expiry.el for TODO entries"
-  (mrb/insert-created-timestamp)
-)
-;; Make it active
-(ad-activate 'org-todo)
 #+END_SRC
 
 Disable displaying the outline path in the echo area
@@ -962,7 +920,88 @@ https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
 
 #+end_src
 
-* Coding
+Use Github Flavored Markdown exporter for Org Mode
+#+begin_src elisp
+  (with-eval-after-load "org"
+    (require 'ox-gfm nil t))
+#+end_src
+
+I add this hook at the top of most org-mode files that are
+destined for export to Bordercore. Mark this variable and value
+as safe to avoid a "apply unsafe local variable" warning.
+
+#+begin_src elisp
+(add-to-list 'safe-local-variable-values
+  '(after-save-hook . org-gfm-export-to-markdown))
+#+end_src
+
+** Todo items
+#+BEGIN_SRC emacs-lisp
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+#+END_SRC
+
+#+begin_src emacs-lisp
+(defun mrb/insert-created-timestamp()
+  "Insert a CREATED property using org-expiry.el for TODO entries"
+  (org-expiry-insert-created)
+  (org-back-to-heading)
+  (org-end-of-line)
+)
+#+end_src
+
+Whenever a TODO entry is created, add a timestamp. [[https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-in-org-mode][Source]]
+
+#+begin_src emacs-lisp
+(defadvice org-todo (after mrb/created-timestamp-advice activate)
+  "Insert a CREATED property using org-expiry.el for TODO entries"
+  (mrb/insert-created-timestamp)
+)
+#+end_src
+
+Make it active
+
+#+begin_src emacs-lisp
+(ad-activate 'org-todo)
+#+end_src
+this is text
+** Auto-show Emphasis Markers
+
+This package makes it much easier to edit Org documents when ~org-hide-emphasis-markers~ is enabled. It temporarily shows the emphasis markers around certain markup elements when you place your cursor inside of them.
+
+#+begin_src emacs-lisp
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
+#+end_src
+** Eye Candy
+
+Show org-mode bullets and ellipses as UTF-8 characters
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :init
+  (setq org-ellipsis " ⬎")
+  (set-face-attribute 'org-ellipsis nil :underline nil)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
+Show org priorities as custom strings
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-fancy-priorities
+  :diminish
+  :ensure t
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("MED", "HIGH", "LOW")))
+#+END_SRC
+
+* Development
 ** Misc
 
 Enable auto-complete mode globally
