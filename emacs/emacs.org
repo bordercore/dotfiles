@@ -1204,6 +1204,10 @@ Use C-Style indentation in CSS mode
 (setq cssm-indent-function #'cssm-c-style-indenter)
 #+END_SRC
 
+Change the size of one indentation step
+#+begin_src emacs-lisp
+(setq css-indent-offset 2)
+#+end_src
 ** Lisp
 
 Add more keywords for font-lock hilighlighting
