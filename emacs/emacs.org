@@ -37,6 +37,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#misc-1][Misc]]
   - [[#python][Python]]
   - [[#web-development][Web Development]]
+  - [[#productivity][Productivity]]
   - [[#lisp][Lisp]]
   - [[#magit][Magit]]
   - [[#diff-hl][diff-hl]]
@@ -1203,6 +1204,14 @@ Change the size of one indentation step
 #+begin_src emacs-lisp
 (setq css-indent-offset 2)
 #+end_src
+** Productivity
+
+Enable rainbow-delimiters in most programming modes
+
+#+begin_src emacs-lisp
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+#+end_src
+
 ** Lisp
 
 Add more keywords for font-lock hilighlighting
