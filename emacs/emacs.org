@@ -635,6 +635,21 @@ Use ivy for file and buffer completions
        (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))))
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package company
+    :delight
+    :custom
+    (company-minimum-prefix-length 2)
+    (company-idle-delay 0.01)
+    )
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package company-box
+    :delight
+    :hook (company-mode . company-box-mode))
+#+end_src
+
 ** Imenu
 
 Automatically use Imenu, as needed
