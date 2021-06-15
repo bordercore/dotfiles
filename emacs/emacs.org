@@ -45,6 +45,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#yaml][YAML]]
 - [[#games][Games]]
   - [[#nethack][Nethack]]
+- [[#runtime-performance][Runtime Performance]]
 - [[#color-theme][Color Theme]]
 - [[#wrapup][Wrapup]]
 
@@ -1374,6 +1375,22 @@ You'll need to apt-get this if using Ubuntu or Debian
 #+BEGIN_SRC emacs-lisp
 (setq nethack-program "/usr/games/nethack-lisp")
 #+END_SRC
+
+* Runtime Performance
+
+Increase the GC threshold so that garbage collection happens less frequently.
+This should help with LSP performance.
+
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 100 1000 1000))
+#+end_src
+
+Increase the amount of data which Emacs reads from a process.
+This should help with LSP performance.
+
+#+begin_src emacs-lisp
+(setq read-process-output-max (* 1024 1024))
+#+end_src
 
 * Color Theme
 
