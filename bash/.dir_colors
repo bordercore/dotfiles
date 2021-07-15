@@ -87,6 +87,7 @@ EXEC 01;35
 .gif 01;35
 .gl 01;35
 .jpg 01;35
+.jpeg 01;35
 .mpg 01;35
 .png 01;35
 .png 01;35
@@ -95,6 +96,10 @@ EXEC 01;35
 .tif 01;35
 .xbm 01;35
 .xpm 01;35
+
+# video formats
+.mp4 01;32
+.webm 01;32
 
 # source code files
 .css 00;33
