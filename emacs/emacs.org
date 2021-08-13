@@ -75,8 +75,6 @@ Start the Emacs server
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
-(package-initialize)
-
 (defmacro when-package-installed (package-name &rest body)
   `(if (package-installed-p ,package-name)
      (progn ,@body)
