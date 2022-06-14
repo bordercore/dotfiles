@@ -1221,9 +1221,17 @@ I use web-mode for Django and Vue.js development
   :init
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . html-mode))
+  ;; These two functions remove screen artifacts when you change the
+  ;;  indentation using both web-mode and highlight-indent-guides mode.
+  ;;  https://github.com/DarthFennec/highlight-indent-guides/issues/22
+  (defun my-unfontify-function (beg end)
+    (remove-list-of-text-properties beg end '(display)))
+  (defun my-register-unfontify ()
+    (setq font-lock-unfontify-region-function 'my-unfontify-function))
+  (add-hook 'web-mode-hook 'my-register-unfontify t)
   :config
   (setq web-mode-engines-alist
-      '(("django"    . "\\.html\\'")))
+        '(("django"    . "\\.html\\'")))
   (setq web-mode-markup-indent-offset 4)
   (setq web-mode-css-indent-offset 4)
   (setq web-mode-code-indent-offset 4)
@@ -1235,28 +1243,28 @@ I use web-mode for Django and Vue.js development
 
 Use highlight-indent-guides mode to display indentation levels
 #+begin_src emacs-lisp
-    (use-package highlight-indent-guides
-      :delight
-      :config
+(use-package highlight-indent-guides
+  :delight
+  :config
 
-      ;; Use the 'character' display method
-      (setq highlight-indent-guides-method 'character)
+  ;; Use the 'character' display method
+  (setq highlight-indent-guides-method 'character)
 
-      ;; Use different colors for odd and even indentation levels
-      ;; https://github.com/DarthFennec/highlight-indent-guides/issues/64
-      (defface my-highlighter-even-face '((t :foreground "#292929")) "")
-      (defface my-highlighter-odd-face '((t :foreground "#191919")) "")
+  ;; Use different colors for odd and even indentation levels
+  ;; https://github.com/DarthFennec/highlight-indent-guides/issues/64
+  (defface my-highlighter-even-face '((t :foreground "#292929")) "")
+  (defface my-highlighter-odd-face '((t :foreground "#191919")) "")
 
-      (defun my-highlighter (level responsive display)
-        (if (cl-evenp level)
-          'my-highlighter-even-face
-          'my-highlighter-odd-face))
+  (defun my-highlighter (level responsive display)
+    (if (cl-evenp level)
+      'my-highlighter-even-face
+      'my-highlighter-odd-face))
 
-      (setq highlight-indent-guides-highlighter-function 'my-highlighter)
+  (setq highlight-indent-guides-highlighter-function 'my-highlighter)
 
-      ;; Use this mode when in web-mode
-      (add-hook 'web-mode-hook 'highlight-indent-guides-mode)
-      )
+  ;; Use this mode when in web-mode
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  )
 #+end_src
 Use Rainbow minor mode when in CSS mode
 #+BEGIN_SRC emacs-lisp
