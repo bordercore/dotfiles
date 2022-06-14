@@ -1108,19 +1108,18 @@ installed by Ubuntu 20.04, so I've installed that manually in a
 separate location and put it first in my PATH.
 
 #+begin_src emacs-lisp
-  (use-package lsp-pyright
-  :init
-  ;; Temporary until this is read from ~/.bashrc-bordercore
-  (setenv "PATH"
-          (concat
-           "/home/jerrell/Downloads/node-v14.16.0-linux-x64/bin:"
-           (getenv "PATH")
-           )
-          )
-    :hook
-    (python-mode . (lambda ()
-                     (require 'lsp-pyright)
-                     (lsp-deferred))))
+(use-package lsp-pyright
+:init
+(setenv "PATH"
+        (concat
+         "/opt/node-v14.16.0-linux-x64/bin:"
+         (getenv "PATH")
+         )
+        )
+  :hook
+  (python-mode . (lambda ()
+                   (require 'lsp-pyright)
+                   (lsp-deferred))))
 #+end_src
 
 #+begin_src emacs-lisp
