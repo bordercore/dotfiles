@@ -1210,17 +1210,14 @@ Don't use tabs for indentation
 
 ** Web Development
 
-Use HTML Mode for html files
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
-#+END_SRC
 
 I use web-mode for Django and Vue.js development
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
   :init
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.vue\\'" . html-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+
   ;; These two functions remove screen artifacts when you change the
   ;;  indentation using both web-mode and highlight-indent-guides mode.
   ;;  https://github.com/DarthFennec/highlight-indent-guides/issues/22
