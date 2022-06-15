@@ -1127,6 +1127,9 @@ separate location and put it first in my PATH.
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-ui-doc-position 'bottom)
+
+  ;; Hide code actions. They consume too much screen real estate.
+  (setq lsp-ui-sideline-show-code-actions nil)
   )
 #+end_src
 
