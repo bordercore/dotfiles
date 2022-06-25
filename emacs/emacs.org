@@ -1146,40 +1146,6 @@ Use flycheck for on-the-fly syntax checking
   :init (global-flycheck-mode))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(use-package elpy
-  :init
-  (pyvenv-activate "~/dev/envs/elpy/")
-  :config
-  ;; Stop elpy from enabling highlight-indentation-mode
-  (delete `elpy-module-highlight-indentation elpy-modules)
-
-  ;; Use flycheck rather than the default flymake
-  (when (require 'flycheck nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-  ;; Use jedi for the backend rather than rope
-  (setq elpy-rpc-backend "jedi")
-
-  ;; elpy overrides the default snippets directory variable to activate
-  ;; its own included Python snippets. Although its code seems to preserve
-  ;; the existing variable, in my experience this doesn't work. So reset it
-  ;; back so that my own snippets will load.
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-
-(elpy-enable))
-#+END_SRC
-
 Use isort to automatically sort Python imports on save.
 To install isort: pip install isort
 
