@@ -1167,8 +1167,28 @@ Don't use tabs for indentation
 (setq-default indent-tabs-mode nil)
 #+END_SRC
 
-** Web Development
+Use pyvenv to manage virtual environments.
+Useful in dap-mode.
+#+begin_src emacs-lisp
+(use-package pyvenv
+  :ensure t)
+#+end_src
 
+Use dap-mode for Python debugging
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :ensure t
+  :config
+  (require 'dap-python)
+  (setq dap-auto-configure-features '(sessions locals controls tooltip))
+  (dap-auto-configure-mode 1)
+  ;; Bring up a hydra automatically when a breakpoint is hit
+  :hook
+  (dap-stopped .(lambda (arg) (call-interactively #'dap-hydra)))
+  )
+#+end_src
+
+** Web Development
 
 I use web-mode for Django and Vue.js development
 #+BEGIN_SRC emacs-lisp
