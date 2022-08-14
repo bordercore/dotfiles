@@ -90,7 +90,7 @@ function set_prompt {
 
 #    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white$NORMAL"
 
-    export PS1="$purple┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $green$MYPWD\n$purple└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white$NORMAL"
+    export PS1="${purple}┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $green$MYPWD\n${purple}└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white$NORMAL"
 
     export P2="> "
 
