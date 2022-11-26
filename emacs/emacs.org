@@ -20,6 +20,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
   - [[#sessions][Sessions]]
   - [[#typing-and-spelling][Typing and Spelling]]
   - [[#file-editing][File Editing]]
+  - [[#window-management][Window Management]]
 - [[#navigation][Navigation]]
   - [[#general][General]]
   - [[#completions][Completions]]
@@ -532,6 +533,25 @@ Decrease tramp's verbosity level
 #+BEGIN_SRC emacs-lisp
 (setq tramp-verbose 2)
 #+END_SRC
+
+** Window Management
+
+#+BEGIN_SRC emacs-lisp
+(defun switch-registers()
+  (interactive)
+  (read-char "Switch to register: ")
+  ;; Save the current state of all frames and windows to current register,
+  ;;  which is saved in a custom variable.
+  (if (boundp 'saved-register)
+      (frameset-to-register saved-register))
+  ;; Save the current register to custom variable
+  (setq saved-register last-input-event)
+  ;; Jump to specified register
+  (jump-to-register last-input-event)
+  )
+(global-set-key (quote [f6]) 'switch-registers)
+#+END_SRC
+
 * Navigation
 ** General
 
@@ -880,7 +900,6 @@ Define a function which toggles the return key binding between
     (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)
     (define-key org-mode-map (kbd "RET") 'org-return))
   )
-(global-set-key (quote [f6]) 'toggle-org-return-key)
 #+END_SRC
 
 
