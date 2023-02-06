@@ -192,3 +192,6 @@ for f in $HOME/.bashrc-*; do
 
 done
 
+# Remove duplicate PATH entries
+# https://www.linuxjournal.com/content/removing-duplicate-path-entries-reboot
+PATH=$(n= IFS=':'; for e in $PATH; do [[ :$n == *:$e:* ]] || n+=$e:; done; echo "${n:0: -1}")
