@@ -99,6 +99,7 @@ EXEC 01;35
 
 # video formats
 .mp4 01;32
+.mkv 01;32
 .webm 01;32
 
 # source code files
