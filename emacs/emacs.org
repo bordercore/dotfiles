@@ -474,6 +474,14 @@ Automatically save and restore sessions
 (desktop-save-mode t)
 #+END_SRC
 
+Use the Session package to save registers, which I use to store
+frame and window configuration. State is saved in ~/.emacs.d/session.
+#+begin_src emacs-lisp
+(use-package session
+  :config
+  (session-initialize))
+#+end_src
+
 Store the session file here
 #+BEGIN_SRC emacs-lisp
 (setq desktop-dirname "~/.emacs.d/")
