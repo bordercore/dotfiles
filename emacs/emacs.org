@@ -533,6 +533,22 @@ Decrease tramp's verbosity level
 (setq tramp-verbose 2)
 #+END_SRC
 
+*** Filling Paragraphs
+
+Change the maximum line width for filling
+#+begin_src emacs-lisp
+(setq fill-column 80)
+#+end_src
+
+Add an "unfill" function that is the opposite of fill-paragraph
+#+begin_src emacs-lisp
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+#+end_src
+
 ** Window Management
 
 #+BEGIN_SRC emacs-lisp
