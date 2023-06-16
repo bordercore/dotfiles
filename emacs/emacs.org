@@ -187,6 +187,7 @@ due to session saving.
 Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 #+begin_src emacs-lisp
 (use-package beacon
+  :delight
   :ensure t
   :config
   (beacon-mode 1))
@@ -315,11 +316,6 @@ Don't underline highlighted text
 (set-face-underline-p 'highlight nil)
 #+END_SRC
 
-Use "delight" to hide certain modes from the Modeline
-#+BEGIN_SRC emacs-lisp
-(use-package delight
-  :ensure t)
-#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
@@ -514,7 +510,7 @@ Use abbrev mode to correct often misspelled words
 Use the YASnippet template system
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-  :delight
+  :delight yas-minor-mode
   :ensure t
   :config
   (setq
@@ -612,7 +608,7 @@ Auto refresh buffers, but be quiet about it
 Use ivy for file and buffer completions
 #+begin_src emacs-lisp
   (use-package ivy
-    :diminish
+    :delight
     :bind
     (("C-s" . swiper)
      ("C-r" . swiper))
@@ -869,8 +865,6 @@ This requires installation of the "ag" binary.
 
   ;; TABs in code blocks should act as if they were issued in the language major mode buffer
   (setq org-src-tab-acts-natively t)
-
-  :delight org-indent-mode
 )
 #+END_SRC
 
@@ -923,7 +917,6 @@ Define a function which toggles the return key binding between
   )
 #+END_SRC
 
-
 #+BEGIN_SRC emacs-lisp
 (use-package org-expiry
   :ensure org-plus-contrib
@@ -974,6 +967,14 @@ as safe to avoid a "apply unsafe local variable" warning.
 #+begin_src elisp
 (add-to-list 'safe-local-variable-values
   '(after-save-hook . org-gfm-export-to-markdown))
+#+end_src
+
+Diminish org-indent mode
+
+#+begin_src elisp
+(with-eval-after-load 'org-indent
+  (require 'diminish)
+  (diminish 'org-indent-mode))
 #+end_src
 
 ** Todo items
@@ -1034,7 +1035,7 @@ Show org priorities as custom strings
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-fancy-priorities
-  :diminish
+  :delight
   :ensure t
   :hook
   (org-mode . org-fancy-priorities-mode)
@@ -1114,6 +1115,7 @@ Enable json-mode when editing JSON files
 
 #+begin_src emacs-lisp
 (use-package lsp-mode
+  :delight
   :commands lsp
   :hook ((typescript-mode js2-mode web-mode) . lsp)
   :config
@@ -1125,6 +1127,7 @@ Enable json-mode when editing JSON files
 
   :custom
   (lsp-headerline-breadcrumb-enable t)
+
   (lsp-headerline-breadcrumb-segments '(project file symbols)))
 #+end_src
 
@@ -1177,6 +1180,7 @@ Populate a virtualenv with the required Python packages:
 Use flycheck for on-the-fly syntax checking
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
+  :delight
   :ensure t
   :config
   ;; Tell flycheck to use eslint when in web-mode
@@ -1460,4 +1464,15 @@ Local or experimental settings are stored here
 (when (file-exists-p local-settings)
   (load-file local-settings))
 )
+#+END_SRC
+
+Use "delight" to hide certain modes from the mode line. Keep this here since some modes need to be delighted at the end for them to take effect.
+#+BEGIN_SRC emacs-lisp
+(use-package delight
+  :ensure t
+  :delight
+  (eldoc-mode nil t)
+  (org-indent-mode nil org-indent)
+  (text-scale-mode nil face-remap)
+  (global-whitespace-mode))
 #+END_SRC
