@@ -1169,14 +1169,6 @@ separate location and put it first in my PATH.
 
 ** Python
 
-Install Elpy, the Emacs Lisp Python Environment
-
-Populate a virtualenv with the required Python packages:
-
-> python3 -m venv ~/dev/envs/elpy
-> . ~/dev/envs/elpy/bin/activate
-> $ pip install autopep8 epc flake8 importmagic jedi rope yapf
-
 Use flycheck for on-the-fly syntax checking
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
