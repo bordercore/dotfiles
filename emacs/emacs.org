@@ -46,7 +46,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 - [[#games][Games]]
   - [[#nethack][Nethack]]
 - [[#runtime-performance][Runtime Performance]]
-- [[#color-theme][Color Theme]]
+- [[#theme][Theme]]
 - [[#wrapup][Wrapup]]
 
 * Emacs initialization
@@ -1427,27 +1427,34 @@ This should help with LSP performance.
 (setq read-process-output-max (* 1024 1024))
 #+end_src
 
-* Color Theme
+* Theme
 
-This should be run near the end, since custom face attributes are set in current-theme.el which
-all already need to be defined.
+This should be run near the end, since custom face attributes are set in current-theme.el, which all already need to be defined.
 
-I store my custom color themes here
+I store my custom themes here.
 #+BEGIN_SRC emacs-lisp
 (setq custom-theme-directory "~/.emacs.d/themes/")
 #+END_SRC
 
-Load the current theme
-current-theme.el is a symlink to the currently used theme
-#+BEGIN_SRC emacs-lisp
-(let ((current-theme "~/.emacs.d/themes/current-theme.el"))
-(when (file-exists-p current-theme)
-   (load-file current-theme))
-)
+Load the current theme. The theme name should be stored in the environment
+variable "EMACS_THEME".
 
-(let ((current-theme "~/.emacs.d/themes/current-theme-custom.el"))
-(when (file-exists-p current-theme)
-   (load-file current-theme)))
+Then make any customizations specified in current-theme-custom.el, which
+should be a symlink that matches the current theme.
+#+BEGIN_SRC emacs-lisp
+(defun load-theme-from-env-var ()
+  "Load the Emacs theme specified by the EMACS_THEME environment variable."
+  (let ((theme-name (getenv "EMACS_THEME")))
+    (if theme-name
+        (load-theme (intern theme-name) t)
+      (message "EMACS_THEME environment variable is not set."))))
+
+(load-theme-from-env-var)
+
+(dolist (file '("~/.emacs.d/themes/current-theme-custom.el"))
+  (when (file-exists-p file)
+    (load-file file))
+  )
 #+END_SRC
 
 * Wrapup
