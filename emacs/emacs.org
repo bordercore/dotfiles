@@ -1185,6 +1185,8 @@ Use flycheck for on-the-fly syntax checking
   :config
   ;; Tell flycheck to use eslint when in web-mode
   (flycheck-add-mode 'javascript-eslint 'web-mode)
+  ;; Use my own version of Python rather than the one installed by the system
+  (setq flycheck-python-flake8-executable "/usr/bin/python3.8")
   :init (global-flycheck-mode))
 #+END_SRC
 
