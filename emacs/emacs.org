@@ -473,6 +473,9 @@ save my place in files between sessions
 Automatically save and restore sessions
 #+BEGIN_SRC emacs-lisp
 (desktop-save-mode t)
+;; Only restore 5 buffers immediately to improve startup-time. The
+;;  others are lazily restored when Emacs is idle.
+(setq desktop-restore-eager 5)
 #+END_SRC
 
 Use the Session package to save registers, which I use to store
