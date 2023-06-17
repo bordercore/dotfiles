@@ -316,6 +316,11 @@ Don't underline highlighted text
 (set-face-underline-p 'highlight nil)
 #+END_SRC
 
+Use spaceline, the package that provides Spacemacs with its mode-line theme.
+#+begin_src emacs-lisp
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+#+end_src
 
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
