@@ -530,11 +530,6 @@ Use the YASnippet template system
 
   ;; make any snippets in the "fundamental-mode" subdirectory available in any mode
   (add-hook 'yas-minor-mode-hook (lambda () (yas-activate-extra-mode 'fundamental-mode))))
-
-;; yasnippet doesn't come with any snippets
-;;  you must install some yourself
-(use-package yasnippet-snippets
-  :ensure t)
 #+END_SRC
 
 ** File Editing
