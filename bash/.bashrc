@@ -177,6 +177,14 @@ psgrep () {
     fi
 }
 
+es () {
+    if [ ! -z $1 ] ; then
+        curl -XGET "http://$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
+    else
+        echo "Please specify the uuid"
+    fi
+}
+
 #
 # Source your location or host specific .bashrc file here
 #
