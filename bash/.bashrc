@@ -30,6 +30,9 @@ export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
 # Set the default editor
 export VISUAL="emacs -nw --no-desktop"
 
+# Set my Emacs theme
+export EMACS_THEME=doom-outrun-electric
+
 # Setup GIT environment
 export GIT_EDITOR="emacs --no-desktop"
 export GIT_AUTHOR_EMAIL=jerrell@bordercore.com
