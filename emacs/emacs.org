@@ -1368,6 +1368,16 @@ Automatically display the process buffer on error
 (advice-add 'magit-process-set-mode-line-error-status :before
             #'auto-display-magit-process-buffer)
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun magit-status-font-setup ()
+  "Set a specific font size for the Magit status buffer."
+  (when (derived-mode-p 'magit-status-mode)
+    (buffer-face-set '(:height 280))))
+
+(add-hook 'magit-status-mode-hook 'magit-status-font-setup)
+#+END_SRC
+
 ** diff-hl
 
 #+BEGIN_SRC emacs-lisp
