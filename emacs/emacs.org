@@ -835,6 +835,7 @@ This requires installation of the "ag" binary.
                                  (sql . t)
                                  (sqlite . t)
                                  (perl . t)
+                                 (php . t)
                                  (jupyter . t)))
   ;; Use bash (rather than the default sh) as the command to invoke a shell
   (setq org-babel-sh-command "bash")
