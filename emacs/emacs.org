@@ -336,7 +336,7 @@ Use spaceline, the package that provides Spacemacs with its mode-line theme.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (quote [f1]) '(lambda () (interactive) (dired "/home/jerrell/docs/*org") (revert-buffer)))
 (global-set-key (quote [f2]) 'query-replace)
-(global-set-key (quote [f4]) 'org-footnote-action)
+(global-set-key (quote [f4]) 'projectile-ag)
 (global-set-key (quote [f5]) 'revert-buffer-no-confirm)
 (global-set-key (quote [f8]) 'projectile-find-file)
 (global-set-key (quote [f9]) 'eval-region)
