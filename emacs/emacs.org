@@ -1122,19 +1122,8 @@ Enable json-mode when editing JSON files
 
 Use pyright as the LSP Python server.
 
-Note that it requires a more recent version of node than the one
-installed by Ubuntu 20.04, so I've installed that manually in a
-separate location and put it first in my PATH.
-
 #+begin_src emacs-lisp
 (use-package lsp-pyright
-:init
-(setenv "PATH"
-        (concat
-         "/opt/node-v14.16.0-linux-x64/bin:"
-         (getenv "PATH")
-         )
-        )
   :hook
   (python-mode . (lambda ()
                    (require 'lsp-pyright)
