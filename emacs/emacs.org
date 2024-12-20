@@ -1050,14 +1050,6 @@ Show org priorities as custom strings
 * Development
 ** Misc
 
-Enable auto-complete mode globally
-#+BEGIN_SRC emacs-lisp
-(use-package auto-complete
-  :config
-  (global-auto-complete-mode t)
-  :delight)
-#+END_SRC
-
 hilight matching pairs of parentheses and other characters
 #+BEGIN_SRC emacs-lisp
 (show-paren-mode t)
