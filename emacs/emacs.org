@@ -672,9 +672,9 @@ Use ivy for file and buffer completions
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package company-box
-    :delight
-    :hook (company-mode . company-box-mode))
+(use-package company-box
+  :delight
+  :hook (company-mode . company-box-mode))
 #+end_src
 
 ** Imenu
@@ -1165,8 +1165,6 @@ To install isort: pip install isort
   (add-hook 'before-save-hook 'py-isort-before-save))
 #+END_SRC
 
-Tabs
-
 Set the default tab width to 4
 #+BEGIN_SRC emacs-lisp
 (setq-default tab-width 4)
@@ -1256,6 +1254,7 @@ Use highlight-indent-guides mode to display indentation levels
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   )
 #+end_src
+
 Use Rainbow minor mode when in CSS mode
 #+BEGIN_SRC emacs-lisp
 (add-hook 'css-mode-hook 'rainbow-mode)
