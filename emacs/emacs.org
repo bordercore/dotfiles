@@ -313,7 +313,7 @@ Window configuration
 
 Don't underline highlighted text
 #+BEGIN_SRC emacs-lisp
-(set-face-underline-p 'highlight nil)
+(set-face-attribute 'highlight nil :underline nil)
 #+END_SRC
 
 Use spaceline, the package that provides Spacemacs with its mode-line theme.
