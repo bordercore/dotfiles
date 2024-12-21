@@ -663,12 +663,23 @@ Use ivy for file and buffer completions
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package company
-    :delight
-    :custom
-    (company-minimum-prefix-length 2)
-    (company-idle-delay 0.01)
-    )
+(use-package company
+  :defer 0.1
+  :delight
+  :custom
+  (company-minimum-prefix-length 2)
+  (company-idle-delay 0.01)
+  :config
+  (setq-default
+   company-idle-delay 0.05
+   company-require-match nil
+   company-minimum-prefix-length 0
+
+   ;; get only preview
+   company-frontends '(company-preview-frontend)
+   ;; Display a drop down
+   company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)
+   ))
 #+end_src
 
 #+begin_src emacs-lisp
