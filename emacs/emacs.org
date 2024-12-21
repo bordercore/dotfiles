@@ -1057,11 +1057,7 @@ hilight matching pairs of parentheses and other characters
 
 Insert parentheses, braces, quotes and the like in matching pairs
 #+BEGIN_SRC emacs-lisp
-(cond
- ((string-match "GNU Emacs 24" (emacs-version))
-  (electric-pair-mode)
-  )
- )
+(electric-pair-mode t)
 #+END_SRC
 
 C support
