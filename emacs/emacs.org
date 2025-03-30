@@ -72,6 +72,13 @@ Start the Emacs server
 (server-start)
 #+END_SRC
 
+Look for an optional local.el file which contains code that is not meant to be checked-in.
+#+begin_src emacs-lisp
+(let ((local-file (expand-file-name "local.el" user-emacs-directory)))
+  (when (file-exists-p local-file)
+    (load local-file)))
+#+end_src
+
 * Packages
 ** Sources
 
@@ -1169,6 +1176,31 @@ Use flycheck for on-the-fly syntax checking
   (setq flycheck-python-flake8-executable "/usr/bin/python3.8")
   :init (global-flycheck-mode))
 #+END_SRC
+
+Add any directory-local variables found in bc/trusted-project-paths (found in locals.e) to the trusted project path. Typically used for setting ~flycheck-python-pylint-executable~ on a per-project basis.
+#+begin_src emacs-lisp
+(defun bc/within-trusted-project-p (dir)
+  "Return non-nil if DIR is inside one of `bc/trusted-project-paths`."
+  (let ((dir (file-truename (expand-file-name dir))))
+    (cl-some (lambda (trusted)
+               (string-prefix-p (file-truename (expand-file-name trusted)) dir))
+             bc/trusted-project-paths)))
+
+(defun bc/trust-dir-locals ()
+  "Mark all directory-local variables as safe if in a trusted project path."
+  (let ((dir (file-truename (or buffer-file-name default-directory))))
+    (when (bc/within-trusted-project-p dir)
+      (let ((inhibit-message t))
+        (hack-local-variables)
+        (dolist (pair (buffer-local-variables))
+          (let ((sym (car pair))
+                (val (cdr pair)))
+            (when (and (not (memq sym '(nil t)))
+                       (not (safe-local-variable-p sym val)))
+              (add-to-list 'safe-local-variable-values (cons sym val)))))))))
+
+(add-hook 'python-mode-hook #'bc/trust-dir-locals)
+#+end_src
 
 Use isort to automatically sort Python imports on save.
 To install isort: pip install isort
