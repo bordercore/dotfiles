@@ -80,7 +80,6 @@ EXEC 01;35
 .zip 01;31
 
 # image formats
-.avi 01;35
 .bmp 01;35
 .dl 01;35
 .fli 01;35
@@ -98,6 +97,7 @@ EXEC 01;35
 .xpm 01;35
 
 # video formats
+.avi 01;32
 .mp4 01;32
 .mkv 01;32
 .webm 01;32
