@@ -31,6 +31,8 @@
     helper = cache --timeout=7200
 [delta]
     navigate = true    # use n and N to move between diff sections
+[diff]
+    colorMoved = default
 [interactive]
     diffFilter = delta --color-only
 [push]
