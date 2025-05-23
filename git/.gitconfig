@@ -16,6 +16,7 @@
     changed = green
     untracked = cyan
 [core]
+    pager = delta
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [alias]
     co = "!f() { git checkout $(git branch --all | grep \"$1\" | grep -v HEAD | head -n 1 | sed 's/^[* ] //;s#remotes/[^/]*/##'); }; f"
@@ -28,6 +29,10 @@
     undo = reset --soft HEAD^
 [credential]
     helper = cache --timeout=7200
+[delta]
+    navigate = true    # use n and N to move between diff sections
+[interactive]
+    diffFilter = delta --color-only
 [push]
     default = simple
 [status]
