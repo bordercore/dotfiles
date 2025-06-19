@@ -1438,7 +1438,7 @@ Add your OpenAI key to ~/.netrc.
   :config
   (setq chatgpt-shell-openai-key
         (auth-source-pick-first-password :host "api.openai.com"))
-  (setq chatgpt-shell-model-versions '("gpt-3.5-turbo" "gpt-3.5-turbo-0613"))
+  (setq chatgpt-shell-model-versions '("gpt-4.1"))
   )
 #+end_src
 
@@ -1472,7 +1472,7 @@ Snippet source: https://www.reddit.com/r/emacs/comments/185n3yo/emacs_meets_chat
                     "Maintain existing org-mode syntax expressions like =this= and *this*."
                     "Only return the corrected paragraph, not the original text or this prompt."
                     "Here's the text:\n\n" text)
-                   nil "gpt-3.5-turbo" nil nil nil nil)))
+                   nil "gpt-4.1" nil nil nil nil)))
     response))
 
 (global-set-key (kbd "C-c s") 'chatgpt-shell-check-and-correct-paragraph)
