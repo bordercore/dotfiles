@@ -64,6 +64,7 @@ alias ccc="rm *~"
 alias dls="ls -l | grep \"^d\""
 alias f="find . |grep "
 alias grep="grep --directories=skip --color=auto"
+alias mp="mypy --config-file ~/mypy.ini *py"
 alias mv="mv -i"
 alias pp='python -mjson.tool'  # JSON pretty-printer
 alias rls="ls -l -r -h -B -t"
