@@ -1478,6 +1478,43 @@ Snippet source: https://www.reddit.com/r/emacs/comments/185n3yo/emacs_meets_chat
 (global-set-key (kbd "C-c s") 'chatgpt-shell-check-and-correct-paragraph)
 #+end_src
 
+Run an external Python script that collects the staged diff in the current Git repository, sends it to ChatGPT, and returns the recommended commit message. Bind to C-c s in git-commit-mode.
+
+#+begin_src emacs-lisp
+(defun run-gpt-commit ()
+  "Run gpt-commit.py from the git repo root, pulling OPENAI_API_KEY from ~/.netrc."
+  (interactive)
+  (let ((git-root (magit-toplevel)))
+    (if (not git-root)
+        (message "Not in a git repository")
+      (let* ((default-directory git-root)
+             (netrc-file    (expand-file-name "~/.netrc"))
+             (api-key       nil))
+        ;; Parse ~/.netrc for "machine api.openai.com" stanza
+        (when (and (file-readable-p netrc-file)
+                   (with-temp-buffer
+                     (insert-file-contents netrc-file)
+                     (goto-char (point-min))
+                     ;; find the machine line...
+                     (re-search-forward "^machine[ \t]+api\\.openai\\.com\\b" nil t)
+                     ;; ...then the next password line
+                     (re-search-forward "^\\s-*password[ \t]+\\(.+\\)$" nil t)))
+          (setq api-key (match-string 1)))
+        (when api-key
+          (setenv "OPENAI_API_KEY" api-key))
+        (condition-case err
+            (let ((output (shell-command-to-string
+                           "python3 /home/jerrell/dev/gpt-commit.py")))
+              (if (string-empty-p (string-trim output))
+                  (message "gpt-commit.py produced no output")
+                (insert output)))
+          (error (message "Error running gpt-commit.py: %s"
+                          (error-message-string err))))))))
+
+(with-eval-after-load 'git-commit
+  (define-key git-commit-mode-map (kbd "C-c s") 'run-gpt-commit))
+#+end_src
+
 ** Codeium
 
 #+begin_src emacs-lisp
