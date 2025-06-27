@@ -1164,6 +1164,16 @@ Use pyright as the LSP Python server.
 
 ** Python
 
+Set PYTHONPATH so that pylint will properly read the django-settings-module config option inside .pylintrc for Django linting
+#+begin_src emacs-lisp
+(let ((existing (getenv "PYTHONPATH")))
+  (setenv "PYTHONPATH"
+          (mapconcat 'identity
+                     (delete-dups (append (split-string (or existing "") ":")
+                                          '("/home/jerrell/dev/django/bordercore_project" "/home/jerrell/dev/django/bordercore_project/bordercore")))
+                     ":")))
+#+end_src
+
 Use flycheck for on-the-fly syntax checking
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
