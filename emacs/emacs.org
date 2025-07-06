@@ -1514,15 +1514,35 @@ Snippet source: https://www.reddit.com/r/emacs/comments/185n3yo/emacs_meets_chat
                           (chatgpt-shell-quick-insert
                            (list (cons (substring query 1) output)))))))
 
+(defun chatgpt-shell-custom-prompt-region-or-paragraph ()
+  "Apply a custom prompt to the active region or current paragraph."
+  (interactive)
+  (let* ((custom-prompt (read-string "Custom prompt: "))
+         (full-prompt (concat custom-prompt " Only return the corrected paragraph, not the original text or this prompt."))
+         (region (chatgpt-shell--region-or-paragraph-with-newline))
+         (query  (alist-get :text region)))
+    (chatgpt-shell-request-and-insert-merged-response
+     :system-prompt     full-prompt
+     :query             (substring query 1)  ; Remove the prepended newline from query
+     :context           nil
+     :remove-block-markers t
+     :region            region
+     :on-iterate        (lambda (output)
+                          (set-mark   (alist-get :end region))
+                          (goto-char  (alist-get :start region))
+                          (chatgpt-shell-quick-insert
+                           (list (cons (substring query 1) (concat "\n" output))))))))
+
 (defun chatgpt-shell-proofread-or-improve ()
   "Prompt to either spell-check or improve clarity on region or paragraph."
   (interactive)
   (let ((choice
          (ivy-completing-read
-          "Action: " '("Spell Check" "Improve Clarity") nil t)))
+          "Action: " '("Spell Check" "Improve Clarity" "Custom Prompt") nil t)))
     (pcase choice
       ("Spell Check"    (chatgpt-shell-spell-check-region-or-paragraph))
       ("Improve Clarity" (chatgpt-shell-improve-clarity-region-or-paragraph))
+      ("Custom Prompt"   (chatgpt-shell-custom-prompt-region-or-paragraph))
       (_ (user-error "Invalid choice: %s" choice)))))
 
 (global-set-key (kbd "C-c s") #'chatgpt-shell-proofread-or-improve)
