@@ -1448,7 +1448,7 @@ Add your OpenAI key to ~/.netrc.
   :config
   (setq chatgpt-shell-openai-key
         (auth-source-pick-first-password :host "api.openai.com"))
-  (setq chatgpt-shell-model-versions '("gpt-4.1"))
+  (setq chatgpt-shell-model-version "gpt-4.1")
   )
 #+end_src
 
@@ -1456,36 +1456,76 @@ Bind C-c s to check the current paragraph for spelling and grammar
 Snippet source: https://www.reddit.com/r/emacs/comments/185n3yo/emacs_meets_chatgpt_for_flawless_grammar_and/
 
 #+begin_src emacs-lisp
-(defun chatgpt-shell-check-and-correct-paragraph ()
-  "Check and correct the current paragraph using ChatGPT."
+(defun chatgpt-shell--region-or-paragraph ()
+  "Return an alist with :start, :end, and :text for the active region or current paragraph."
+  (if (use-region-p)
+      (chatgpt-shell--region)
+    (save-excursion
+      (mark-paragraph)
+      (let ((start (region-beginning))
+            (end   (progn (goto-char (region-end))
+                          (skip-chars-backward "\n")
+                          (point))))
+        (list (cons :start start)
+              (cons :end   end)
+              (cons :text  (buffer-substring-no-properties start end)))))))
+
+(defun chatgpt-shell--region-or-paragraph-with-newline ()
+  "Return an alist with :start, :end, and :text for the active region or current paragraph, with space for newline."
+  (let ((region (chatgpt-shell--region-or-paragraph)))
+    (save-excursion
+      (goto-char (alist-get :start region))
+      (insert "\n")
+      (list (cons :start (+ 1 (alist-get :start region)))  ; start after inserted newline
+            (cons :end   (+ 1 (alist-get :end region)))
+            (cons :text  (alist-get :text region))))))
+
+(defun chatgpt-shell-spell-check-region-or-paragraph ()
+  "Correct spelling and grammar of the active region or current paragraph."
   (interactive)
-  (let* ((bounds (bounds-of-thing-at-point 'paragraph))
-         (start (car bounds))
-         (end (cdr bounds))
-         (original-text (buffer-substring-no-properties start end))
-         (point-offset (- end (point))) ; Save the offset of point from end
-         (checked-text (chatgpt-shell-check-paragraph original-text)))
-    (when checked-text
-      (save-excursion
-        (goto-char start)
-        (delete-region start end)
-        (insert "\n") ; Insert a newline here
-        (insert checked-text))
-      ;; Move the point to its new position relative to the end
-      (goto-char (- (cdr (bounds-of-thing-at-point 'paragraph)) point-offset)))))
+  (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
+         (query  (alist-get :text region)))
+    (chatgpt-shell-request-and-insert-merged-response
+     :system-prompt     "Correct only spelling and grammar. Preserve org-mode markup like =this= and *this*. Only return the corrected paragraph, not the original text or this prompt."
+     :query             (substring query 1)  ; Remove the prepended newline from query
+     :context           nil
+     :remove-block-markers t
+     :region            region
+     :on-iterate        (lambda (output)
+                          (set-mark   (alist-get :end region))
+                          (goto-char  (alist-get :start region))
+                          (chatgpt-shell-quick-insert
+                           (list (cons (substring query 1) output)))))))
 
-(defun chatgpt-shell-check-paragraph (text)
-  "Send TEXT to ChatGPT for spell and grammar checking."
-  (let ((response (chatgpt-shell-post-prompt
-                   (concat
-                    "Please correct the spelling and grammar of the following paragraph."
-                    "Maintain existing org-mode syntax expressions like =this= and *this*."
-                    "Only return the corrected paragraph, not the original text or this prompt."
-                    "Here's the text:\n\n" text)
-                   nil "gpt-4.1" nil nil nil nil)))
-    response))
+(defun chatgpt-shell-improve-clarity-region-or-paragraph ()
+  "Improve clarity, spelling, and grammar of the active region or current paragraph."
+  (interactive)
+  (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
+         (query  (alist-get :text region)))
+    (chatgpt-shell-request-and-insert-merged-response
+     :system-prompt     "Improve clarity, spelling, and grammar of the following text. Only return the corrected paragraph, not the original text or this prompt."
+     :query             (substring query 1)  ; Remove the prepended newline from query
+     :context           nil
+     :remove-block-markers t
+     :region            region
+     :on-iterate        (lambda (output)
+                          (set-mark   (alist-get :end region))
+                          (goto-char  (alist-get :start region))
+                          (chatgpt-shell-quick-insert
+                           (list (cons (substring query 1) output)))))))
 
-(global-set-key (kbd "C-c s") 'chatgpt-shell-check-and-correct-paragraph)
+(defun chatgpt-shell-proofread-or-improve ()
+  "Prompt to either spell-check or improve clarity on region or paragraph."
+  (interactive)
+  (let ((choice
+         (ivy-completing-read
+          "Action: " '("Spell Check" "Improve Clarity") nil t)))
+    (pcase choice
+      ("Spell Check"    (chatgpt-shell-spell-check-region-or-paragraph))
+      ("Improve Clarity" (chatgpt-shell-improve-clarity-region-or-paragraph))
+      (_ (user-error "Invalid choice: %s" choice)))))
+
+(global-set-key (kbd "C-c s") #'chatgpt-shell-proofread-or-improve)
 #+end_src
 
 Run an external Python script that collects the staged diff in the current Git repository, sends it to ChatGPT, and returns the recommended commit message. Bind to C-c s in git-commit-mode.
