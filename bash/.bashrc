@@ -184,7 +184,7 @@ psgrep () {
 
 es () {
     if [ ! -z $1 ] ; then
-        curl -s -XGET "http://$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
+        curl -s -XGET "$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
     else
         echo "Please specify the uuid"
     fi
