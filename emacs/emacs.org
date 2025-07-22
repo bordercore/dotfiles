@@ -1170,7 +1170,7 @@ Set PYTHONPATH so that pylint will properly read the django-settings-module conf
   (setenv "PYTHONPATH"
           (mapconcat 'identity
                      (delete-dups (append (split-string (or existing "") ":")
-                                          '("/home/jerrell/dev/django/bordercore_project" "/home/jerrell/dev/django/bordercore_project/bordercore")))
+                                          '("/home/jerrell/dev/django/bordercore" "/home/jerrell/dev/django/bordercore/bordercore")))
                      ":")))
 #+end_src
 
