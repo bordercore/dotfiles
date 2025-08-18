@@ -238,36 +238,32 @@ Use which-key to display the key bindings following your currently entered incom
 
 ** Scratch Buffer
 
-Save the scratch buffer when Emacs quits
-See http://dorophone.blogspot.fr/2011/11/how-to-make-emacs-scratch-buffer.html
+Configure persistent-scratch to restore on startup, save on exit, autosave every 2 minutes.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
+(use-package persistent-scratch
+  :ensure t
+  :init
+  ;; Paths
+  (setq persistent-scratch-save-file
+        (expand-file-name "persistent-scratch.el" user-emacs-directory))
+  (setq persistent-scratch-backup-directory
+        (expand-file-name "persistent-scratch/" user-emacs-directory))
 
-(defvar persistent-scratch-filename
-    "~/.emacs.d/emacs-persistent-scratch"
-    "Location of *scratch* file contents for persistent-scratch.")
+  ;; Ensure backup dir exists
+  (unless (file-directory-p persistent-scratch-backup-directory)
+    (make-directory persistent-scratch-backup-directory t))
 
-(defun save-persistent-scratch ()
-  "Write the contents of *scratch* to the file name
-  PERSISTENT-SCRATCH-FILENAME, making a backup copy in
-  PERSISTENT-SCRATCH-BACKUP-DIRECTORY."
-  (with-current-buffer (get-buffer "*scratch*")
-    (write-region (point-min) (point-max)
-                  persistent-scratch-filename)))
+  ;; Autosave every 2 minutes (default is 30s)
+  (setq persistent-scratch-autosave-interval 120)
 
-(defun load-persistent-scratch ()
-  "Load the contents of PERSISTENT-SCRATCH-FILENAME into the
-  scratch buffer, clearing its contents first."
-  (if (file-exists-p persistent-scratch-filename)
-      (with-current-buffer (get-buffer "*scratch*")
-        (delete-region (point-min) (point-max))
-        (shell-command (format "cat %s" persistent-scratch-filename) (current-buffer)))))
+  :config
+  ;; Restore on startup, save on exit
+  (persistent-scratch-setup-default)
 
-(push #'save-persistent-scratch kill-emacs-hook)
-
-(load-persistent-scratch)
-
-#+END_SRC
+  ;; Periodic autosave timer
+  (persistent-scratch-autosave-mode 1))
+#+end_src
 
 ** User Interface
 
