@@ -69,6 +69,11 @@ alias mv="mv -i"
 alias pl="pylint --load-plugins pylint_django --django-settings-module=config.settings.dev"
 alias pp='python -mjson.tool'  # JSON pretty-printer
 alias rls="ls -l -r -h -B -t"
+
+alias cdiff="git -c color.diff.old='red bold' \
+    -c color.diff.new='green bold' \
+    diff --no-index --word-diff=color"
+
 alias rm="rm -i"
 alias sniff="sudo tethereal -n -l"
 alias tf='tail -f'
