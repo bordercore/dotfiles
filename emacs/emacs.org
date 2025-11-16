@@ -46,6 +46,7 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 - [[#ai][AI]]
   - [[#chatgpt][ChatGPT]]
   - [[#codeium][Codeium]]
+- [[#external-tools-and-integration][External Tools and Integration]]
 - [[#games][Games]]
   - [[#nethack][Nethack]]
 - [[#runtime-performance][Runtime Performance]]
@@ -1639,6 +1640,38 @@ Run an external Python script that collects the staged diff in the current Git r
      (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
   (setq codeium/document/text 'my-codeium/document/text)
   (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
+#+end_src
+* External Tools and Integration
+
+Enables editing any Chrome textarea inside Emacs by syncing the browser field to a dedicated Emacs buffer via the GhostText protocol. Requires the GhostText Chrome extension.
+
+#+begin_src emacs-lisp
+(use-package atomic-chrome
+  :ensure t
+  :init
+  ;; Where the buffers should appear: 'frame, 'split, or 'full
+  (setq atomic-chrome-buffer-open-style 'frame)
+  :config
+  (defun bordercore/strip-cr-from-string (text)
+    "Return TEXT with all carriage returns removed."
+    (replace-regexp-in-string "\r" "" text))
+
+  ;; Strip CRs when the buffer is first created.
+  (advice-add
+   'atomic-chrome-create-buffer :around
+   (lambda (orig-fun socket url title text)
+     (funcall orig-fun socket url title
+              (bordercore/strip-cr-from-string text))))
+
+  ;; Strip CRs on every subsequent update from the browser.
+  (advice-add
+   'atomic-chrome-update-buffer :around
+   (lambda (orig-fun socket text)
+     (funcall orig-fun socket
+              (bordercore/strip-cr-from-string text))))
+
+  ;; Start the server so Chrome can talk to Emacs
+  (atomic-chrome-start-server))
 #+end_src
 
 * Games
