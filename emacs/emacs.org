@@ -1569,34 +1569,27 @@ Run an external Python script that collects the staged diff in the current Git r
 
 #+begin_src emacs-lisp
 (defun run-gpt-commit ()
-  "Run gpt-commit.py from the git repo root, pulling OPENAI_API_KEY from ~/.netrc."
+  "Run gpt-commit.py from repo root, setting OPENAI_API_KEY from ~/.netrc."
   (interactive)
   (let ((git-root (magit-toplevel)))
     (if (not git-root)
         (message "Not in a git repository")
       (let* ((default-directory git-root)
-             (netrc-file    (expand-file-name "~/.netrc"))
-             (api-key       nil))
-        ;; Parse ~/.netrc for "machine api.openai.com" stanza
-        (when (and (file-readable-p netrc-file)
-                   (with-temp-buffer
-                     (insert-file-contents netrc-file)
-                     (goto-char (point-min))
-                     ;; find the machine line...
-                     (re-search-forward "^machine[ \t]+api\\.openai\\.com\\b" nil t)
-                     ;; ...then the next password line
-                     (re-search-forward "^\\s-*password[ \t]+\\(.+\\)$" nil t)))
-          (setq api-key (match-string 1)))
-        (when api-key
+             (netrc-file (expand-file-name "~/.netrc"))
+             (api-key
+              (when (file-readable-p netrc-file)
+                (with-temp-buffer
+                  (insert-file-contents netrc-file)
+                  (goto-char (point-min))
+                  (when (re-search-forward "^machine[ \t]+api\\.openai\\.com\\b" nil t)
+                    (when (re-search-forward "^\\s-*password[ \t]+\\(.+\\)$" nil t)
+                      (match-string-no-properties 1)))))))
+        (when (and api-key (not (string-empty-p api-key)))
           (setenv "OPENAI_API_KEY" api-key))
-        (condition-case err
-            (let ((output (shell-command-to-string
-                           "python3 /home/jerrell/dev/gpt-commit.py")))
-              (if (string-empty-p (string-trim output))
-                  (message "gpt-commit.py produced no output")
-                (insert output)))
-          (error (message "Error running gpt-commit.py: %s"
-                          (error-message-string err))))))))
+        (let ((output (shell-command-to-string "python3 /home/jerrell/dev/gpt_commit.py")))
+          (if (string-empty-p (string-trim output))
+              (message "gpt-commit.py produced no output")
+            (insert output)))))))
 
 (with-eval-after-load 'git-commit
   (define-key git-commit-mode-map (kbd "C-c s") 'run-gpt-commit))
