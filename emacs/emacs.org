@@ -1123,9 +1123,11 @@ Enable json-mode when editing JSON files
   :config
   (setq lsp-enable-file-watchers nil)
 
-  ;; Disable auto-configuring flycheck to use lsp for linting.
-  ;; I prefer to use flake8.
-  (setq lsp-diagnostics-provider :none)
+  ;; Configure LSP to use flycheck for linting
+  (setq lsp-diagnostics-provider :flycheck)
+
+  ;; Tell ESLint LSP to treat "bordercore" (relative to the workspace) as the package root for resolving config/plugins.
+  (setq lsp-eslint-working-directories '("bordercore"))
 
   :custom
   (lsp-headerline-breadcrumb-enable t)
