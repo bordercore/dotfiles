@@ -1230,7 +1230,7 @@ Add any directory-local variables found in bc/trusted-project-paths (found in lo
 #+end_src
 
 Use isort to automatically sort Python imports on save.
-To install isort: pip install isort
+To install isort: sudo apt install isort python3-isort
 
 #+BEGIN_SRC emacs-lisp
 (use-package py-isort
