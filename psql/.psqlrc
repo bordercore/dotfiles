@@ -20,7 +20,7 @@
 
 \x auto
 
-set application_name to "Jerrell Desktop"; commit;
+set application_name to "Jerrell Desktop -- psql"; commit;
 
 set bytea_output to escape; commit;
 
