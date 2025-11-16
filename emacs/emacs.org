@@ -1180,9 +1180,28 @@ Use flycheck for on-the-fly syntax checking
   :config
   ;; Tell flycheck to use eslint when in web-mode
   (flycheck-add-mode 'javascript-eslint 'web-mode)
-  ;; Use my own version of Python rather than the one installed by the system
-  (setq flycheck-python-flake8-executable "/usr/bin/python3.8")
   :init (global-flycheck-mode))
+#+END_SRC
+
+Display flycheck error messages via posframe, which pops up a frame at point to show diagnostics without inserting text into the buffer or disrupting code layout.
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-posframe
+  :after flycheck
+  :config
+  (custom-set-faces
+   ;; Background of the popup
+   '(flycheck-posframe-background-face ((t (:background "#1c1f26"))))
+   ;; Error text
+   '(flycheck-posframe-face ((t (:foreground "red" :weight bold))))
+   ;; Warning test
+   '(flycheck-posframe-warning-face ((t (:foreground "cyan"))))
+   ;; Info text
+   '(flycheck-posframe-info-face ((t (:foreground "DeepSkyBlue1"))))
+   ;; Border text -- not working
+   '(flycheck-posframe-border-face ((t (:foreground "gray60"))))
+   )
+  (setq flycheck-posframe-border-width 20)
+  (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 #+END_SRC
 
 Add any directory-local variables found in bc/trusted-project-paths (found in locals.e) to the trusted project path. Typically used for setting ~flycheck-python-pylint-executable~ on a per-project basis.
