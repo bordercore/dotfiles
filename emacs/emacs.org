@@ -1147,6 +1147,8 @@ Use pyright as the LSP Python server.
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :config
+  (setq lsp-ui-sideline-enable nil)
+  (setq lsp-ui-sideline-show-diagnostics nil)
   (setq lsp-ui-doc-show-with-cursor t)
   (setq lsp-ui-doc-position 'top)
   )
