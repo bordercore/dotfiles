@@ -1623,6 +1623,9 @@ Run an external Python script that collects the staged diff in the current Git r
   ;; :defer t ;; lazy loading, if you want
   :config
   (setq use-dialog-box nil) ;; do not use popup boxes
+  ;; Disable logging to *codeium-log* to eliminate spammy heartbeat messages.
+  ;; You can always re-enable temporarily to debug problems.
+  (setq codeium-log-buffer nil)
 
   ;; Read the API key from ~/.netrc using the built-in auto-source package
   (setq codeium/metadata/api_key
