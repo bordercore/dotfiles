@@ -174,9 +174,18 @@ function dis {
 }
 
 findclass () {
+    [[ -z "$1" ]] && { echo "Usage: findclass CLASSNAME" >&2; return 1; }
 
-    find . -name "*.jar" | while read file; do echo "Processing ${file}"; jar -tvf $file | grep -i "$1.class"; done
+    local classname="$1"
 
+    find . -name "*.jar" -exec sh -c '
+        classname="$1"
+        shift
+        for file do
+            echo "Processing $file"
+            jar -tf "$file" | grep -Fi "${classname}.class"
+        done
+    ' sh "$1" {} +
 }
 
 extract () {
