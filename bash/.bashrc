@@ -144,6 +144,9 @@ if command -v pyenv &> /dev/null; then
     eval "$(pyenv init -)"
 fi
 
+# uv binaries are installed here
+export PATH="$PATH:$HOME/.local/bin"
+
 # Prevent core dumps
 ulimit -c 0
 
