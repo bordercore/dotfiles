@@ -87,7 +87,7 @@ alias html2md="xclip -o -selection clipboard -t text/html \
       | xclip -i -selection clipboard"
 
 # Mac-specific stuff here
-if [ `uname` == "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
 
     # Inspired by https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
 
@@ -99,11 +99,10 @@ if [ `uname` == "Darwin" ]; then
           | pbcopy"
 
     # Required for building some packages using Catalina
-    export CPATH=`xcrun --show-sdk-path`/usr/include
+    export CPATH=$(xcrun --show-sdk-path)/usr/include
 
     # Set the LESSOPEN variable to use lesspipe, if installed
-    less_output=$(lesspipe.sh 2> /dev/null)
-    if [ $? -eq 0 ] ; then
+    if less_output=$(lesspipe.sh 2>/dev/null); then
         eval "$less_output"
     fi
 
@@ -112,14 +111,14 @@ fi
 # Customize ls colors.  On OS X we assume the coreutils package has been installed
 #  via MacPorts to provide 'dircolors' and the GNU ls.  You must also place
 #  /opt/local/libexec/gnubin at the front of your PATH
-if which dircolors > /dev/null && [ -f $HOME/.dir_colors ]; then
-   eval `dircolors $HOME/.dir_colors`
-   alias ls='ls -F --color=auto'
+if which dircolors > /dev/null && [ -f "$HOME"/.dir_colors ]; then
+    eval "$(dircolors -b "$HOME/.dir_colors")"
+    alias ls='ls -F --color=auto'
 fi
 
 # Directory navigation aliases
-alias ..='cd ..'
-alias ...='cd ../..'
+alias ..="cd .."
+alias ...="cd ../.."
 
 # usefull alias to browse your filesystem for heavy usage quickly
 alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -I {} du -hs {}'
@@ -132,8 +131,8 @@ ulimit -c 0
 
 set noclobber
 
-if [ -f $HOME/.prompt ]; then
-   source $HOME/.prompt
+if [ -f "$HOME"/.prompt ]; then
+   source "$HOME"/.prompt
    set_prompt
 fi
 
@@ -159,18 +158,18 @@ findclass () {
 }
 
 extract () {
-    if [ -f $1 ] ; then
-    case $1 in
-        *.tar.bz2)  tar xjf $1    ;;
-            *.tar.gz)   tar xzf $1    ;;
-            *.bz2)      bunzip2 $1    ;;
-            *.rar)      rar x $1      ;;
-            *.gz)       gunzip $1     ;;
-            *.tar)      tar xf $1     ;;
-            *.tbz2)     tar xjf $1    ;;
-            *.tgz)      tar xzf $1    ;;
-            *.zip)      unzip $1      ;;
-            *.Z)        uncompress $1 ;;
+    if [ -f "$1" ] ; then
+    case "$1" in
+        *.tar.bz2)  tar xjf "$1"    ;;
+            *.tar.gz)   tar xzf "$1"    ;;
+            *.bz2)      bunzip2 "$1"    ;;
+            *.rar)      rar x "$1"      ;;
+            *.gz)       gunzip "$1"     ;;
+            *.tar)      tar xf "$1"     ;;
+            *.tbz2)     tar xjf "$1"    ;;
+            *.tgz)      tar xzf "$1"    ;;
+            *.zip)      unzip "$1"      ;;
+            *.Z)        uncompress "$1" ;;
             *)          echo "'$1' cannot be extracted via extract()" ;;
          esac
     else
@@ -179,16 +178,16 @@ extract () {
 }
 
 psgrep () {
-    if [ ! -z $1 ] ; then
-    echo "Grepping for processes matching $1..."
-    ps aux | grep $1 | grep -v grep
+    if [ -n "$1" ] ; then
+        echo "Grepping for processes matching $1..."
+        ps aux | grep "$1" | grep -v grep
     else
-    echo "!! Need name to grep for"
+        echo "!! Need name to grep for"
     fi
 }
 
 es () {
-    if [ ! -z $1 ] ; then
+    if [ -n "$1" ] ; then
         curl -s -XGET "$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
     else
         echo "Please specify the uuid"
@@ -198,7 +197,7 @@ es () {
 #
 # Source your location or host specific .bashrc file here
 #
-for f in $HOME/.bashrc-*; do
+for f in "$HOME"/.bashrc-*; do
 
     ## Check if the glob gets expanded to existing files.
     ## If not, f here will be exactly the pattern above
