@@ -51,7 +51,8 @@ export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 # Point nethack to my personal config file
 #export NETHACKOPTIONS="@/usr/lib/games/nethackdir/config/nethackrc-jerrell"
 
-export CLASSPATH=$CLASSPATH:.
+# Append current directory to CLASSPATH (handles empty CLASSPATH cleanly)
+export CLASSPATH="${CLASSPATH:+$CLASSPATH:}."
 
 # Create an alias for emacsclient, starting (and connecting to) an Emacs daemon if one already isn't running
 alias e='emacsclient --no-wait --alternate-editor=""'
