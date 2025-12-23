@@ -9,7 +9,8 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
+    # shellcheck disable=SC1091
+    source /etc/bashrc
 fi
 
 # If not running interactively, don't do anything
@@ -151,6 +152,7 @@ ulimit -c 0
 set -o noclobber
 
 if [ -f "$HOME"/.prompt ]; then
+   # shellcheck disable=SC1091
    source "$HOME"/.prompt
    set_prompt
 fi
@@ -206,6 +208,7 @@ extract () {
 psgrep () {
     if [ -n "$1" ] ; then
         echo "Grepping for processes matching $1..."
+        # shellcheck disable=SC2009
         ps aux | grep "$1" | grep -v grep
     else
         echo "!! Need name to grep for"
@@ -228,7 +231,7 @@ for f in "$HOME"/.bashrc-*; do
     ## Check if the glob gets expanded to existing files.
     ## If not, f here will be exactly the pattern above
     ## and the exists test will evaluate to false.
-    [ -e "$f" ] && . "$f"
+    [ -e "$f" ] && source "$f"
 
     ## Break after the first match
     break
