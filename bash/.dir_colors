@@ -98,9 +98,14 @@ EXEC 01;35
 
 # video formats
 .avi 01;32
+.flv 01;32
+.m4v 01;32
+.mov 01;32
 .mp4 01;32
+.mpg 01;32
 .mkv 01;32
 .webm 01;32
+.wmv 01;32
 
 # source code files
 .css 00;33
