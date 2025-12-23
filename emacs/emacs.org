@@ -142,7 +142,8 @@ Stop at the end of a file when moving the cursor down, don't just add lines
 TODO: Is there a better section for this?
 makes killing/yanking interact with clipboard X11 selection
 #+BEGIN_SRC emacs-lisp
-(setq x-select-enable-clipboard t)
+(when (eq window-system 'x)
+  (setq x-select-enable-clipboard t))
 #+END_SRC
 
 Flash the frame to represent a bell rather than play a sound
