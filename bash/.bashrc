@@ -127,7 +127,8 @@ alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
 # Prevent core dumps
 ulimit -c 0
 
-set noclobber
+# Prevent accidental overwriting of existing files when using > redirection
+set -o noclobber
 
 if [ -f "$HOME"/.prompt ]; then
    source "$HOME"/.prompt
