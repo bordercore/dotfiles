@@ -1034,18 +1034,9 @@ Diminish org-indent mode
 Whenever a TODO entry is created, add a timestamp. [[https://stackoverflow.com/questions/12262220/add-created-date-property-to-todos-in-org-mode][Source]]
 
 #+begin_src emacs-lisp
-(defadvice org-todo (after mrb/created-timestamp-advice activate)
-  "Insert a CREATED property using org-expiry.el for TODO entries"
-  (mrb/insert-created-timestamp)
-)
+(advice-add 'org-todo :after #'mrb/insert-created-timestamp)
 #+end_src
 
-Make it active
-
-#+begin_src emacs-lisp
-(ad-activate 'org-todo)
-#+end_src
-this is text
 ** Auto-show Emphasis Markers
 
 This package makes it much easier to edit Org documents when ~org-hide-emphasis-markers~ is enabled. It temporarily shows the emphasis markers around certain markup elements when you place your cursor inside of them.
@@ -1372,17 +1363,16 @@ Add more keywords for font-lock hilighlighting
 If the matching paren is offscreen, show the matching line in the echo area
 See http://www.emacswiki.org/emacs/ShowParenMode
 #+BEGIN_SRC emacs-lisp
-(defadvice show-paren-function
-      (after show-matching-paren-offscreen activate)
-      "If the matching paren is offscreen, show the matching line in the
-        echo area. Has no effect if the character before point is not of
-        the syntax class ')'."
-      (interactive)
-      (let* ((cb (char-before (point)))
-             (matching-text (and cb
-                                 (char-equal (char-syntax cb) ?\) )
-                                 (blink-matching-open))))
-        (when matching-text (message matching-text))))
+(defun show-matching-paren-offscreen ()
+  "If the matching paren is offscreen, show the matching line in the echo area.
+Has no effect if the character before point is not of the syntax class ')'."
+  (let* ((cb (char-before (point)))
+         (matching-text (and cb
+                            (char-equal (char-syntax cb) ?\) )
+                            (blink-matching-open))))
+    (when matching-text (message matching-text))))
+
+(advice-add 'show-paren-function :after #'show-matching-paren-offscreen)
 #+END_SRC
 
 ** Magit
@@ -1403,10 +1393,12 @@ Custom key binding for the often-used "magit-status" command
 full screen magit-status
 http://whattheemacsd.com/setup-magit.el-01.html
 #+BEGIN_SRC emacs-lisp
-(defadvice magit-status (around magit-fullscreen activate)
+(defun magit-fullscreen-wrapper (orig-fun &rest args)
   (window-configuration-to-register :magit-fullscreen)
-  ad-do-it
+  (apply orig-fun args)
   (delete-other-windows))
+
+(advice-add 'magit-status :around #'magit-fullscreen-wrapper)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
