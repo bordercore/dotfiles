@@ -776,7 +776,7 @@ This requires installation of the "ag" binary.
 (use-package ag
   :commands ag
   :init
-  (setq ag-highlight-search 't)
+  (setq ag-highlight-search t)
   :config
   ;; Focus the search buffer after a search
   (add-hook 'ag-search-finished-hook (lambda () (pop-to-buffer next-error-last-buffer))))
