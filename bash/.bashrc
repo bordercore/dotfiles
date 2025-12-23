@@ -1,43 +1,45 @@
-# Master .bashrc file
+# shellcheck shell=bash
+# ------------------------------------------------------------------------------
+# MASTER .BASHRC FILE
 #   by F. Jerrell Schivers
-#
-# TODO: Split this up into .bash_functions, .bash_aliases, and .bash_prompt.  Then:
-#   if [ -f ~/.bash_functions ]; then
-#      . ~/.bash_functions
-#  fi
+# ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# SOURCE GLOBAL DEFINITIONS
+# ------------------------------------------------------------------------------
 
-# Source global definitions
 if [ -f /etc/bashrc ]; then
     # shellcheck disable=SC1091
     source /etc/bashrc
 fi
 
+# ------------------------------------------------------------------------------
+# INTERACTIVE SHELL CHECK
+# ------------------------------------------------------------------------------
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# don't put duplicate lines in the history. See bash(1) for more options
-#export HISTCONTROL=ignoredups
+# ------------------------------------------------------------------------------
+# ENVIRONMENT VARIABLES
+# ------------------------------------------------------------------------------
 
-# We want the 256 color mode of xterm.  Among other things, tmux takes advantage of this.
+# Terminal settings
 export TERM=xterm-256color
 
-# Set the maximum number of lines kept in history
+# History settings
 export HISTFILESIZE=10000
-
-# Add a timestamp for history
 export HISTTIMEFORMAT='%Y-%b-%d %H:%M:%S '
+#export HISTCONTROL=ignoredups
 
-# Set the default editor
+# Editor settings
 export VISUAL="emacs -nw --no-desktop"
-
-# Set my Emacs theme
 export EMACS_THEME=doom-outrun-electric
 
-# Setup GIT environment
+# Git settings
 export GIT_EDITOR="emacs --no-desktop"
 export GIT_AUTHOR_EMAIL=jerrell@bordercore.com
-export GIT_AUTHOR_NAME='F. Jerrell Schivers'
+export GIT_AUTHOR_NAME="F. Jerrell Schivers"
 
 # LESS options
 #   --ignore-case: searches in less should not be case-sensitive
@@ -45,33 +47,64 @@ export GIT_AUTHOR_NAME='F. Jerrell Schivers'
 #   --RAW-CONTROL-CHARS: cause ANSI "color" escape sequences to be output in "raw" form
 export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+# Support for color man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
 
-# Point nethack to my personal config file
-#export NETHACKOPTIONS="@/usr/lib/games/nethackdir/config/nethackrc-jerrell"
-
-# Append current directory to CLASSPATH (handles empty CLASSPATH cleanly)
+# Java CLASSPATH - append current directory
 export CLASSPATH="${CLASSPATH:+$CLASSPATH:}."
 
-# Create an alias for emacsclient, starting (and connecting to) an Emacs daemon if one already isn't running
-alias e='emacsclient --no-wait --alternate-editor=""'
+# ------------------------------------------------------------------------------
+# PATH CONFIGURATION
+# ------------------------------------------------------------------------------
 
-# Set up misc aliases
+# uv binaries are installed here
+export PATH="$PATH:$HOME/.local/bin"
+
+# ------------------------------------------------------------------------------
+# SHELL OPTIONS
+# ------------------------------------------------------------------------------
+
+# Prevent core dumps
+ulimit -c 0
+
+# Prevent accidental overwriting of existing files when using > redirection
+set -o noclobber
+
+# ------------------------------------------------------------------------------
+# TOOL INITIALIZATION
+# ------------------------------------------------------------------------------
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+# Use pyenv to support earlier versions of Python (eg Python 3.12.x)
+if command -v pyenv &> /dev/null; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+fi
+
+# Customize ls colors. On macOS we assume coreutils is installed via MacPorts
+# to provide 'dircolors' and GNU ls. Place /opt/local/libexec/gnubin in PATH.
+if which dircolors > /dev/null && [ -f "$HOME"/.dir_colors ]; then
+    eval "$(dircolors -b "$HOME/.dir_colors")"
+    alias ls='ls -F --color=auto'
+fi
+
+# ------------------------------------------------------------------------------
+# ALIASES - File Operations
+# ------------------------------------------------------------------------------
+
 alias ccc="rm *~"
-alias dls="ls -l | grep \"^d\""
-alias f="find . |grep "
-alias grep="grep --directories=skip --color=auto"
-alias mp='mypy --config-file "$HOME/mypy.in"'
 alias mv="mv -i"
-alias p3="python3"
-alias pl='pylint -v --rc-file="$HOME/dev/django/bordercore/pyproject.toml"'
-alias pp='python -mjson.tool'  # JSON pretty-printer
-alias vlc="vlc -q"
-
-alias cdiff="git -c color.diff.old='red bold' \
-    -c color.diff.new='green bold' \
-    diff --no-index --word-diff=color"
+alias rm="rm -i"
 
 # List files sorted by modification time, long format, human-readable sizes, ignore backups
 # Use eza if available (with git status and header), otherwise fall back to ls
@@ -93,18 +126,60 @@ else
     alias rls="ls -l -r -h -B -t"
 fi
 
-alias rm="rm -i"
+alias dls="ls -l | grep \"^d\""
+alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
+
+# ------------------------------------------------------------------------------
+# ALIASES - Directory Navigation
+# ------------------------------------------------------------------------------
+
+alias ..="cd .."
+alias ...="cd ../.."
+
+# ------------------------------------------------------------------------------
+# ALIASES - Development Tools
+# ------------------------------------------------------------------------------
+
+# Emacs
+alias e='emacsclient --no-wait --alternate-editor=""'
+
+# Python
+alias p3="python3"
+alias mp='mypy --config-file "$HOME/mypy.in"'
+alias pl='pylint -v --rc-file="$HOME/dev/django/bordercore/pyproject.toml"'
+alias pp='python -mjson.tool'  # JSON pretty-printer
+
+# Git
+alias cdiff="git -c color.diff.old='red bold' \
+    -c color.diff.new='green bold' \
+    diff --no-index --word-diff=color"
+
+# ------------------------------------------------------------------------------
+# ALIASES - System Utilities
+# ------------------------------------------------------------------------------
+
+alias f="find . |grep "
+alias grep="grep --directories=skip --color=auto"
 alias sniff="sudo tethereal -n -l"
 alias tf='tail -f'
 alias tw='tmux rename-window'
+alias vlc="vlc -q"
 
-# Run a command and copy both stdout and stderr to the clipboard.
-#  Usage: clipall some_command [args...]
+# Show disk usage for items in current directory, sorted by size
+alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -I {} du -hs {}'
+
+# ------------------------------------------------------------------------------
+# FUNCTIONS
+# ------------------------------------------------------------------------------
+
+# Run a command and copy both stdout and stderr to the clipboard
+#   Usage: clipall some_command [args...]
 function clipall () {
     "$@" 2>&1 | xclip -selection clipboard
     echo "[stdout+stderr copied to clipboard]"
 }
 
+# Convert HTML from clipboard to Markdown (Linux version, macOS override below)
 html2md() {
     xclip -o -selection clipboard -t text/html \
       | pandoc -r html-native_divs-native_spans \
@@ -114,11 +189,74 @@ html2md() {
       | xclip -i -selection clipboard
 }
 
-# Mac-specific stuff here
+# Set DISPLAY environment variable
+function dis {
+    export DISPLAY=$1:0.0
+}
+
+# Search for a class in JAR files
+findclass () {
+    [[ -z "$1" ]] && { echo "Usage: findclass CLASSNAME" >&2; return 1; }
+
+    find . -name "*.jar" -exec sh -c '
+        classname="$1"
+        shift
+        for file do
+            echo "Processing $file"
+            jar -tf "$file" | grep -Fi "${classname}.class"
+        done
+    ' sh "$1" {} +
+}
+
+# Extract various archive formats
+extract () {
+    if [ -f "$1" ] ; then
+        case "$1" in
+            *.tar.bz2)  tar xjf "$1"    ;;
+            *.tar.gz)   tar xzf "$1"    ;;
+            *.bz2)      bunzip2 "$1"    ;;
+            *.rar)      rar x "$1"      ;;
+            *.gz)       gunzip "$1"     ;;
+            *.tar)      tar xf "$1"     ;;
+            *.tbz2)     tar xjf "$1"    ;;
+            *.tgz)      tar xzf "$1"    ;;
+            *.zip)      unzip "$1"      ;;
+            *.Z)        uncompress "$1" ;;
+            *)          echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Search for processes by name
+psgrep () {
+    if [ -n "$1" ] ; then
+        echo "Grepping for processes matching $1..."
+        # shellcheck disable=SC2009
+        ps aux | grep "$1" | grep -v grep
+    else
+        echo "!! Need name to grep for"
+    fi
+}
+
+# Query Elasticsearch by UUID
+es () {
+    if [ -n "$1" ] ; then
+        curl -s -XGET "$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
+    else
+        echo "Please specify the uuid"
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# PLATFORM-SPECIFIC (macOS)
+# ------------------------------------------------------------------------------
+
 if [ "$(uname)" == "Darwin" ]; then
 
-    # Inspired by https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
-
+    # Convert HTML from clipboard to Markdown (macOS version)
+    # https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
     html2md() {
         swift "$HOME/bin/pbpaste.swift" \
           | pandoc -r html-native_divs-native_spans \
@@ -135,127 +273,35 @@ if [ "$(uname)" == "Darwin" ]; then
 
 fi
 
-# Customize ls colors.  On OS X we assume the coreutils package has been installed
-#  via MacPorts to provide 'dircolors' and the GNU ls.  You must also place
-#  /opt/local/libexec/gnubin at the front of your PATH
-if which dircolors > /dev/null && [ -f "$HOME"/.dir_colors ]; then
-    eval "$(dircolors -b "$HOME/.dir_colors")"
-    alias ls='ls -F --color=auto'
-fi
-
-# Directory navigation aliases
-alias ..="cd .."
-alias ...="cd ../.."
-
-# usefull alias to browse your filesystem for heavy usage quickly
-alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -I {} du -hs {}'
-
-# Look for dot files
-alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
-
-# Use pyenv to support earlier versions of Python (eg Python 3.12.x)
-if command -v pyenv &> /dev/null; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-fi
-
-# uv binaries are installed here
-export PATH="$PATH:$HOME/.local/bin"
-
-# Prevent core dumps
-ulimit -c 0
-
-# Prevent accidental overwriting of existing files when using > redirection
-set -o noclobber
+# ------------------------------------------------------------------------------
+# PROMPT CONFIGURATION
+# ------------------------------------------------------------------------------
 
 if [ -f "$HOME"/.prompt ]; then
-   # shellcheck disable=SC1091
-   source "$HOME"/.prompt
-   set_prompt
+    # shellcheck disable=SC1091
+    source "$HOME"/.prompt
+    set_prompt
 fi
 
-# Support for color man pages
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+# ------------------------------------------------------------------------------
+# HOST-SPECIFIC CONFIGURATION
+# ------------------------------------------------------------------------------
 
-function dis {
-
-    export DISPLAY=$1:0.0
-
-}
-
-findclass () {
-    [[ -z "$1" ]] && { echo "Usage: findclass CLASSNAME" >&2; return 1; }
-
-    find . -name "*.jar" -exec sh -c '
-        classname="$1"
-        shift
-        for file do
-            echo "Processing $file"
-            jar -tf "$file" | grep -Fi "${classname}.class"
-        done
-    ' sh "$1" {} +
-}
-
-extract () {
-    if [ -f "$1" ] ; then
-    case "$1" in
-        *.tar.bz2)  tar xjf "$1"    ;;
-            *.tar.gz)   tar xzf "$1"    ;;
-            *.bz2)      bunzip2 "$1"    ;;
-            *.rar)      rar x "$1"      ;;
-            *.gz)       gunzip "$1"     ;;
-            *.tar)      tar xf "$1"     ;;
-            *.tbz2)     tar xjf "$1"    ;;
-            *.tgz)      tar xzf "$1"    ;;
-            *.zip)      unzip "$1"      ;;
-            *.Z)        uncompress "$1" ;;
-            *)          echo "'$1' cannot be extracted via extract()" ;;
-         esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}
-
-psgrep () {
-    if [ -n "$1" ] ; then
-        echo "Grepping for processes matching $1..."
-        # shellcheck disable=SC2009
-        ps aux | grep "$1" | grep -v grep
-    else
-        echo "!! Need name to grep for"
-    fi
-}
-
-es () {
-    if [ -n "$1" ] ; then
-        curl -s -XGET "$ELASTICSEARCH_ENDPOINT:9200/bordercore/_search?pretty=true&q=uuid:$1"
-    else
-        echo "Please specify the uuid"
-    fi
-}
-
-#
-# Source your location or host specific .bashrc file here
-#
+# Source location or host specific .bashrc file (e.g., .bashrc-work, .bashrc-home)
 for f in "$HOME"/.bashrc-*; do
-
-    ## Check if the glob gets expanded to existing files.
-    ## If not, f here will be exactly the pattern above
-    ## and the exists test will evaluate to false.
+    # Check if the glob gets expanded to existing files.
+    # If not, f here will be exactly the pattern above
+    # and the exists test will evaluate to false.
+    # shellcheck disable=SC1090
     [ -e "$f" ] && source "$f"
 
-    ## Break after the first match
+    # Break after the first match
     break
-
 done
+
+# ------------------------------------------------------------------------------
+# CLEANUP
+# ------------------------------------------------------------------------------
 
 # Remove duplicate PATH entries
 # https://www.linuxjournal.com/content/removing-duplicate-path-entries-reboot
