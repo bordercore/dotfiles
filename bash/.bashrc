@@ -176,8 +176,6 @@ function dis {
 findclass () {
     [[ -z "$1" ]] && { echo "Usage: findclass CLASSNAME" >&2; return 1; }
 
-    local classname="$1"
-
     find . -name "*.jar" -exec sh -c '
         classname="$1"
         shift
