@@ -136,6 +136,14 @@ alias ducks='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sor
 # Look for dot files
 alias l.='ls -d .[[:alnum:]]* 2> /dev/null || echo "No hidden file here..."'
 
+# Use pyenv to support earlier versions of Python (eg Python 3.12.x)
+if command -v pyenv &> /dev/null; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+fi
+
 # Prevent core dumps
 ulimit -c 0
 
