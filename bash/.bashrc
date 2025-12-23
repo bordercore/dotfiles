@@ -108,9 +108,6 @@ if [ "$(uname)" == "Darwin" ]; then
           | pbcopy
     }
 
-    # Required for building some packages using Catalina
-    export CPATH=$(xcrun --show-sdk-path)/usr/include
-
     # Set the LESSOPEN variable to use lesspipe, if installed
     if less_output=$(lesspipe.sh 2>/dev/null); then
         eval "$less_output"
