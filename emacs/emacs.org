@@ -63,6 +63,11 @@ flyspell-mode, is installed here by MacPorts on OS X.
         '("/opt/local/bin")))
 #+END_SRC
 
+Suppress native-compiler warnings during startup
+#+BEGIN_SRC emacs-lisp
+(setq native-comp-async-report-warnings-errors nil)
+#+END_SRC
+
 Third party packages go here
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/elisp")
