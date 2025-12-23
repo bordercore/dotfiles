@@ -698,9 +698,7 @@ Use ivy for file and buffer completions
    company-require-match nil
    company-minimum-prefix-length 0
 
-   ;; get only preview
-   company-frontends '(company-preview-frontend)
-   ;; Display a drop down
+   ;; Display a drop down with preview
    company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)
    ))
 #+end_src
