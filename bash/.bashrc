@@ -61,11 +61,12 @@ alias ccc="rm *~"
 alias dls="ls -l | grep \"^d\""
 alias f="find . |grep "
 alias grep="grep --directories=skip --color=auto"
-alias mp="mypy --config-file $HOME/mypy.ini"
+alias mp='mypy --config-file "$HOME/mypy.in"'
 alias mv="mv -i"
-alias pl="pylint --load-plugins pylint_django --django-settings-module=config.settings.dev"
+alias p3="python3"
+alias pl='pylint -v --rc-file="$HOME/dev/django/bordercore/pyproject.toml"'
 alias pp='python -mjson.tool'  # JSON pretty-printer
-alias rls="ls -l -r -h -B -t"
+alias vlc="vlc -q"
 
 alias cdiff="git -c color.diff.old='red bold' \
     -c color.diff.new='green bold' \
