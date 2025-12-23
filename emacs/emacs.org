@@ -576,6 +576,11 @@ Add an "unfill" function that is the opposite of fill-paragraph
 
 ** Window Management
 
+;; make new frames start maximized
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
 #+BEGIN_SRC emacs-lisp
 (defun switch-registers()
   (interactive)
