@@ -77,24 +77,35 @@ alias sniff="sudo tethereal -n -l"
 alias tf='tail -f'
 alias tw='tmux rename-window'
 
-alias html2md="xclip -o -selection clipboard -t text/html \
+# Run a command and copy both stdout and stderr to the clipboard.
+#  Usage: clipall some_command [args...]
+function clipall () {
+    "$@" 2>&1 | xclip -selection clipboard
+    echo "[stdout+stderr copied to clipboard]"
+}
+
+html2md() {
+    xclip -o -selection clipboard -t text/html \
       | pandoc -r html-native_divs-native_spans \
-      --filter $HOME/.pandoc_filter.py \
+      --filter "$HOME/.pandoc_filter.py" \
       -w markdown-raw_html-link_attributes-header_attributes-smart-smart-tex_math_dollars \
-      | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
-      | xclip -i -selection clipboard"
+      | awk '{gsub(/\xc2\xa0/," "); print}' \
+      | xclip -i -selection clipboard
+}
 
 # Mac-specific stuff here
 if [ "$(uname)" == "Darwin" ]; then
 
     # Inspired by https://stackoverflow.com/questions/17217450/how-to-get-html-data-out-of-of-the-os-x-pasteboard-clipboard
 
-    alias html2md="swift $HOME/bin/pbpaste.swift \
+    html2md() {
+        swift "$HOME/bin/pbpaste.swift" \
           | pandoc -r html-native_divs-native_spans \
-          --filter $HOME/.pandoc_filter.py \
+          --filter "$HOME/.pandoc_filter.py" \
           -w markdown-raw_html-link_attributes-header_attributes-smart \
-          | awk '{gsub(/\xc2\xa0/,\" \"); print}' \
-          | pbcopy"
+          | awk '{gsub(/\xc2\xa0/," "); print}' \
+          | pbcopy
+    }
 
     # Required for building some packages using Catalina
     export CPATH=$(xcrun --show-sdk-path)/usr/include
