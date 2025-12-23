@@ -1618,7 +1618,7 @@ Run an external Python script that collects the staged diff in the current Git r
 
 #+begin_src emacs-lisp
 (use-package codeium
-  :ensure f
+  :ensure nil
   :init
   ;; use globally
   ;; (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
