@@ -40,10 +40,9 @@ export GIT_AUTHOR_EMAIL=jerrell@bordercore.com
 export GIT_AUTHOR_NAME='F. Jerrell Schivers'
 
 # LESS options
-#
-#   Searches in less should not be case-sensitive.
-#   Set tab stops to be multiples of 4.
-#   Cause ANSI "color" escape sequences to be output in "raw" form
+#   --ignore-case: searches in less should not be case-sensitive
+#   --tabs=4: set tab stops to be multiples of 4
+#   --RAW-CONTROL-CHARS: cause ANSI "color" escape sequences to be output in "raw" form
 export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -73,6 +72,26 @@ alias vlc="vlc -q"
 alias cdiff="git -c color.diff.old='red bold' \
     -c color.diff.new='green bold' \
     diff --no-index --word-diff=color"
+
+# List files sorted by modification time, long format, human-readable sizes, ignore backups
+# Use eza if available (with git status and header), otherwise fall back to ls
+if command -v eza >/dev/null 2>&1; then
+    # eza options:
+    #   --long: long format (detailed listing with permissions, owner, size, date)
+    #   --header: show header row with column names
+    #   --git: show git status for each file (tracked/ignored/modified)
+    #   --sort newest: sort by modification time, newest first
+    #   --ignore-glob "*~": ignore backup files (files ending with ~)
+    alias rls="eza --long --header --git --sort newest --ignore-glob '*~'"
+else
+    # ls options:
+    #   -l: long format (detailed listing with permissions, owner, size, date)
+    #   -r: reverse sort order (reverses the -t time sort, showing oldest files first)
+    #   -h: human-readable file sizes (e.g., 1K, 234M, 2.5G instead of bytes)
+    #   -B: ignore backup files (files ending with ~)
+    #   -t: sort by modification time (newest first by default; combined with -r shows oldest first)
+    alias rls="ls -l -r -h -B -t"
+fi
 
 alias rm="rm -i"
 alias sniff="sudo tethereal -n -l"
