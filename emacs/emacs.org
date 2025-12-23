@@ -1088,11 +1088,6 @@ hilight matching pairs of parentheses and other characters
 (show-paren-mode t)
 #+END_SRC
 
-Insert parentheses, braces, quotes and the like in matching pairs
-#+BEGIN_SRC emacs-lisp
-(electric-pair-mode t)
-#+END_SRC
-
 C support
 #+BEGIN_SRC emacs-lisp
 (add-hook 'c-mode-common-hook
