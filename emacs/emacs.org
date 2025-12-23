@@ -58,9 +58,8 @@ Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 Add /opt/local/bin to the exec-path. Aspell, which is used by
 flyspell-mode, is installed here by MacPorts on OS X.
 #+BEGIN_SRC emacs-lisp
-(setq exec-path
-      (append exec-path
-        '("/opt/local/bin")))
+(when (file-directory-p "/opt/local/bin")
+  (add-to-list 'exec-path "/opt/local/bin"))
 #+END_SRC
 
 Suppress native-compiler warnings during startup
