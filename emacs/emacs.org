@@ -181,7 +181,10 @@ eg kill-region when no region is selected will delete the current line.
 See http://www.emacswiki.org/WholeLineOrRegion#toc3.
 Most useful feature: C-w will delete the current line if no region is selected.
 #+BEGIN_SRC emacs-lisp
-(whole-line-or-region-mode t)
+(use-package whole-line-or-region
+  :ensure t
+  :config
+  (whole-line-or-region-mode 1))
 #+END_SRC
 
 auto-save buffers when switching between buffers or when an Emacs frame lose focus
