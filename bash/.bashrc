@@ -53,9 +53,6 @@ export LESS="--ignore-case --tabs=4 --RAW-CONTROL-CHARS"
 
 export CLASSPATH=$CLASSPATH:.
 
-# Options for the ack grep replacement
-export ACK_OPTIONS="--ignore-case --ignore-dir=$WWW/docs --ignore-dir=$WWW/rdf --ignore-dir=$WWW/yui"
-
 # Create an alias for emacsclient, starting (and connecting to) an Emacs daemon if one already isn't running
 alias e='emacsclient --no-wait --alternate-editor=""'
 
