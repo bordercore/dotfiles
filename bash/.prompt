@@ -1,15 +1,25 @@
 # shellcheck shell=bash
-# Master .prompt file for setting the BASH prompt
-#  by F. Jerrell Schivers
-#  based on work by KrON from windowmaker on IRC and Spidey 08/06
+# ------------------------------------------------------------------------------
+# MASTER .PROMPT FILE
+#   by F. Jerrell Schivers
+#   based on work by KrON from windowmaker on IRC and Spidey 08/06
+# ------------------------------------------------------------------------------
 
 function set_prompt {
 
     EXITSTATUS="$?"
 
+    # ------------------------------------------------------------------------------
+    # EARLY RETURN CHECKS
+    # ------------------------------------------------------------------------------
+
     if [ "$TERM" == "dumb" ]; then
-    return
+        return
     fi
+
+    # ------------------------------------------------------------------------------
+    # COLOR DEFINITIONS
+    # ------------------------------------------------------------------------------
 
     # For a lighter version of any of these colors,
     #  replace the '0' with '1', eg turn green to
@@ -29,11 +39,15 @@ function set_prompt {
     local blue="\[\e[34m\]"
     local purple="\[\e[35m\]"
     local brown="\[\e[33m\]"
+    local bakred='\[\e[41m\]'   # Red Background
+
     local grad
     # shellcheck disable=SC2034,SC2155
     grad=$(tty|cut -d/ -f3)
 
-    local bakred='\[\e[41m\]'   # Red Background
+    # ------------------------------------------------------------------------------
+    # ERROR STATUS COMPONENT
+    # ------------------------------------------------------------------------------
 
     ERROR=
 
@@ -42,25 +56,37 @@ function set_prompt {
         ERROR=" $BOLD$white$bakred$EXITSTATUS$color_off"
     fi
 
+    # ------------------------------------------------------------------------------
+    # JOBS COMPONENT
+    # ------------------------------------------------------------------------------
+
     # Capture the number of jobs
     JOBS=$(jobs | wc -l | awk '{print $1}')
 
     if [ "$JOBS" -ne 0 ]; then
-    if [ "$JOBS" -eq 1 ]; then
-        JOBS=" $green($BOLD${red}1 job$color_off$green)"
+        if [ "$JOBS" -eq 1 ]; then
+            JOBS=" $green($BOLD${red}1 job$color_off$green)"
+        else
+            JOBS=" $green($BOLD$red$JOBS jobs$color_off$green)"
+        fi
     else
-        JOBS=" $green($BOLD$red$JOBS jobs$color_off$green)"
+        JOBS=""
     fi
-    else
-    JOBS=""
-    fi
+
+    # ------------------------------------------------------------------------------
+    # SSH COMPONENT
+    # ------------------------------------------------------------------------------
 
     # Set SSH_FLAG only if this is a remote (ssh) connection.  This will be used in the prompt
     local SSH_IP
     SSH_IP=$(echo "$SSH_CLIENT" | awk '{ print $1 }')
     if [ "$SSH_IP" ]; then
-    local SSH_FLAG="$red@$yellow\h"
+        local SSH_FLAG="$red@$yellow\h"
     fi
+
+    # ------------------------------------------------------------------------------
+    # PATH COMPONENT
+    # ------------------------------------------------------------------------------
 
     # When displaying the PWD in the prompt, we want to truncate it so avoid displaying excessively long paths
     MAXLENGTH=100
@@ -68,9 +94,13 @@ function set_prompt {
     LENGTH=${#MYPWD}
 
     if [ $(( LENGTH )) -gt $MAXLENGTH ] ; then
-    MYPWD=${MYPWD:$LENGTH-$MAXLENGTH:$MAXLENGTH}
-    MYPWD="...$MYPWD"
+        MYPWD=${MYPWD:$LENGTH-$MAXLENGTH:$MAXLENGTH}
+        MYPWD="...$MYPWD"
     fi
+
+    # ------------------------------------------------------------------------------
+    # GIT COMPONENT
+    # ------------------------------------------------------------------------------
 
     # bash completion support for Git: Ubuntu
     # shellcheck disable=SC1090
@@ -90,6 +120,10 @@ function set_prompt {
         GIT="$yellow$(__git_ps1 ' (%s)')"
     fi
 
+    # ------------------------------------------------------------------------------
+    # PYTHON VIRTUALENV COMPONENT
+    # ------------------------------------------------------------------------------
+
     # Determine active Python virtualenv details.
     if test -z "$VIRTUAL_ENV" ; then
         PYTHON_VIRTUALENV=""
@@ -97,7 +131,9 @@ function set_prompt {
         PYTHON_VIRTUALENV="${blue}[$(basename "$VIRTUAL_ENV")]${color_off}"
     fi
 
-#    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white$NORMAL"
+    # ------------------------------------------------------------------------------
+    # PROMPT ASSEMBLY
+    # ------------------------------------------------------------------------------
 
     export PS1="${purple}┌ $red\$(date +%l:%M%P\ %m/%d) $PYTHON_VIRTUALENV $purple$MYPWD\n${purple}└ $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$GIT $purple-> $white$NORMAL"
 
@@ -105,8 +141,15 @@ function set_prompt {
 
 }
 
+# ------------------------------------------------------------------------------
+# PROMPT INITIALIZATION
+# ------------------------------------------------------------------------------
+
 PROMPT_COMMAND=set_prompt
 
+# ------------------------------------------------------------------------------
+# COLOR REFERENCE
+# ------------------------------------------------------------------------------
 
 # Colors:
 #
