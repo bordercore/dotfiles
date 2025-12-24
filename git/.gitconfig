@@ -1,10 +1,11 @@
+# User identification
 [user]
     name = F. Jerrell Schivers
     email = jerrell@bordercore.com
+
+# Color and display settings
 [color]
     ui = true
-[branch]
-    autosetuprebase = always
 [color "diff"]
     meta = yellow
     frag = cyan
@@ -15,9 +16,15 @@
     added = yellow
     changed = green
     untracked = cyan
+
+# Core Git behavior
 [core]
     pager = delta
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+[branch]
+    autosetuprebase = always
+
+# Custom command aliases
 [alias]
     co = "!f() { git checkout $(git branch --all | grep \"$1\" | grep -v HEAD | head -n 1 | sed 's/^[* ] //;s#remotes/[^/]*/##'); }; f"
     glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=format:%m-%d-%Y
@@ -27,19 +34,23 @@
     s = status -sb
     st = stash list --format='%gd %cd %s'
     undo = reset --soft HEAD^
+
+# Credential storage (cross-platform: libsecret for Linux, osxkeychain for macOS)
 [credential]
     helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
     helper = osxkeychain
-[delta]
-    navigate = true    # use n and N to move between diff sections
+
+# Diff and merge settings
 [diff]
     colorMoved = default
 [interactive]
     diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
 [merge]
     conflictstyle = diff3
-[push]
-    default = simple
+
+# Status and push behavior
 [status]
     # show individual files in untracked directories
     showUntrackedFiles = all
@@ -53,6 +64,8 @@
 # Include local overrides (if file exists)
 [include]
     path = ~/.gitconfig.local
+
+# Git LFS (Large File Storage) filter configuration
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
