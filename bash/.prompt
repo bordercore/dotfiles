@@ -7,7 +7,7 @@ function set_prompt {
     EXITSTATUS="$?"
 
     if [ "$TERM" == "dumb" ]; then
-	return
+    return
     fi
 
     # For a lighter version of any of these colors,
@@ -34,26 +34,26 @@ function set_prompt {
 
     # If the last command resulted in an error, prominently display the exit status
     if [ "$EXITSTATUS" -ne "0" ]; then
-	    ERROR=" $BOLD$white$bakred$EXITSTATUS$color_off"
+        ERROR=" $BOLD$white$bakred$EXITSTATUS$color_off"
     fi
 
     # Capture the number of jobs
     JOBS=$(jobs | wc -l | awk '{print $1}')
 
     if [ "$JOBS" -ne 0 ]; then
-	if [ "$JOBS" -eq 1 ]; then
-	    JOBS=" $green($BOLD${red}1 job$color_off$green)"
-	else
-	    JOBS=" $green($BOLD$red$JOBS jobs$color_off$green)"
-	fi
+    if [ "$JOBS" -eq 1 ]; then
+        JOBS=" $green($BOLD${red}1 job$color_off$green)"
     else
-	JOBS=""
+        JOBS=" $green($BOLD$red$JOBS jobs$color_off$green)"
+    fi
+    else
+    JOBS=""
     fi
 
     # Set SSH_FLAG only if this is a remote (ssh) connection.  This will be used in the prompt
     local SSH_IP=$(echo $SSH_CLIENT | awk '{ print $1 }')
     if [ "$SSH_IP" ]; then
-	local SSH_FLAG="$red@$yellow\h"
+    local SSH_FLAG="$red@$yellow\h"
     fi
 
     # When displaying the PWD in the prompt, we want to truncate it so avoid displaying excessively long paths
@@ -62,8 +62,8 @@ function set_prompt {
     LENGTH=${#MYPWD}
 
     if [ $(( LENGTH )) -gt $MAXLENGTH ] ; then
-	MYPWD=${MYPWD:$LENGTH-$MAXLENGTH:$MAXLENGTH}
-	MYPWD="...$MYPWD"
+    MYPWD=${MYPWD:$LENGTH-$MAXLENGTH:$MAXLENGTH}
+    MYPWD="...$MYPWD"
     fi
 
     # bash completion support for Git: Ubuntu
@@ -81,12 +81,12 @@ function set_prompt {
         GIT="$yellow$(__git_ps1 ' (%s)')"
     fi
 
-	# Determine active Python virtualenv details.
-	if test -z "$VIRTUAL_ENV" ; then
-		PYTHON_VIRTUALENV=""
-	else
-		PYTHON_VIRTUALENV="${blue}[$(basename \"$VIRTUAL_ENV\")]${color_off}"
-	fi
+    # Determine active Python virtualenv details.
+    if test -z "$VIRTUAL_ENV" ; then
+        PYTHON_VIRTUALENV=""
+    else
+        PYTHON_VIRTUALENV="${blue}[$(basename \"$VIRTUAL_ENV\")]${color_off}"
+    fi
 
 #    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white$NORMAL"
 
