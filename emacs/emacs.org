@@ -308,11 +308,6 @@ Enable wheelmouse support
 Set the default fonts
 #+BEGIN_SRC emacs-lisp
 (set-face-attribute 'default nil :height 180)
-
-;; On "OS X", set the default font to "Monaco 18"
-(when (equal system-type 'darwin)
-  (set-face-attribute 'default nil :font "Monaco 18")
-  )
 #+END_SRC
 
 Window configuration
@@ -1766,6 +1761,15 @@ should be a symlink that matches the current theme.
   (when (file-exists-p file)
     (load-file file))
   )
+
+;; On macOS, ensure Menlo font is set after theme loads
+(when (equal system-type 'darwin)
+  ;; Set font for all frames (including new ones)
+  (add-to-list 'default-frame-alist '(font . "Menlo-16"))
+  ;; Set font for current frame
+  (set-face-attribute 'default nil
+                       :family "Menlo"
+                       :height 160))
 #+END_SRC
 
 * Wrapup
