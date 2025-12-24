@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Master .prompt file for setting the BASH prompt
 #  by F. Jerrell Schivers
 #  based on work by KrON from windowmaker on IRC and Spidey 08/06
@@ -17,16 +18,20 @@ function set_prompt {
     local color_off="\[\e[m\]"
     local BOLD="\[\e[1m\]"
     local NORMAL="\[\e[0m\]"
+    # shellcheck disable=SC2034
     local black="\[\e[30m\]"
     local red="\[\e[31m\]"
     local yellow="\[\e[33m\]"
     local green="\[\e[1;32m\]"
+    # shellcheck disable=SC2034
     local cyan="\[\e[1;36m\]"
     local white="\[\e[37m\]"
     local blue="\[\e[34m\]"
     local purple="\[\e[35m\]"
     local brown="\[\e[33m\]"
-    local grad=$(tty|cut -d/ -f3)
+    local grad
+    # shellcheck disable=SC2034,SC2155
+    grad=$(tty|cut -d/ -f3)
 
     local bakred='\[\e[41m\]'   # Red Background
 
@@ -51,14 +56,15 @@ function set_prompt {
     fi
 
     # Set SSH_FLAG only if this is a remote (ssh) connection.  This will be used in the prompt
-    local SSH_IP=$(echo $SSH_CLIENT | awk '{ print $1 }')
+    local SSH_IP
+    SSH_IP=$(echo "$SSH_CLIENT" | awk '{ print $1 }')
     if [ "$SSH_IP" ]; then
     local SSH_FLAG="$red@$yellow\h"
     fi
 
     # When displaying the PWD in the prompt, we want to truncate it so avoid displaying excessively long paths
     MAXLENGTH=100
-    MYPWD=$(echo $PWD | sed "s@$HOME@~@g")  # If we're in our home dir, then use ~ for $HOME
+    MYPWD=${PWD//$HOME/~}  # If we're in our home dir, then use ~ for $HOME
     LENGTH=${#MYPWD}
 
     if [ $(( LENGTH )) -gt $MAXLENGTH ] ; then
@@ -67,17 +73,20 @@ function set_prompt {
     fi
 
     # bash completion support for Git: Ubuntu
-    GIT_BASH_SCRIPT=/etc/bash_completion.d/git-prompt && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
+    # shellcheck disable=SC1090
+    GIT_BASH_SCRIPT=/etc/bash_completion.d/git-prompt && test -f "$GIT_BASH_SCRIPT" && source "$GIT_BASH_SCRIPT"
 
     # bash completion support for Git: CentOS (various versions)
-    GIT_BASH_SCRIPT=/etc/bash_completion.d/git && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
-    GIT_BASH_SCRIPT=/usr/share/git-core/contrib/completion/git-prompt.sh && test -f $GIT_BASH_SCRIPT && source $GIT_BASH_SCRIPT
+    # shellcheck disable=SC1090
+    GIT_BASH_SCRIPT=/etc/bash_completion.d/git && test -f "$GIT_BASH_SCRIPT" && source "$GIT_BASH_SCRIPT"
+    # shellcheck disable=SC1090
+    GIT_BASH_SCRIPT=/usr/share/git-core/contrib/completion/git-prompt.sh && test -f "$GIT_BASH_SCRIPT" && source "$GIT_BASH_SCRIPT"
 
-    GIT_PS1_SHOWDIRTYSTATE=1  # show unstaged (*) and staged (+) changes
-    GIT_PS1_SHOWUNTRACKEDFILES=1 # show untracked files
+    export GIT_PS1_SHOWDIRTYSTATE=1  # show unstaged (*) and staged (+) changes
+    export GIT_PS1_SHOWUNTRACKEDFILES=1 # show untracked files
 
     GIT=
-    if [ $(type -t __git_ps1) ]; then
+    if [ "$(type -t __git_ps1)" ]; then
         GIT="$yellow$(__git_ps1 ' (%s)')"
     fi
 
@@ -85,7 +94,7 @@ function set_prompt {
     if test -z "$VIRTUAL_ENV" ; then
         PYTHON_VIRTUALENV=""
     else
-        PYTHON_VIRTUALENV="${blue}[$(basename \"$VIRTUAL_ENV\")]${color_off}"
+        PYTHON_VIRTUALENV="${blue}[$(basename "$VIRTUAL_ENV")]${color_off}"
     fi
 
 #    export PS1="$purple- $red\$(date +%l:%M%P\ %m/%d) $green$MYPWD\n$purple- $brown\u$SSH_FLAG$green$JOBS$SFLAG$ERROR$yellow $purple-> $white$NORMAL"
