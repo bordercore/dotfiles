@@ -43,6 +43,16 @@
 [status]
     # show individual files in untracked directories
     showUntrackedFiles = all
+[push]
+    default = simple
+
+# Security: trusted repository directories
+# Machine-specific safe directories are configured in ~/.gitconfig.local
+# See git/.gitconfig.local.example for template
+
+# Include local overrides (if file exists)
+[include]
+    path = ~/.gitconfig.local
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f

@@ -1,3 +1,5 @@
 *~
 \#*#
 
+# Local git config (may contain sensitive paths)
+git/.gitconfig.local

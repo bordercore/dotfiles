@@ -1,0 +1,11 @@
+# Local Git configuration
+# Copy this file to ~/.gitconfig.local and customize for your machine
+# This file is gitignored and will not be committed to the repository
+
+# Security: trusted repository directories
+# Add directories that Git should trust even if owned by other users
+[safe]
+    directory = /path/to/your/trusted/directory
+    # Add additional directories as needed:
+    # directory = /another/trusted/path
+
