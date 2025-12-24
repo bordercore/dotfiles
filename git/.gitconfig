@@ -28,7 +28,8 @@
     st = stash list --format='%gd %cd %s'
     undo = reset --soft HEAD^
 [credential]
-    helper = cache --timeout=7200
+    helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+    helper = osxkeychain
 [delta]
     navigate = true    # use n and N to move between diff sections
 [diff]
