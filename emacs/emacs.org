@@ -821,7 +821,6 @@ This requires installation of the "ag" binary.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure org-plus-contrib
   :config
   ;; Turn on org-indent-mode for all files
   (setq org-startup-indented t)
@@ -861,8 +860,7 @@ This requires installation of the "ag" binary.
                                  (octave . t)
                                  (sql . t)
                                  (sqlite . t)
-                                 (perl . t)
-                                 (php . t)))
+                                 (perl . t)))
   ;; Use bash (rather than the default sh) as the command to invoke a shell
   (setq org-babel-sh-command "bash")
   ;; Turn on native code fontification
@@ -945,16 +943,6 @@ Define a function which toggles the return key binding between
     (define-key org-mode-map (kbd "RET") 'org-insert-heading-respect-content)
     (define-key org-mode-map (kbd "RET") 'org-return))
   )
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-expiry
-  :ensure org-plus-contrib
-  :config
-  (setq
-    org-expiry-created-property-name "CREATED" ; Name of property when an item is created
-    org-expiry-inactive-timestamps   t         ; Don't have everything in the agenda view
-  ))
 #+END_SRC
 
 Disable displaying the outline path in the echo area
