@@ -184,7 +184,7 @@ Most useful feature: C-w will delete the current line if no region is selected.
 (use-package whole-line-or-region
   :ensure t
   :config
-  (whole-line-or-region-mode 1))
+  (whole-line-or-region-global-mode 1))
 #+END_SRC
 
 auto-save buffers when switching between buffers or when an Emacs frame lose focus
