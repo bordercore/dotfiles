@@ -987,14 +987,6 @@ as safe to avoid a "apply unsafe local variable" warning.
   '(after-save-hook . org-gfm-export-to-markdown))
 #+end_src
 
-Diminish org-indent mode
-
-#+begin_src elisp
-(with-eval-after-load 'org-indent
-  (require 'diminish)
-  (diminish 'org-indent-mode))
-#+end_src
-
 ** Todo items
 #+BEGIN_SRC emacs-lisp
 (defun org-summary-todo (n-done n-not-done)
