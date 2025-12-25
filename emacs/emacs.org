@@ -1168,7 +1168,7 @@ Use flycheck for on-the-fly syntax checking
   :config
   ;; Tell flycheck to use eslint when in web-mode
   (flycheck-add-mode 'javascript-eslint 'web-mode)
-  :init (global-flycheck-mode))
+  (global-flycheck-mode))
 #+END_SRC
 
 Display flycheck error messages via posframe, which pops up a frame at point to show diagnostics without inserting text into the buffer or disrupting code layout.
@@ -1430,9 +1430,8 @@ Automatically display the process buffer on error
 #+BEGIN_SRC emacs-lisp
 (use-package diff-hl
   :ensure t
-  :init
-  (global-diff-hl-mode)
-)
+  :config
+  (global-diff-hl-mode))
 #+END_SRC
 
 ** YAML
