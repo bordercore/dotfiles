@@ -19,7 +19,8 @@
 
 # Core Git behavior
 [core]
-    pager = delta
+    # Use delta if available, otherwise fall back to less
+    pager = sh -c 'command -v delta >/dev/null 2>&1 && delta || less'
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [branch]
     autosetuprebase = always
@@ -44,7 +45,8 @@
 [diff]
     colorMoved = default
 [interactive]
-    diffFilter = delta --color-only
+    # Use delta if available, otherwise fall back to cat (pass-through)
+    diffFilter = sh -c 'command -v delta >/dev/null 2>&1 && delta --color-only || cat'
 [delta]
     navigate = true    # use n and N to move between diff sections
 [merge]
