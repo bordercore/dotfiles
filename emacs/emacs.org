@@ -1177,6 +1177,10 @@ Display flycheck error messages via posframe, which pops up a frame at point to 
 
 Add any directory-local variables found in bc/trusted-project-paths (found in locals.e) to the trusted project path. Typically used for setting ~flycheck-python-pylint-executable~ on a per-project basis.
 #+begin_src emacs-lisp
+(defvar bc/trusted-project-paths nil
+  "List of directory paths that are trusted for loading directory-local variables.
+Paths can be added via customize-variable or in local.el")
+
 (defun bc/within-trusted-project-p (dir)
   "Return non-nil if DIR is inside one of `bc/trusted-project-paths`."
   (let ((dir (file-truename (expand-file-name dir))))
