@@ -5,55 +5,48 @@
 Inspired by http://pages.sachachua.com/.emacs.d/Sacha.html
 
 * Table of Contents                                                     :TOC:
-- [[#emacs-initialization][Emacs initialization]]
-- [[#packages][Packages]]
+- [[#early-initialization-and-performance][Early Initialization & Performance]]
+- [[#package-management][Package Management]]
   - [[#sources][Sources]]
   - [[#setup][Setup]]
-- [[#general-configuration][General Configuration]]
-  - [[#misc][Misc]]
-  - [[#help-and-documentation][Help and Documentation]]
-  - [[#scratch-buffer][Scratch Buffer]]
-  - [[#user-interface][User Interface]]
-  - [[#key-bindings][Key Bindings]]
+- [[#core-settings][Core Settings]]
+- [[#user-interface][User Interface]]
+- [[#editing-and-text-manipulation][Editing & Text Manipulation]]
+- [[#key-bindings][Key Bindings]]
+- [[#buffers-and-sessions][Buffers & Sessions]]
   - [[#backups][Backups]]
-  - [[#buffers][Buffers]]
-  - [[#sessions][Sessions]]
-  - [[#typing-and-spelling][Typing and Spelling]]
-  - [[#file-editing][File Editing]]
-  - [[#window-management][Window Management]]
-- [[#navigation][Navigation]]
-  - [[#general][General]]
+  - [[#buffer-management][Buffer Management]]
+  - [[#session-management][Session Management]]
+- [[#navigation-and-completions][Navigation & Completions]]
+  - [[#general-navigation][General Navigation]]
   - [[#completions][Completions]]
   - [[#imenu][Imenu]]
   - [[#projectile][Projectile]]
   - [[#search][Search]]
   - [[#treemacs][Treemacs]]
-- [[#dired][Dired]]
+  - [[#dired][Dired]]
+- [[#help-and-documentation][Help & Documentation]]
 - [[#org-mode][Org Mode]]
-  - [[#items][items]]
+  - [[#todo-items][Todo items]]
   - [[#auto-show-emphasis-markers][Auto-show Emphasis Markers]]
   - [[#eye-candy][Eye Candy]]
-- [[#development][Development]]
-  - [[#misc-1][Misc]]
+- [[#development-tools][Development Tools]]
+  - [[#language-support][Language Support]]
   - [[#language-server-protocol-lsp][Language Server Protocol (LSP)]]
-  - [[#python][Python]]
+  - [[#python-development][Python Development]]
   - [[#web-development][Web Development]]
-  - [[#productivity][Productivity]]
-  - [[#lisp][Lisp]]
-  - [[#magit][Magit]]
-  - [[#diff-hl][diff-hl]]
+  - [[#lisp-development][Lisp Development]]
+  - [[#version-control][Version Control]]
+  - [[#code-quality][Code Quality]]
   - [[#yaml][YAML]]
-- [[#ai][AI]]
+- [[#ai-tools][AI Tools]]
   - [[#chatgpt][ChatGPT]]
   - [[#codeium][Codeium]]
-- [[#external-tools-and-integration][External Tools and Integration]]
-- [[#games][Games]]
-  - [[#nethack][Nethack]]
-- [[#runtime-performance][Runtime Performance]]
-- [[#theme][Theme]]
+- [[#external-tools-and-integration][External Tools & Integration]]
+  - [[#games][Games]]
 - [[#wrapup][Wrapup]]
 
-* Emacs initialization
+* Early Initialization & Performance
 
 Add /opt/local/bin to the exec-path. Aspell, which is used by
 flyspell-mode, is installed here by MacPorts on OS X.
@@ -72,6 +65,18 @@ Third party packages go here
 (add-to-list 'load-path "~/.emacs.d/elisp")
 #+END_SRC
 
+Increase the GC threshold so that garbage collection happens less frequently.
+This should help with LSP performance.
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 100 1000 1000))
+#+end_src
+
+Increase the amount of data which Emacs reads from a process.
+This should help with LSP performance.
+#+begin_src emacs-lisp
+(setq read-process-output-max (* 1024 1024))
+#+end_src
+
 Start the Emacs server
 #+BEGIN_SRC emacs-lisp
 (server-start)
@@ -84,7 +89,7 @@ Look for an optional local.el file which contains code that is not meant to be c
     (load local-file)))
 #+end_src
 
-* Packages
+* Package Management
 ** Sources
 
 #+BEGIN_SRC emacs-lisp
@@ -125,8 +130,20 @@ Use Paradox for modernizing the package menu
   (paradox-enable))
 #+END_SRC
 
-* General Configuration
-** Misc
+Reinstall rainbow-delimiters if autoloads file is missing
+#+BEGIN_SRC emacs-lisp
+(let ((elpa-dir (expand-file-name "elpa" package-user-dir))
+      (autoloads-file nil))
+  (when (file-directory-p elpa-dir)
+    (dolist (dir (directory-files elpa-dir t "^rainbow-delimiters"))
+      (let ((file (expand-file-name "rainbow-delimiters-autoloads.el" dir)))
+        (when (file-exists-p file)
+          (setq autoloads-file file)))))
+  (when (not autoloads-file)
+    (package-install 'rainbow-delimiters)))
+#+END_SRC
+
+* Core Settings
 
 Change 'yes or no' prompt to 'y or n' prompts
 #+BEGIN_SRC emacs-lisp
@@ -138,8 +155,7 @@ Stop at the end of a file when moving the cursor down, don't just add lines
 (setq next-line-add-newlines nil)
 #+END_SRC
 
-TODO: Is there a better section for this?
-makes killing/yanking interact with clipboard X11 selection
+Make killing/yanking interact with clipboard X11 selection
 #+BEGIN_SRC emacs-lisp
 (when (eq window-system 'x)
   (setq x-select-enable-clipboard t))
@@ -150,49 +166,9 @@ Flash the frame to represent a bell rather than play a sound
 (setq visible-bell t)
 #+END_SRC
 
-Always show trailing whitespace and tabs, but don't show a glyph for tabs
-#+BEGIN_SRC emacs-lisp
-(setq whitespace-style
-      '(face empty tabs tab-mark trailing))
-(setq whitespace-display-mappings
-      '(
-        (tab-mark 9 [9])
-        ))
-(global-whitespace-mode 1)
-#+END_SRC
-
-Delete trailing whitespace on save
-#+begin_src emacs-lisp
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+end_src
-
-Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
-#+BEGIN_SRC emacs-lisp
-(global-visual-line-mode t)
-#+END_SRC
-
 Disable the startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t)
-#+END_SRC
-
-Allow functions to operate on the current line when they would normally operate on the region,
-eg kill-region when no region is selected will delete the current line.
-See http://www.emacswiki.org/WholeLineOrRegion#toc3.
-Most useful feature: C-w will delete the current line if no region is selected.
-#+BEGIN_SRC emacs-lisp
-(use-package whole-line-or-region
-  :ensure t
-  :config
-  (whole-line-or-region-global-mode 1))
-#+END_SRC
-
-auto-save buffers when switching between buffers or when an Emacs frame lose focus
-#+BEGIN_SRC emacs-lisp
-(use-package super-save
-  :delight
-  :config
-(super-save-mode +1))
 #+END_SRC
 
 Avoid "Symbolic link to Git-controlled source file; follow link?" prompt
@@ -203,78 +179,12 @@ due to session saving.
 (setq vc-follow-symlinks t)
 #+END_SRC
 
-Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
-#+begin_src emacs-lisp
-(use-package beacon
-  :delight
-  :ensure t
-  :config
-  (beacon-mode 1))
-#+end_src
-
 Disabling "auto-window-vscroll" improves scroll performance
 #+begin_src emacs-lisp
 (setq auto-window-vscroll nil)
 #+end_src
 
-** Help and Documentation
-
-Helpful is an alternative to the built-in Emacs help that provides much more contextual information
-#+BEGIN_SRC emacs-lisp
-(use-package helpful
-  :bind ("C-h f" . #'helpful-callable)
-  :bind ("C-h v" . #'helpful-variable)
-  :bind ("C-h k" . #'helpful-key)
-  :config
-  (add-hook 'lisp-mode-hook
-            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
-  (add-hook 'lisp-mode-hook
-            (lambda () (local-set-key (kbd "C-h F") #'helpful-function)))
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda () (local-set-key (kbd "C-h F") #'helpful-function))))
-#+END_SRC
-
-Use which-key to display the key bindings following your currently entered incomplete command (a prefix) in a popup
-#+begin_src emacs-lisp
-(use-package which-key
-  :delight
-  :init (which-key-mode)
-  :config
-  (setq which-key-idle-delay 0.3))
-#+end_src
-
-** Scratch Buffer
-
-Configure persistent-scratch to restore on startup, save on exit, autosave every 2 minutes.
-
-#+begin_src emacs-lisp
-(use-package persistent-scratch
-  :ensure t
-  :init
-  ;; Paths
-  (setq persistent-scratch-save-file
-        (expand-file-name "persistent-scratch.el" user-emacs-directory))
-  (setq persistent-scratch-backup-directory
-        (expand-file-name "persistent-scratch/" user-emacs-directory))
-
-  ;; Ensure backup dir exists
-  (unless (file-directory-p persistent-scratch-backup-directory)
-    (make-directory persistent-scratch-backup-directory t))
-
-  ;; Autosave every 2 minutes (default is 30s)
-  (setq persistent-scratch-autosave-interval 120)
-
-  :config
-  ;; Restore on startup, save on exit
-  (persistent-scratch-setup-default)
-
-  ;; Periodic autosave timer
-  (persistent-scratch-autosave-mode 1))
-#+end_src
-
-** User Interface
+* User Interface
 
 Display the cursor's column number
 #+BEGIN_SRC emacs-lisp
@@ -326,6 +236,22 @@ Don't underline highlighted text
 (set-face-attribute 'highlight nil :underline nil)
 #+END_SRC
 
+Always show trailing whitespace and tabs, but don't show a glyph for tabs
+#+BEGIN_SRC emacs-lisp
+(setq whitespace-style
+      '(face empty tabs tab-mark trailing))
+(setq whitespace-display-mappings
+      '(
+        (tab-mark 9 [9])
+        ))
+(global-whitespace-mode 1)
+#+END_SRC
+
+Enable visual-line-mode, which (among other things) makes lines wrap at word boundaries
+#+BEGIN_SRC emacs-lisp
+(global-visual-line-mode t)
+#+END_SRC
+
 Use spaceline, the package that provides Spacemacs with its mode-line theme.
 #+begin_src emacs-lisp
 (use-package spaceline
@@ -344,7 +270,162 @@ Use spaceline, the package that provides Spacemacs with its mode-line theme.
 )
 #+END_SRC
 
-** Key Bindings
+Make new frames start maximized
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+I store my custom themes here.
+#+BEGIN_SRC emacs-lisp
+(setq custom-theme-directory "~/.emacs.d/themes/")
+#+END_SRC
+
+Load the current theme. The theme name should be stored in the environment
+variable "EMACS_THEME".
+
+Then make any customizations specified in current-theme-custom.el, which
+should be a symlink that matches the current theme.
+#+BEGIN_SRC emacs-lisp
+(defun load-theme-from-env-var ()
+  "Load the Emacs theme specified by the EMACS_THEME environment variable."
+  (let ((theme-name (getenv "EMACS_THEME")))
+    (if theme-name
+        (condition-case err
+            (load-theme (intern theme-name) t)
+          (error (message "Error loading theme %s: %s" theme-name (error-message-string err))))
+      (message "EMACS_THEME environment variable is not set."))))
+
+(load-theme-from-env-var)
+
+(dolist (file '("~/.emacs.d/themes/current-theme-custom.el"))
+  (when (file-exists-p file)
+    (condition-case err
+        (load-file file)
+      (error (message "Error loading theme customization file %s: %s" file (error-message-string err))))))
+
+;; On macOS, ensure Menlo font is set after theme loads
+(when (equal system-type 'darwin)
+  ;; Set font for all frames (including new ones)
+  (add-to-list 'default-frame-alist '(font . "Menlo-16"))
+  ;; Set font for current frame
+  (set-face-attribute 'default nil
+                       :family "Menlo"
+                       :height 160))
+#+END_SRC
+
+* Editing & Text Manipulation
+
+Delete trailing whitespace on save
+#+begin_src emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+Allow functions to operate on the current line when they would normally operate on the region,
+eg kill-region when no region is selected will delete the current line.
+See http://www.emacswiki.org/WholeLineOrRegion#toc3.
+Most useful feature: C-w will delete the current line if no region is selected.
+#+BEGIN_SRC emacs-lisp
+(use-package whole-line-or-region
+  :ensure t
+  :config
+  (whole-line-or-region-global-mode 1))
+#+END_SRC
+
+Auto-save buffers when switching between buffers or when an Emacs frame lose focus
+#+BEGIN_SRC emacs-lisp
+(use-package super-save
+  :delight
+  :config
+(super-save-mode +1))
+#+END_SRC
+
+Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
+#+begin_src emacs-lisp
+(use-package beacon
+  :delight
+  :ensure t
+  :config
+  (beacon-mode 1))
+#+end_src
+
+Configure persistent-scratch to restore on startup, save on exit, autosave every 2 minutes.
+
+#+begin_src emacs-lisp
+(use-package persistent-scratch
+  :ensure t
+  :init
+  ;; Paths
+  (setq persistent-scratch-save-file
+        (expand-file-name "persistent-scratch.el" user-emacs-directory))
+  (setq persistent-scratch-backup-directory
+        (expand-file-name "persistent-scratch/" user-emacs-directory))
+
+  ;; Ensure backup dir exists
+  (unless (file-directory-p persistent-scratch-backup-directory)
+    (make-directory persistent-scratch-backup-directory t))
+
+  ;; Autosave every 2 minutes (default is 30s)
+  (setq persistent-scratch-autosave-interval 120)
+
+  :config
+  ;; Restore on startup, save on exit
+  (persistent-scratch-setup-default)
+
+  ;; Periodic autosave timer
+  (persistent-scratch-autosave-mode 1))
+#+end_src
+
+Use abbrev mode to correct often misspelled words
+#+BEGIN_SRC emacs-lisp
+(use-package abbrev
+  :defer 1
+  :ensure nil
+  :custom
+  (abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory))
+  (abbrev-mode 1)
+  :config
+  (if (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file))
+  :delight)
+#+END_SRC
+
+Use the YASnippet template system
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :delight yas-minor-mode
+  :ensure t
+  :config
+  (setq
+   yas-verbosity 1
+   yas-wrap-around-region t)
+
+  (yas-reload-all)
+  (yas-global-mode)
+
+  ;; make any snippets in the "fundamental-mode" subdirectory available in any mode
+  (add-hook 'yas-minor-mode-hook (lambda () (yas-activate-extra-mode 'fundamental-mode))))
+#+END_SRC
+
+Decrease tramp's verbosity level
+#+BEGIN_SRC emacs-lisp
+(setq tramp-verbose 2)
+#+END_SRC
+
+Change the maximum line width for filling
+#+begin_src emacs-lisp
+(setq fill-column 80)
+#+end_src
+
+Add an "unfill" function that is the opposite of fill-paragraph
+#+begin_src emacs-lisp
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+#+end_src
+
+* Key Bindings
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f1>") (lambda () (interactive) (dired (expand-file-name "~/docs/*org")) (revert-buffer)))
@@ -376,6 +457,37 @@ A function that simply duplicates the current line, bound to F12
 (global-set-key (quote [f12]) 'duplicate-line)
 #+END_SRC
 
+The <home> and <end> keys should move to the beginning and end of the buffer, respectively
+#+BEGIN_SRC emacs-lisp
+(global-set-key [home] 'beginning-of-buffer)
+(global-set-key [end] 'end-of-buffer)
+#+END_SRC
+
+Window navigation
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun switch-registers()
+  (interactive)
+  (read-char "Switch to register: ")
+  ;; Save the current state of all frames and windows to current register,
+  ;;  which is saved in a custom variable.
+  (if (boundp 'saved-register)
+      (frameset-to-register saved-register))
+  ;; Save the current register to custom variable
+  (setq saved-register last-input-event)
+  ;; Jump to specified register
+  (jump-to-register last-input-event)
+  )
+(global-set-key (quote [f6]) 'switch-registers)
+#+END_SRC
+
+* Buffers & Sessions
 ** Backups
 
 backup file management
@@ -391,9 +503,7 @@ backup file management
  version-control t)       ; use versioned backups
 #+END_SRC
 
-** Buffers
-
-*** General
+** Buffer Management
 
 Uniquify changes conflicting buffer names from file<2> etc
 #+BEGIN_SRC emacs-lisp
@@ -417,8 +527,6 @@ Focus the buffer window when listing the buffers
 #+BEGIN_SRC emacs-lisp
 (define-key global-map [remap list-buffers] 'buffer-menu-other-window)
 #+END_SRC
-
-*** Ibuffer
 
 Use Ibuffer for buffer list
 #+BEGIN_SRC emacs-lisp
@@ -471,7 +579,7 @@ Enabling this lets you delete buffers without confirmation
 (setq ibuffer-expert t)
 #+END_SRC
 
-** Sessions
+** Session Management
 
 save my place in files between sessions
 #+BEGIN_SRC emacs-lisp
@@ -512,102 +620,6 @@ Save mini-buffer history between sessions
   savehist-file "~/.emacs.d/savehist") ;; keep my home clean
 (savehist-mode t)                          ;; do customization before activate
 #+END_SRC
-** Typing and Spelling
-
-Use abbrev mode to correct often misspelled words
-#+BEGIN_SRC emacs-lisp
-(use-package abbrev
-  :defer 1
-  :ensure nil
-  :custom
-  (abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory))
-  (abbrev-mode 1)
-  :config
-  (if (file-exists-p abbrev-file-name)
-      (quietly-read-abbrev-file))
-  :delight)
-#+END_SRC
-
-Use the YASnippet template system
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :delight yas-minor-mode
-  :ensure t
-  :config
-  (setq
-   yas-verbosity 1
-   yas-wrap-around-region t)
-
-  (yas-reload-all)
-  (yas-global-mode)
-
-  ;; make any snippets in the "fundamental-mode" subdirectory available in any mode
-  (add-hook 'yas-minor-mode-hook (lambda () (yas-activate-extra-mode 'fundamental-mode))))
-#+END_SRC
-
-** File Editing
-*** Tramp
-
-Decrease tramp's verbosity level
-#+BEGIN_SRC emacs-lisp
-(setq tramp-verbose 2)
-#+END_SRC
-
-*** Filling Paragraphs
-
-Change the maximum line width for filling
-#+begin_src emacs-lisp
-(setq fill-column 80)
-#+end_src
-
-Add an "unfill" function that is the opposite of fill-paragraph
-#+begin_src emacs-lisp
-(defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-#+end_src
-
-** Window Management
-
-;; make new frames start maximized
-#+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-#+end_src
-
-#+BEGIN_SRC emacs-lisp
-(defun switch-registers()
-  (interactive)
-  (read-char "Switch to register: ")
-  ;; Save the current state of all frames and windows to current register,
-  ;;  which is saved in a custom variable.
-  (if (boundp 'saved-register)
-      (frameset-to-register saved-register))
-  ;; Save the current register to custom variable
-  (setq saved-register last-input-event)
-  ;; Jump to specified register
-  (jump-to-register last-input-event)
-  )
-(global-set-key (quote [f6]) 'switch-registers)
-#+END_SRC
-
-* Navigation
-** General
-
-The <home> and <end> keys should move to the beginning and end of the buffer, respectively
-#+BEGIN_SRC emacs-lisp
-(global-set-key [home] 'beginning-of-buffer)
-(global-set-key [end] 'end-of-buffer)
-#+END_SRC
-
-Window navigation
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-#+END_SRC
 
 create a list of recently opened files
 #+BEGIN_SRC emacs-lisp
@@ -624,6 +636,10 @@ Auto refresh buffers, but be quiet about it
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil))
 #+END_SRC
+
+* Navigation & Completions
+** General Navigation
+
 ** Completions
 
 Use ivy for file and buffer completions
@@ -764,6 +780,7 @@ This requires installation of the "ag" binary.
   ;; Focus the search buffer after a search
   (add-hook 'ag-search-finished-hook (lambda () (pop-to-buffer next-error-last-buffer))))
 #+END_SRC
+
 ** Treemacs
 
 #+BEGIN_SRC emacs-lisp
@@ -786,7 +803,8 @@ This requires installation of the "ag" binary.
   :after treemacs magit
   :ensure t)
 #+END_SRC
-* Dired
+
+** Dired
 
 #+begin_src emacs-lisp
   (use-package dired
@@ -808,6 +826,35 @@ This requires installation of the "ag" binary.
   ;; Hilight the current line in dired mode
   (add-hook 'dired-mode-hook 'hl-line-mode))
 #+END_SRC
+
+* Help & Documentation
+
+Helpful is an alternative to the built-in Emacs help that provides much more contextual information
+#+BEGIN_SRC emacs-lisp
+(use-package helpful
+  :bind ("C-h f" . #'helpful-callable)
+  :bind ("C-h v" . #'helpful-variable)
+  :bind ("C-h k" . #'helpful-key)
+  :config
+  (add-hook 'lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
+  (add-hook 'lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-h F") #'helpful-function)))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-c C-d") #'helpful-at-point)))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (local-set-key (kbd "C-h F") #'helpful-function))))
+#+END_SRC
+
+Use which-key to display the key bindings following your currently entered incomplete command (a prefix) in a popup
+#+begin_src emacs-lisp
+(use-package which-key
+  :delight
+  :init (which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.3))
+#+end_src
+
 * Org Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -898,7 +945,8 @@ The TOC automatically gets updated when the buffer is saved under the heading wi
 #+BEGIN_SRC emacs-lisp
 (use-package org-contacts
   :ensure nil
-  :after org)
+  :after org
+  :if (locate-library "org-contacts"))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -915,14 +963,19 @@ The TOC automatically gets updated when the buffer is saved under the heading wi
 :WORK_PHONE: %^{Work Phone}
 :URL: %^{Url}
 :NOTE: %^{Note}
-:END:" "Template for org-contacts.")
-  :custom
-  (org-capture-templates
-      `(("c" "Contact" entry (file+headline "~/docs/personal/contacts.org" "Contacts"),
-      my/org-contacts-template
-     :empty-lines 0)
-  ("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-  "* TODO %?  %t  %^g"))))
+:END:" "Template for org-contacts."))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      (list
+       (list "c" "Contact" 'entry
+             (list 'file+headline "~/docs/personal/contacts.org" "Contacts")
+             my/org-contacts-template
+             :empty-lines 0)
+       (list "t" "Todo" 'entry
+             (list 'file+headline org-default-notes-file "Tasks")
+             "* TODO %?  %t  %^g")))
 #+END_SRC
 
 Define a function which toggles the return key binding between
@@ -1035,8 +1088,8 @@ Show org priorities as custom strings
   (setq org-fancy-priorities-list '("MED", "HIGH", "LOW")))
 #+END_SRC
 
-* Development
-** Misc
+* Development Tools
+** Language Support
 
 hilight matching pairs of parentheses and other characters
 #+BEGIN_SRC emacs-lisp
@@ -1079,6 +1132,7 @@ Enable json-mode when editing JSON files
   (use-package json-mode
     :mode ("\\.json" . json-mode))
 #+END_SRC
+
 ** Language Server Protocol (LSP)
 
 #+begin_src emacs-lisp
@@ -1128,7 +1182,7 @@ Use pyright as the LSP Python server.
   )
 #+end_src
 
-** Python
+** Python Development
 
 Set PYTHONPATH so that pylint will properly read the django-settings-module config option inside .pylintrc for Django linting
 #+begin_src emacs-lisp
@@ -1234,14 +1288,14 @@ Use dap-mode for Python debugging
 #+begin_src emacs-lisp
 (use-package dap-mode
   :ensure t
+  :defer t
   :config
   (require 'dap-python)
   (setq dap-auto-configure-features '(sessions locals controls tooltip))
   (dap-auto-configure-mode 1)
   ;; Bring up a hydra automatically when a breakpoint is hit
   :hook
-  (dap-stopped .(lambda (arg) (call-interactively #'dap-hydra)))
-  )
+  (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra))))
 #+end_src
 
 ** Web Development
@@ -1317,15 +1371,8 @@ Change the size of one indentation step
 #+begin_src emacs-lisp
 (setq css-indent-offset 2)
 #+end_src
-** Productivity
 
-Enable rainbow-delimiters in most programming modes
-
-#+begin_src emacs-lisp
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-#+end_src
-
-** Lisp
+** Lisp Development
 
 Add more keywords for font-lock hilighlighting
 #+BEGIN_SRC emacs-lisp
@@ -1348,7 +1395,7 @@ Has no effect if the character before point is not of the syntax class ')'."
 (advice-add 'show-paren-function :after #'show-matching-paren-offscreen)
 #+END_SRC
 
-** Magit
+** Version Control
 
 support for Magit, which provides nice Git integration with Emacs
 #+BEGIN_SRC emacs-lisp
@@ -1412,14 +1459,20 @@ Automatically display the process buffer on error
 (add-hook 'magit-status-mode-hook 'magit-status-font-setup)
 #+END_SRC
 
-** diff-hl
-
 #+BEGIN_SRC emacs-lisp
 (use-package diff-hl
   :ensure t
   :config
   (global-diff-hl-mode))
 #+END_SRC
+
+** Code Quality
+
+Enable rainbow-delimiters in most programming modes
+
+#+begin_src emacs-lisp
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+#+end_src
 
 ** YAML
 
@@ -1428,7 +1481,8 @@ Automatically display the process buffer on error
   :mode (("\\.yaml\\'" . yaml-mode)
          ("\\.yml\\'"       . yaml-mode)))
 #+END_SRC
-* AI
+
+* AI Tools
 ** ChatGPT
 
 chatgpt-shell provides shell support to ChatGPT and Dall-E.
@@ -1437,105 +1491,114 @@ Add your OpenAI key to ~/.netrc.
 #+begin_src emacs-lisp
 (use-package chatgpt-shell
   :ensure t
+  :defer t
   :config
   (setq chatgpt-shell-openai-key
         (auth-source-pick-first-password :host "api.openai.com"))
-  (setq chatgpt-shell-model-version "gpt-4.1")
-  )
+  (setq chatgpt-shell-model-version "gpt-4.1"))
 #+end_src
 
 Bind C-c s to check the current paragraph for spelling and grammar
 Snippet source: https://www.reddit.com/r/emacs/comments/185n3yo/emacs_meets_chatgpt_for_flawless_grammar_and/
 
 #+begin_src emacs-lisp
-(defun chatgpt-shell--region-or-paragraph ()
-  "Return an alist with :start, :end, and :text for the active region or current paragraph."
-  (if (use-region-p)
-      (chatgpt-shell--region)
-    (save-excursion
-      (mark-paragraph)
-      (let ((start (region-beginning))
-            (end   (progn (goto-char (region-end))
-                          (skip-chars-backward "\n")
-                          (point))))
-        (list (cons :start start)
-              (cons :end   end)
-              (cons :text  (buffer-substring-no-properties start end)))))))
+(with-eval-after-load 'chatgpt-shell
+  (defun chatgpt-shell--region-or-paragraph ()
+    "Return an alist with :start, :end, and :text for the active region or current paragraph."
+    (if (use-region-p)
+        (chatgpt-shell--region)
+      (save-excursion
+        (mark-paragraph)
+        (let ((start (region-beginning))
+              (end   (progn (goto-char (region-end))
+                            (skip-chars-backward "\n")
+                            (point))))
+          (list (cons :start start)
+                (cons :end   end)
+                (cons :text  (buffer-substring-no-properties start end)))))))
 
-(defun chatgpt-shell--region-or-paragraph-with-newline ()
-  "Return an alist with :start, :end, and :text for the active region or current paragraph, with space for newline."
-  (let ((region (chatgpt-shell--region-or-paragraph)))
-    (save-excursion
-      (goto-char (alist-get :start region))
-      (insert "\n")
-      (list (cons :start (+ 1 (alist-get :start region)))  ; start after inserted newline
-            (cons :end   (+ 1 (alist-get :end region)))
-            (cons :text  (alist-get :text region))))))
+  (defun chatgpt-shell--region-or-paragraph-with-newline ()
+    "Return an alist with :start, :end, and :text for the active region or current paragraph, with space for newline."
+    (let ((region (chatgpt-shell--region-or-paragraph)))
+      (save-excursion
+        (goto-char (alist-get :start region))
+        (insert "\n")
+        (list (cons :start (+ 1 (alist-get :start region)))  ; start after inserted newline
+              (cons :end   (+ 1 (alist-get :end region)))
+              (cons :text  (alist-get :text region))))))
 
-(defun chatgpt-shell-spell-check-region-or-paragraph ()
-  "Correct spelling and grammar of the active region or current paragraph."
-  (interactive)
-  (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
-         (query  (alist-get :text region)))
-    (chatgpt-shell-request-and-insert-merged-response
-     :system-prompt     "Correct only spelling and grammar. Preserve org-mode markup like =this= and *this*. Only return the corrected paragraph, not the original text or this prompt."
-     :query             (substring query 1)  ; Remove the prepended newline from query
-     :context           nil
-     :remove-block-markers t
-     :region            region
-     :on-iterate        (lambda (output)
-                          (set-mark   (alist-get :end region))
-                          (goto-char  (alist-get :start region))
-                          (chatgpt-shell-quick-insert
-                           (list (cons (substring query 1) output)))))))
+  (defun chatgpt-shell-spell-check-region-or-paragraph ()
+    "Correct spelling and grammar of the active region or current paragraph."
+    (interactive)
+    (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
+           (query  (alist-get :text region)))
+      (chatgpt-shell-request-and-insert-merged-response
+       :system-prompt     "Correct only spelling and grammar. Preserve org-mode markup like =this= and *this*. Only return the corrected paragraph, not the original text or this prompt."
+       :query             (substring query 1)  ; Remove the prepended newline from query
+       :context           nil
+       :remove-block-markers t
+       :region            region
+       :on-iterate        (lambda (output)
+                            (set-mark   (alist-get :end region))
+                            (goto-char  (alist-get :start region))
+                            (chatgpt-shell-quick-insert
+                             (list (cons (substring query 1) output)))))))
 
-(defun chatgpt-shell-improve-clarity-region-or-paragraph ()
-  "Improve clarity, spelling, and grammar of the active region or current paragraph."
-  (interactive)
-  (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
-         (query  (alist-get :text region)))
-    (chatgpt-shell-request-and-insert-merged-response
-     :system-prompt     "Improve clarity, spelling, and grammar of the following text. Only return the corrected paragraph, not the original text or this prompt."
-     :query             (substring query 1)  ; Remove the prepended newline from query
-     :context           nil
-     :remove-block-markers t
-     :region            region
-     :on-iterate        (lambda (output)
-                          (set-mark   (alist-get :end region))
-                          (goto-char  (alist-get :start region))
-                          (chatgpt-shell-quick-insert
-                           (list (cons (substring query 1) output)))))))
+  (defun chatgpt-shell-improve-clarity-region-or-paragraph ()
+    "Improve clarity, spelling, and grammar of the active region or current paragraph."
+    (interactive)
+    (let* ((region (chatgpt-shell--region-or-paragraph-with-newline))
+           (query  (alist-get :text region)))
+      (chatgpt-shell-request-and-insert-merged-response
+       :system-prompt     "Improve clarity, spelling, and grammar of the following text. Only return the corrected paragraph, not the original text or this prompt."
+       :query             (substring query 1)  ; Remove the prepended newline from query
+       :context           nil
+       :remove-block-markers t
+       :region            region
+       :on-iterate        (lambda (output)
+                            (set-mark   (alist-get :end region))
+                            (goto-char  (alist-get :start region))
+                            (chatgpt-shell-quick-insert
+                             (list (cons (substring query 1) output)))))))
 
-(defun chatgpt-shell-custom-prompt-region-or-paragraph ()
-  "Apply a custom prompt to the active region or current paragraph."
-  (interactive)
-  (let* ((custom-prompt (read-string "Custom prompt: "))
-         (full-prompt (concat custom-prompt " Only return the corrected paragraph, not the original text or this prompt."))
-         (region (chatgpt-shell--region-or-paragraph-with-newline))
-         (query  (alist-get :text region)))
-    (chatgpt-shell-request-and-insert-merged-response
-     :system-prompt     full-prompt
-     :query             (substring query 1)  ; Remove the prepended newline from query
-     :context           nil
-     :remove-block-markers t
-     :region            region
-     :on-iterate        (lambda (output)
-                          (set-mark   (alist-get :end region))
-                          (goto-char  (alist-get :start region))
-                          (chatgpt-shell-quick-insert
-                           (list (cons (substring query 1) (concat "\n" output))))))))
+  (defun chatgpt-shell-custom-prompt-region-or-paragraph ()
+    "Apply a custom prompt to the active region or current paragraph."
+    (interactive)
+    (let* ((custom-prompt (read-string "Custom prompt: "))
+           (full-prompt (concat custom-prompt " Only return the corrected paragraph, not the original text or this prompt."))
+           (region (chatgpt-shell--region-or-paragraph-with-newline))
+           (query  (alist-get :text region)))
+      (chatgpt-shell-request-and-insert-merged-response
+       :system-prompt     full-prompt
+       :query             (substring query 1)  ; Remove the prepended newline from query
+       :context           nil
+       :remove-block-markers t
+       :region            region
+       :on-iterate        (lambda (output)
+                            (set-mark   (alist-get :end region))
+                            (goto-char  (alist-get :start region))
+                            (chatgpt-shell-quick-insert
+                             (list (cons (substring query 1) (concat "\n" output))))))))
+
+  (defun chatgpt-shell-proofread-or-improve--impl ()
+    "Internal implementation: Prompt to either spell-check or improve clarity on region or paragraph."
+    (interactive)
+    (let ((choice
+           (ivy-completing-read
+            "Action: " '("Spell Check" "Improve Clarity" "Custom Prompt") nil t)))
+      (pcase choice
+        ("Spell Check"    (chatgpt-shell-spell-check-region-or-paragraph))
+        ("Improve Clarity" (chatgpt-shell-improve-clarity-region-or-paragraph))
+        ("Custom Prompt"   (chatgpt-shell-custom-prompt-region-or-paragraph))
+        (_ (user-error "Invalid choice: %s" choice)))))  ; Close pcase, let, defun
+  )  ; Close with-eval-after-load
 
 (defun chatgpt-shell-proofread-or-improve ()
-  "Prompt to either spell-check or improve clarity on region or paragraph."
+  "Prompt to either spell-check or improve clarity on region or paragraph.
+This function ensures chatgpt-shell is loaded before calling the actual implementation."
   (interactive)
-  (let ((choice
-         (ivy-completing-read
-          "Action: " '("Spell Check" "Improve Clarity" "Custom Prompt") nil t)))
-    (pcase choice
-      ("Spell Check"    (chatgpt-shell-spell-check-region-or-paragraph))
-      ("Improve Clarity" (chatgpt-shell-improve-clarity-region-or-paragraph))
-      ("Custom Prompt"   (chatgpt-shell-custom-prompt-region-or-paragraph))
-      (_ (user-error "Invalid choice: %s" choice)))))
+  (require 'chatgpt-shell)
+  (chatgpt-shell-proofread-or-improve--impl))
 
 (global-set-key (kbd "C-c s") #'chatgpt-shell-proofread-or-improve)
 #+end_src
@@ -1633,7 +1696,8 @@ Run an external Python script that collects the staged diff in the current Git r
   (setq codeium/document/text 'my-codeium/document/text)
   (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
 #+end_src
-* External Tools and Integration
+
+* External Tools & Integration
 
 Enables editing any Chrome textarea inside Emacs by syncing the browser field to a dedicated Emacs buffer via the GhostText protocol. Requires the GhostText Chrome extension.
 
@@ -1666,8 +1730,8 @@ Enables editing any Chrome textarea inside Emacs by syncing the browser field to
   (atomic-chrome-start-server))
 #+end_src
 
-* Games
-** Nethack
+** Games
+*** Nethack
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'nethack-map-mode-hook
@@ -1689,61 +1753,6 @@ Enables editing any Chrome textarea inside Emacs by syncing the browser field to
 You'll need to apt-get this if using Ubuntu or Debian
 #+BEGIN_SRC emacs-lisp
 (setq nethack-program "/usr/games/nethack-lisp")
-#+END_SRC
-
-* Runtime Performance
-
-Increase the GC threshold so that garbage collection happens less frequently.
-This should help with LSP performance.
-
-#+begin_src emacs-lisp
-(setq gc-cons-threshold (* 100 1000 1000))
-#+end_src
-
-Increase the amount of data which Emacs reads from a process.
-This should help with LSP performance.
-
-#+begin_src emacs-lisp
-(setq read-process-output-max (* 1024 1024))
-#+end_src
-
-* Theme
-
-This should be run near the end, since custom face attributes are set in current-theme.el, which all already need to be defined.
-
-I store my custom themes here.
-#+BEGIN_SRC emacs-lisp
-(setq custom-theme-directory "~/.emacs.d/themes/")
-#+END_SRC
-
-Load the current theme. The theme name should be stored in the environment
-variable "EMACS_THEME".
-
-Then make any customizations specified in current-theme-custom.el, which
-should be a symlink that matches the current theme.
-#+BEGIN_SRC emacs-lisp
-(defun load-theme-from-env-var ()
-  "Load the Emacs theme specified by the EMACS_THEME environment variable."
-  (let ((theme-name (getenv "EMACS_THEME")))
-    (if theme-name
-        (load-theme (intern theme-name) t)
-      (message "EMACS_THEME environment variable is not set."))))
-
-(load-theme-from-env-var)
-
-(dolist (file '("~/.emacs.d/themes/current-theme-custom.el"))
-  (when (file-exists-p file)
-    (load-file file))
-  )
-
-;; On macOS, ensure Menlo font is set after theme loads
-(when (equal system-type 'darwin)
-  ;; Set font for all frames (including new ones)
-  (add-to-list 'default-frame-alist '(font . "Menlo-16"))
-  ;; Set font for current frame
-  (set-face-attribute 'default nil
-                       :family "Menlo"
-                       :height 160))
 #+END_SRC
 
 * Wrapup
